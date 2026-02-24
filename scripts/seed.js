@@ -33,7 +33,7 @@ async function populateDB() {
 	const connection = await db.getConnection()
 	try {
 		await connection.beginTransaction()
-		await connection.query('DELETE FROM Close_Approaches') // Prevent duplicated data
+		await connection.query(`DELETE FROM ${config.table}`) // Prevent duplicated data
 		await streamData(connection)
 		await connection.commit()
 		console.log('CSV file processed successfully')
@@ -48,7 +48,6 @@ async function populateDB() {
 
 async function streamData(connection) {
 	const batch = []
-	const batchSize = 500
 	const bulkQuery = `
 	INSERT INTO Close_Approaches 
 	(neo_name, ca_date, nominal_distance_km, minimum_distance_km, 
@@ -56,13 +55,13 @@ async function streamData(connection) {
 	diameter_min_km, diameter_max_km, rarity) 
 	VALUES ?`
 
-	const fileStream = createReadStream('./scripts/neo_close_approaches.csv')
+	const fileStream = createReadStream(config.filePath)
 		.pipe(csvParser())
 
 	for await (const row of fileStream) {
 		const values = getValues(row)
 		batch.push(values)
-		if (batch.length >= batchSize) {
+		if (batch.length >= config.batchSize) {
 			await connection.query(bulkQuery, [batch])
 			batch.length = 0
 		}
@@ -73,20 +72,20 @@ async function streamData(connection) {
 }
 
 function getValues(row) {
-	const formattedDate = formatDate(row['Close-Approach (CA) Date'])
-	const { minDiameter, maxDiameter } = splitDiameter(row['Diameter'])
+	const formattedDate = formatDate(row[config.headers.date])
+	const { minDiameter, maxDiameter } = splitDiameter(row[config.headers.diameter])
 
 	const values = [
-		row['Object'],
+		row[config.headers.object],
 		formattedDate,
-		safeFloat(row['CA DistanceNominal (km)']),
-		safeFloat(row['CA DistanceMinimum (km)']),
-		safeFloat(row['V relative(km/s)']),
-		safeFloat(row['V infinity(km/s)']),
-		safeFloat(row['H(mag)']),
+		safeFloat(row[config.headers.nominalDistance]),
+		safeFloat(row[config.headers.minDistance]),
+		safeFloat(row[config.headers.relVelocity]),
+		safeFloat(row[config.headers.infVelocity]),
+		safeFloat(row[config.headers.mag]),
 		safeFloat(minDiameter),
 		safeFloat(maxDiameter),
-		safeInt(row['Rarity'])
+		safeInt(row[config.headers.rarity])
 	]
 
 	return values
