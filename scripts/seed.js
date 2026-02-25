@@ -18,7 +18,15 @@ const PRIMARY = {
 	batchSize: 500,
 	query: `INSERT INTO Near_Earth_Objects  
 	(spkid, name, earth_moid_ld, magnitude, rotation_hours, pot_hazardous_asteroid) 
-	VALUES ?`
+	VALUES ?`,
+ 	values: (row) => [
+		row['spkid'],
+		formatName(row['full_name']),
+		row['moid_ld'],
+		safeFloat(row['H']),
+		safeFloat(row['rot_per']),
+		formatPHA(row['pha']),
+	]
 }
 
 const SECONDARY = {
@@ -27,7 +35,15 @@ const SECONDARY = {
 	batchSize: 500,
 	query: `INSERT INTO Close_Approaches  
 	(spkid, date, nominal_distance_km, minimum_distance_km, relative_velocity_km_s, rarity) 
-	VALUES ?`
+	VALUES ?`,
+  values: (row, spkid) => [
+		spkid,
+		formatDate(row['Close-Approach (CA) Date']),
+		safeFloat(row['CA DistanceNominal (km)']),
+		safeFloat(row['CA DistanceMinimum (km)']),
+		safeFloat(row['V relative(km/s)']),
+		safeInt(row['Rarity'])
+	]
 }
 
 const TERTIARY = {
@@ -35,7 +51,13 @@ const TERTIARY = {
 	filePath: path.join(__dirname, '../data/orbits.csv'),
 	batchSize: 500,
 	query: `INSERT INTO Orbits 
-	(spkid, orbital_class, eccentricity, years) VALUES ?`
+	(spkid, orbital_class, eccentricity, years) VALUES ?`,
+	values: (row) => [
+		row['spkid'],
+		row['class'],
+		safeFloat(row['e']),
+		safeFloat(row['per_y']),
+	]
 }
 
 async function seed() {
@@ -43,9 +65,9 @@ async function seed() {
 	try {
 		await connection.beginTransaction()
 		await emptyTables(connection)  // Prevent duplicates
-		await streamPrimary(connection)
+		await streamData(connection, PRIMARY)
 		await streamSecondary(connection)
-		await streamTertiary(connection)
+		await streamData(connection, TERTIARY)
 		await connection.commit()
 		console.log('CSV file processed successfully')
 	} catch (error) {
@@ -61,43 +83,27 @@ async function seed() {
 async function emptyTables(connection) {
 	await connection.query(`DELETE FROM ${TERTIARY.table}`)
 	await connection.query(`DELETE FROM ${SECONDARY.table}`)
+
 	// Must be last because other tables have FKs that reference it
 	await connection.query(`DELETE FROM ${PRIMARY.table}`)
 }
 
-async function streamPrimary(connection) {
+async function streamData(connection, CONFIG) {
 	const batch = []
-	const fileStream = createReadStream(PRIMARY.filePath)
+	const fileStream = createReadStream(CONFIG.filePath)
 		.pipe(csvParser())
 
 	for await (const row of fileStream) {
-		const values = primaryValues(row)
+		const values = CONFIG.values(row)
 		batch.push(values)
-		if (batch.length >= PRIMARY.batchSize) {
-			await connection.query(PRIMARY.query, [batch])
+		if (batch.length >= CONFIG.batchSize) {
+			await connection.query(CONFIG.query, [batch])
 			batch.length = 0
 		}
 	}
 	if (batch.length > 0) {  // If there are remaining values
-		await connection.query(PRIMARY.query, [batch])
+		await connection.query(CONFIG.query, [batch])
 	}
-}
-
-const primaryValues = (row) => [
-	row['spkid'],
-	formatName(row['full_name']),
-	row['moid_ld'],
-	safeFloat(row['H']),
-	safeFloat(row['rot_per']),
-	parsePHA(row['pha']),
-]
-
-function formatName(value) {
-	return value.trimStart()
-}
-
-function parsePHA(value) {
-	return value === 'Y' ? true : false
 }
 
 async function streamSecondary(connection) {
@@ -110,7 +116,7 @@ async function streamSecondary(connection) {
 		const spkid = spkidMap.get(row['Object'])
 		if (!spkid) continue
 
-		const values = secondaryValues(row, spkid)
+		const values = SECONDARY.values(row, spkid)
 		batch.push(values)
 		if (batch.length >= SECONDARY.batchSize) {
 			await connection.query(SECONDARY.query, [batch])
@@ -121,15 +127,6 @@ async function streamSecondary(connection) {
 		await connection.query(SECONDARY.query, [batch])
 	}
 }
-
-const secondaryValues = (row, spkid) => [
-	spkid,
-	formatDate(row['Close-Approach (CA) Date']),
-	safeFloat(row['CA DistanceNominal (km)']),
-	safeFloat(row['CA DistanceMinimum (km)']),
-	safeFloat(row['V relative(km/s)']),
-	safeInt(row['Rarity'])
-]
 
 async function mapSpkid(connection) {
 	const [rows] = await connection.query(
@@ -143,6 +140,14 @@ async function mapSpkid(connection) {
 	return map
 }
 
+function formatName(value) {
+	return value.trimStart()
+}
+
+function formatPHA(value) {
+	return value === 'Y' ? true : false
+}
+
 function formatDate(date) {
 	const parsedDate = parse(
 		date.split('±')[0].trim(), 'yyyy-MMM-dd HH:mm', new Date())
@@ -150,31 +155,6 @@ function formatDate(date) {
 
 	return formattedDate
 }
-
-async function streamTertiary(connection) {
-	const batch = []
-	const fileStream = createReadStream(TERTIARY.filePath)
-		.pipe(csvParser())
-
-	for await (const row of fileStream) {
-		const values = tertiaryValues(row)
-		batch.push(values)
-		if (batch.length >= TERTIARY.batchSize) {
-			await connection.query(TERTIARY.query, [batch])
-			batch.length = 0
-		}
-	}
-	if (batch.length > 0) {  // If there are remaining values
-		await connection.query(TERTIARY.query, [batch])
-	}
-}
-
-const tertiaryValues = (row) => [
-	row['spkid'],
-	row['class'],
-	safeFloat(row['e']),
-	safeFloat(row['per_y']),
-]
 
 function safeFloat(val) {
 	const parsedFloat = parseFloat(val)
