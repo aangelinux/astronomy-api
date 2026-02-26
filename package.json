@@ -1,7 +1,7 @@
 {
   "name": "assignment-api-design",
   "version": "1.0.0",
-  "description": "GraphQL API fetching astronomical object data.",
+  "description": "GraphQL API for fetching data on astronomical objects.",
   "type": "module",
   "main": "app.js",
   "scripts": {
@@ -10,11 +10,15 @@
   "author": "Angelina Larsson",
   "license": "MIT",
   "dependencies": {
+    "@apollo/server": "^5.4.0",
+    "@graphql-tools/schema": "^10.0.31",
     "bcrypt": "^6.0.0",
     "csv-parser": "^3.2.0",
     "date-fns": "^4.1.0",
     "dotenv": "^17.3.1",
     "express": "^5.2.1",
+    "graphql": "^16.13.0",
+    "graphql-import-node": "^0.0.5",
     "jsonwebtoken": "^9.0.3",
     "mysql2": "^3.17.5"
   }
