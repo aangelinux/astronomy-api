@@ -3,7 +3,7 @@
  */
 
 import Neo from '../models/neo.js'
-import { verifyToken } from '../middleware/auth.js'
+import { authenticate } from '../middleware/auth.js'
 
 export const neoResolvers = {
 	Query: {
@@ -15,16 +15,16 @@ export const neoResolvers = {
 		}
 	},
 	Mutation: {
-		addNeo: async (_, { input }) => {
-			verifyToken()
+		addNeo: async (_, { input }, context) => {
+			authenticate(context)
 			return await Neo.addNeo(input)
 		},
-		updateNeo: async (_, { id, input }) => {
-			verifyToken()
+		updateNeo: async (_, { id, input }, context) => {
+			authenticate(context)
 			return await Neo.updateNeo(id, input)
 		},
-		deleteNeo: async (_, { id }) => {
-			verifyToken()
+		deleteNeo: async (_, { id }, context) => {
+			authenticate(context)
 			const neo = Neo.getNeo(id)
 			await Neo.deleteNeo(id)
 

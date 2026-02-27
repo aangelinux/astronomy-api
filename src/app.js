@@ -8,11 +8,11 @@ import db from './config/db.js'
 import { ApolloServer } from '@apollo/server'
 import { typeDefs } from './schema/index.js'
 import { resolvers } from './resolvers/index.js'
+import { verifyToken } from './middleware/auth.js'
 
 dotenv.config()
 
 const app = express()
-const apolloServer = new ApolloServer({ typeDefs, resolvers })
 
 app.use(express.json())
 app.use(session({
@@ -23,6 +23,19 @@ app.use(session({
 app.use((err, req, res, next) => {
   console.error(err)
   res.status(500).json({ message: "Oops! Something went wrong." })
+})
+
+const apolloServer = new ApolloServer({ 
+	typeDefs, 
+	resolvers, 
+	context: async ({ req }) => {
+		try {
+			const user = verifyToken(req)
+			return { user }
+		} catch (err) {
+			return { user: null }
+		}
+	}
 })
 
 await apolloServer.start()

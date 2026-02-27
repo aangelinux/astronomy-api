@@ -9,20 +9,30 @@ import dotenv from 'dotenv'
 
 dotenv.config()
 
-export async function authenticate(username, password, req) {
+
+export function authenticate(context) {
+	if (!context.user) {
+		throw new Error('Authentication required')
+	}
+}
+
+export async function verifyCredentials(username, password, context) {
 	const user = await User.getUser(username)
 	if (!user) throw new Error('Username or password invalid')
 
 	const match = await bcrypt.compare(password, user.password_hash)
 	if (!match) throw new Error('Username or password invalid')
 
-	req.session.user = username
-	const token = jwt.sign(req.session.user, process.env.JWT_SECRET, { expiresIn: '1h' })
+	const token = jwt.sign(
+		context.user, 
+		process.env.JWT_SECRET, 
+		{ expiresIn: '1h' }
+	)
 
 	return token
 }
 
-export function verifyToken(req, res, next) {
+export function verifyToken(req) {
 	const authHeader = req.headers.authorization
 	if (authHeader) {
 		const token = authHeader.split(' ')[1]

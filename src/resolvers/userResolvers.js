@@ -3,8 +3,7 @@
  */
 
 import User from '../models/user.js'
-import { authenticate } from '../middleware/auth.js'
-import { request } from 'express'
+import { verifyCredentials } from '../middleware/auth.js'
 import bcrypt from 'bcrypt'
 
 export const userResolvers = {
@@ -18,11 +17,10 @@ export const userResolvers = {
 			const password_hash = await bcrypt.hash(password, 12)
 			return await User.register({ username, password_hash })
 		},
-		login: async (_, { username, password }) => {
-			return await authenticate(username, password, request)
+		login: async (_, { username, password }, context) => {
+			return await verifyCredentials(username, password, context)
 		},
 		deleteAccount: async (_, { password }) => {
-			const username = request.session.user
 			const user = User.getUser(username)
 			await bcrypt.compare(password, user.password_hash)
 			await User.delete(username)
