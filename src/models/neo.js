@@ -6,31 +6,49 @@ import db from '../config/db.js'
 
 export default class Neo {
 	static async getNeo(id) {
-
-	}
-
-	static async getAllNeos() {
-		const query = `
-		SELECT * FROM Near_Earth_Objects
-		WHERE spkid > 50
-		ORDER BY spkid
-		LIMIT 50`
-
-		const [result] = await db.query(query)
-		console.log(result)
+		const query = `SELECT * FROM Near_Earth_Objects WHERE spkid = ?`
+		const [result] = await db.query(query, [id])
 		
 		return result
 	}
 
-	static async addNeo(data) {
+	static async getAllNeos(page) {
+		const query = `SELECT * FROM Near_Earth_Objects LIMIT 50 OFFSET = ?`
+		const [result] = await db.query(query, [page])
 
+		return result
+	}
+
+	static async addNeo(data) {
+		const query = `
+		INSERT INTO Near_Earth_Objects (spkid, name, earth_moid_ld, magnitude, rotation_hours, pha)
+		VALUES (?, ?, ?, ?, ?, ?)`
+
+		const [result] = await db.query(query, [
+			data.id,
+			data.name,
+			data.earth_moid_ld,
+			data.magnitude,
+			data.rotation_hours,
+			data.pha
+		])
+
+		return result
 	}
 
 	static async updateNeo(id, data) {
+		const tables = Object.keys(data)
 
+		const query = `UPDATE Near_Earth_Objects SET ${tables} = ? WHERE spkid = ?`
+		const [result] = await db.query(query, [...data, id])
+
+		return result
 	}
 
 	static async deleteNeo(id) {
+		const query = `DELETE FROM Near_Earth_Objects WHERE spkid = ?`
+		const [result] = await db.query(query, [id])
 
+		return result
 	}
 }
