@@ -15,6 +15,11 @@ const app = express()
 const apolloServer = new ApolloServer({ typeDefs, resolvers })
 
 app.use(express.json())
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false
+}))
 app.use((err, req, res, next) => {
   console.error(err)
   res.status(500).json({ message: "Oops! Something went wrong." })

@@ -12,6 +12,8 @@ export const neo = gql`
 		magnitude: Float
 		rotation_hours: Float
 		pha: Boolean
+		orbit: [Orbit]
+		close_approach: [Close_Approach]
 	}
 
 	input AddNeoInput {

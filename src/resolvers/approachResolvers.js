@@ -1,5 +1,5 @@
 /**
- * Resolves queries for Close Approaches.
+ * Resolves queries for Close Approaches data.
  */
 
 import Close_Approach from '../models/close_approach.js'
@@ -9,8 +9,8 @@ export const approachResolvers = {
 		close_approach: async (_, { id }) => {
 			return await Close_Approach.getApproach(id)
 		},
-		close_approaches: async () => {
-			return await Close_Approach.getAllApproaches()
+		close_approaches: async (_, { page }) => {
+			return await Close_Approach.getAllApproaches(page)
 		}
 	}
 }

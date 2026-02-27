@@ -3,21 +3,14 @@
  */
 
 export default class User {
-	static async getUser(id) {
-		const query = `SELECT * FROM Users WHERE userid = ?`
-		const [result] = await db.query(query, [id])
+	static async getUser(username) {
+		const query = `SELECT * FROM Users WHERE username = ?`
+		const [result] = await db.query(query, [username])
 		
 		return result
 	}
 
-	static async getAllUsers(page) {
-		const query = `SELECT * FROM Users LIMIT 50 OFFSET = ?`
-		const [result] = await db.query(query, [page])
-
-		return result
-	}
-
-	static async addUser(data) {
+	static async register(data) {
 		const query = `
 		INSERT INTO Users (username, password_hash, created)
 		VALUES (?, ?, NOW())`
@@ -26,6 +19,13 @@ export default class User {
 			data.username,
 			data.password_hash
 		])
+
+		return result
+	}
+
+	static async delete(user) {
+		const query = `DELETE FROM Users WHERE username = ?`
+		const [result] = await db.query(query, [user])
 
 		return result
 	}

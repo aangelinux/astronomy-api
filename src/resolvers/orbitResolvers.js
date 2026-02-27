@@ -1,5 +1,5 @@
 /**
- * Resolves queries for Orbits.
+ * Resolves queries for Orbits data.
  */
 
 import Orbit from '../models/orbit.js'
@@ -9,8 +9,8 @@ export const orbitResolvers = {
 		orbit: async (_, { id }) => {
 			return await Orbit.getOrbit(id)
 		},
-		orbits: async () => {
-			return await Orbit.getAllOrbits()
+		orbits: async (_, { page }) => {
+			return await Orbit.getAllOrbits(page)
 		}
 	}
 }
