@@ -2,9 +2,7 @@
  * Defines the GraphQL schema for Users.
  */
 
-import { gql } from '@apollo/server'
-
-export const user = gql`
+export const user = `#graphql
 	type User {
 		id: ID!
 		username: String!
@@ -29,6 +27,10 @@ export const user = gql`
 	input DeleteInput {
 		username: String!
 		password: String!
+	}
+
+	extend type Query {
+		user(id: ID!): User
 	}
 
 	extend type Mutation {

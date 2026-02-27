@@ -2,9 +2,7 @@
  * Defines the GraphQL schema for Close Approaches.
  */
 
-import { gql } from '@apollo/server'
-
-export const approach = gql`
+export const approach = `#graphql
 	type Close_Approach {
 		id: ID!
 		date: Date!

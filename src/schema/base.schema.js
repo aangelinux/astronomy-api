@@ -2,9 +2,7 @@
  * Defines the base GraphQL schema.
  */
 
-import { gql } from '@apollo/server'
-
-export const base = gql`
+export const base = `#graphql
 	type Query {
 		_: String
 	}

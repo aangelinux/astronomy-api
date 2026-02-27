@@ -10,5 +10,5 @@ import path from 'path'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
-const typesArray = loadFilesSync(path.join(__dirname, '../src/schema/*.js'))
+const typesArray = loadFilesSync(path.join(__dirname, '*.schema.js'))
 export const typeDefs = mergeTypeDefs(typesArray)

@@ -2,9 +2,7 @@
  * Defines the GraphQL schema for Near-Earth Objects.
  */
 
-import { gql } from '@apollo/server'
-
-export const neo = gql`
+export const neo = `#graphql
 	type Neo {
 		id: ID!
 		name: String!

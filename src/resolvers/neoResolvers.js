@@ -25,7 +25,7 @@ export const neoResolvers = {
 		},
 		deleteNeo: async (_, { id }, context) => {
 			authenticate(context)
-			const neo = Neo.getNeo(id)
+			const neo = await Neo.getNeo(id)
 			await Neo.deleteNeo(id)
 
 			return {

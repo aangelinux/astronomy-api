@@ -8,10 +8,8 @@ import { orbitResolvers } from './orbitResolvers.js'
 import { userResolvers } from './userResolvers.js'
 
 export const resolvers = {
-	Query: {
-		...neoResolvers.Query,
-		...approachResolvers.Query,
-		...orbitResolvers.Query,
-		...userResolvers.Query
-	}
+	...neoResolvers,
+	...approachResolvers,
+	...orbitResolvers,
+	...userResolvers
 }

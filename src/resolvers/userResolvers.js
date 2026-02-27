@@ -13,15 +13,18 @@ export const userResolvers = {
 		}
 	},
 	Mutation: {
-		register: async (_, { username, password }) => {
+		register: async (_, { input }) => {
+			const { username, password } = input
 			const password_hash = await bcrypt.hash(password, 12)
 			return await User.register({ username, password_hash })
 		},
-		login: async (_, { username, password }, context) => {
+		login: async (_, { input }, context) => {
+			const { username, password } = input
 			return await verifyCredentials(username, password, context)
 		},
-		deleteAccount: async (_, { password }) => {
-			const user = User.getUser(username)
+		deleteAccount: async (_, { input }) => {
+			const { username, password } = input
+			const user = await User.getUser(username)
 			await bcrypt.compare(password, user.password_hash)
 			await User.delete(username)
 

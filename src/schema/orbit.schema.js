@@ -2,9 +2,7 @@
  * Defines the GraphQL schema for Orbits.
  */
 
-import { gql } from '@apollo/server'
-
-export const orbit = gql`
+export const orbit = `#graphql
 	type Orbit {
 		id: ID!
 		class: String!

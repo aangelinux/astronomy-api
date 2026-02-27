@@ -4,6 +4,7 @@
 
 import dotenv from 'dotenv'
 import express from 'express'
+import session from 'express-session'
 import db from './config/db.js'
 import { ApolloServer } from '@apollo/server'
 import { typeDefs } from './schema/index.js'
