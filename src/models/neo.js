@@ -26,7 +26,7 @@ export default class Neo {
 
 	}
 
-	static async updateNeo(data) {
+	static async updateNeo(id, data) {
 
 	}
 
