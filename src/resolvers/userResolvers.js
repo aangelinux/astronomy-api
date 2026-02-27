@@ -25,8 +25,12 @@ export const userResolvers = {
 			const username = request.session.user
 			const user = User.getUser(username)
 			await bcrypt.compare(password, user.password_hash)
+			await User.delete(username)
 
-			return await User.delete(username)
+			return {
+				deletedUser: user,
+				message: 'Account deleted successfully'
+			}
 		}
 	}
 }

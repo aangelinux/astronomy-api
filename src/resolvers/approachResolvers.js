@@ -2,7 +2,7 @@
  * Resolves queries for Close Approaches data.
  */
 
-import Close_Approach from '../models/close_approach.js'
+import Close_Approach from '../models/approach.js'
 
 export const approachResolvers = {
 	Query: {

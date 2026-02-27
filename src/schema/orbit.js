@@ -11,4 +11,9 @@ export const orbit = gql`
 		eccentricity: Float
 		years: Float
 	}
+
+	extend type Query {
+		orbit(id: ID!): Orbit
+		orbits: [Orbit!]!
+	}
 `

@@ -12,8 +12,13 @@ export const neo = gql`
 		magnitude: Float
 		rotation_hours: Float
 		pha: Boolean
-		orbit: [Orbit]
-		close_approach: [Close_Approach]
+		orbit: Orbit
+		close_approaches: [Close_Approach]
+	}
+
+	type DeleteNeoResponse {
+		deletedNeo: Neo
+		message: String
 	}
 
 	input AddNeoInput {
@@ -31,11 +36,6 @@ export const neo = gql`
 		magnitude: Float
 		rotation_hours: Float
 		pha: Boolean
-	}
-
-	type DeleteNeoResponse {
-		deletedNeo: Neo
-		message: String
 	}
 
 	extend type Query {

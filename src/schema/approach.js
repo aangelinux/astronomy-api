@@ -13,4 +13,9 @@ export const approach = gql`
 		velocity: Float
 		rarity: Int
 	}
+
+	extend type Query {
+		close_approach(id: ID!): Close_Approach
+		close_approaches: [Close_Approach!]!
+	}
 `

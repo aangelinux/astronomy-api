@@ -25,7 +25,13 @@ export const neoResolvers = {
 		},
 		deleteNeo: async (_, { id }) => {
 			verifyToken()
-			return await Neo.deleteNeo(id)
+			const neo = Neo.getNeo(id)
+			await Neo.deleteNeo(id)
+
+			return {
+				deletedNeo: neo,
+				message: 'Near-Earth Object deleted successfully'
+			}
 		}
 	}
 }
