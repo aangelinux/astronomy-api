@@ -10,22 +10,16 @@ import path from 'path'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
-// Load all .js schema files in this directory except this index file.
-const rawTypes = loadFilesSync([
-	path.join(__dirname, '*.js'),
-	'!' + path.join(__dirname, 'index.js')
-])
+const types = loadFilesSync(path.join(__dirname, '*.schema.js'),)
 
-// loadFilesSync returns module exports (objects). Each schema module exports
-// a named const (e.g. `export const neo = gql`), so extract the first
-// exported value (the SDL DocumentNode / string) from each module before
-// passing to mergeTypeDefs.
-const typesArray = rawTypes.map(mod => {
-	if (mod && typeof mod === 'object' && !('kind' in mod)) {
-		const vals = Object.values(mod)
-		return vals[0]
+// Check if the module is a schema object or DocumentNode (ie has 'kind'), and
+// if true then extract the first module value (schema type) to use in typeDefs
+const typesArray = types.map(module => {
+	if (module && typeof module === 'object' && !('kind' in module)) {
+		const values = Object.values(module)
+		return values[0]
 	}
-	return mod
+	return module
 })
 
 export const typeDefs = mergeTypeDefs(typesArray)
