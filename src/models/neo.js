@@ -9,7 +9,7 @@ export default class Neo {
 		const query = `SELECT * FROM Near_Earth_Objects WHERE spkid = ?`
 		const [result] = await db.query(query, [id])
 		
-		return result
+		return result[0]
 	}
 
 	static async getAllNeos(page) {
