@@ -6,8 +6,8 @@ import Orbit from '../models/orbit.js'
 
 export const orbitResolvers = {
 	Query: {
-		orbit: async (_, { id }) => {
-			return await Orbit.getOrbit(id)
+		orbit: async (_, { spkid }) => {
+			return await Orbit.getOrbit(spkid)
 		},
 		orbits: async (_, { page }) => {
 			return await Orbit.getAllOrbits(page)

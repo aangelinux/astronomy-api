@@ -5,6 +5,7 @@
 export const approach = `#graphql
 	type Close_Approach {
 		id: ID!
+		spkid: String!
 		date: Date!
 		nominal_distance_km: Float!
 		minimum_distance_km: Float!

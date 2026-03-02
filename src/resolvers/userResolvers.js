@@ -8,8 +8,8 @@ import bcrypt from 'bcrypt'
 
 export const userResolvers = {
 	Query: {
-		user: async (_, { id }) => {
-			return await User.getUser(id)
+		user: async (_, { userid }) => {
+			return await User.getUser(userid)
 		}
 	},
 	Mutation: {
@@ -18,10 +18,12 @@ export const userResolvers = {
 			const password_hash = await bcrypt.hash(password, 12)
 			return await User.register({ username, password_hash })
 		},
+
 		login: async (_, { input }, context) => {
 			const { username, password } = input
 			return await verifyCredentials(username, password, context)
 		},
+
 		deleteAccount: async (_, { input }) => {
 			const { username, password } = input
 			const user = await User.getUser(username)

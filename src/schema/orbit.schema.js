@@ -4,14 +4,14 @@
 
 export const orbit = `#graphql
 	type Orbit {
-		id: ID!
-		class: String!
+		spkid: ID!
+		orbital_class: String!
 		eccentricity: Float
 		years: Float
 	}
 
 	extend type Query {
-		orbit(id: ID!): Orbit
+		orbit(spkid: ID!): Orbit
 		orbits: [Orbit!]!
 	}
 `

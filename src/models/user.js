@@ -5,11 +5,11 @@
 import db from '../config/db.js'
 
 export default class User {
-	static async getUser(username) {
-		const query = `SELECT * FROM Users WHERE username = ?`
-		const [result] = await db.query(query, [username])
+	static async getUser(userid) {
+		const query = `SELECT * FROM Users WHERE userid = ?`
+		const [result] = await db.query(query, [userid])
 		
-		return result
+		return result[0]
 	}
 
 	static async register(data) {

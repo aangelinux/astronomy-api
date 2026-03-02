@@ -7,8 +7,8 @@ import { authenticate } from '../middleware/auth.js'
 
 export const neoResolvers = {
 	Query: {
-		neo: async (_, { id }) => {
-			return await Neo.getNeo(id)
+		neo: async (_, { spkid }) => {
+			return await Neo.getNeo(spkid)
 		},
 		neos: async (_, { page }) => {
 			return await Neo.getAllNeos(page)
@@ -19,14 +19,14 @@ export const neoResolvers = {
 			authenticate(context)
 			return await Neo.addNeo(input)
 		},
-		updateNeo: async (_, { id, input }, context) => {
+		updateNeo: async (_, { spkid, input }, context) => {
 			authenticate(context)
-			return await Neo.updateNeo(id, input)
+			return await Neo.updateNeo(spkid, input)
 		},
-		deleteNeo: async (_, { id }, context) => {
+		deleteNeo: async (_, { spkid }, context) => {
 			authenticate(context)
-			const neo = await Neo.getNeo(id)
-			await Neo.deleteNeo(id)
+			const neo = await Neo.getNeo(spkid)
+			await Neo.deleteNeo(spkid)
 
 			return {
 				deletedNeo: neo,

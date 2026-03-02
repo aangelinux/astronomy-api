@@ -4,7 +4,7 @@
 
 export const user = `#graphql
 	type User {
-		id: ID!
+		userid: ID!
 		username: String!
 		created: Date
 	}
@@ -30,7 +30,7 @@ export const user = `#graphql
 	}
 
 	extend type Query {
-		user(id: ID!): User
+		user(userid: ID!): User
 	}
 
 	extend type Mutation {

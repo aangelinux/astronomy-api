@@ -5,16 +5,18 @@
 import db from '../config/db.js'
 
 export default class Orbit {
-	static async getOrbit(id) {
+	static async getOrbit(spkid) {
 		const query = `SELECT * FROM Orbits WHERE spkid = ?`
-		const [result] = await db.query(query, [id])
+		const [result] = await db.query(query, [spkid])
 		
-		return result
+		return result[0]
 	}
 
 	static async getAllOrbits(page) {
+		const offset = page * 50
+
 		const query = `SELECT * FROM Orbits LIMIT 50 OFFSET = ?`
-		const [result] = await db.query(query, [page])
+		const [result] = await db.query(query, [offset])
 
 		return result
 	}

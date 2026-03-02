@@ -4,7 +4,7 @@
 
 export const neo = `#graphql
 	type Neo {
-		id: ID!
+		spkid: ID!
 		name: String!
 		earth_moid_ld: Float!
 		magnitude: Float
@@ -20,7 +20,7 @@ export const neo = `#graphql
 	}
 
 	input AddNeoInput {
-		id: ID!
+		spkid: ID!
 		name: String!
 		earth_moid_ld: Float!
 		magnitude: Float
@@ -37,13 +37,13 @@ export const neo = `#graphql
 	}
 
 	extend type Query {
-		neo(id: ID!): Neo
+		neo(spkid: ID!): Neo
 		neos: [Neo!]!
 	}
 
 	extend type Mutation {
 		addNeo(input: AddNeoInput!): Neo
-		updateNeo(id: ID!, input: UpdateNeoInput!): Neo
-		deleteNeo(id: ID!): DeleteNeoResponse
+		updateNeo(spkid: ID!, input: UpdateNeoInput!): Neo
+		deleteNeo(spkid: ID!): DeleteNeoResponse
 	}
 `

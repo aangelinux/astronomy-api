@@ -5,16 +5,18 @@
 import db from '../config/db.js'
 
 export default class Neo {
-	static async getNeo(id) {
+	static async getNeo(spkid) {
 		const query = `SELECT * FROM Near_Earth_Objects WHERE spkid = ?`
-		const [result] = await db.query(query, [id])
-		
+		const [result] = await db.query(query, [spkid])
+
 		return result[0]
 	}
 
 	static async getAllNeos(page) {
-		const query = `SELECT * FROM Near_Earth_Objects LIMIT 50 OFFSET = ?`
-		const [result] = await db.query(query, [page])
+		const offset = page * 50
+
+		const query = `SELECT * FROM Near_Earth_Objects LIMIT 50 OFFSET ?`
+		const [result] = await db.query(query, [offset])
 
 		return result
 	}
@@ -25,7 +27,7 @@ export default class Neo {
 		VALUES (?, ?, ?, ?, ?, ?)`
 
 		const [result] = await db.query(query, [
-			data.id,
+			data.spkid,
 			data.name,
 			data.earth_moid_ld,
 			data.magnitude,
@@ -36,18 +38,22 @@ export default class Neo {
 		return result
 	}
 
-	static async updateNeo(id, data) {
-		const tables = Object.keys(data)
+	static async updateNeo(spkid, data) {
+		const rows = Object.keys(data)
+		if (rows.length === 0) return null
 
-		const query = `UPDATE Near_Earth_Objects SET ${tables} = ? WHERE spkid = ?`
-		const [result] = await db.query(query, [...data, id])
+		const updateTables = rows.map(table = `${table} = ?`).join(', ')
+		const values = rows.map(table => data[table])
+
+		const query = `UPDATE Near_Earth_Objects SET ${updateTables} WHERE spkid = ?`
+		const [result] = await db.query(query, [...values, spkid])
 
 		return result
 	}
 
-	static async deleteNeo(id) {
+	static async deleteNeo(spkid) {
 		const query = `DELETE FROM Near_Earth_Objects WHERE spkid = ?`
-		const [result] = await db.query(query, [id])
+		const [result] = await db.query(query, [spkid])
 
 		return result
 	}
