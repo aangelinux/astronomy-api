@@ -13,8 +13,7 @@ export default class Orbit {
 	}
 
 	static async getAllOrbits(page) {
-		const offset = page * 50
-
+		const offset = (page - 1) * 50
 		const query = `SELECT * FROM Orbits LIMIT 50 OFFSET = ?`
 		const [result] = await db.query(query, [offset])
 

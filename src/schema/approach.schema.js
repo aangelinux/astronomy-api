@@ -9,7 +9,7 @@ export const approach = `#graphql
 		date: Date!
 		nominal_distance_km: Float!
 		minimum_distance_km: Float!
-		velocity: Float
+		relative_velocity_km_s: Float
 		rarity: Int
 	}
 

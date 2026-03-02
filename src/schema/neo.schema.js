@@ -9,7 +9,7 @@ export const neo = `#graphql
 		earth_moid_ld: Float!
 		magnitude: Float
 		rotation_hours: Float
-		pha: Boolean
+		pot_hazardous_asteroid: Boolean
 		orbit: Orbit
 		close_approaches: [Close_Approach]
 	}
@@ -25,7 +25,7 @@ export const neo = `#graphql
 		earth_moid_ld: Float!
 		magnitude: Float
 		rotation_hours: Float
-		pha: Boolean
+		pot_hazardous_asteroid: Boolean
 	}
 
 	input UpdateNeoInput {
@@ -33,7 +33,7 @@ export const neo = `#graphql
 		earth_moid_ld: Float
 		magnitude: Float
 		rotation_hours: Float
-		pha: Boolean
+		pot_hazardous_asteroid: Boolean
 	}
 
 	extend type Query {

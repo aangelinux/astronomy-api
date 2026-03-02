@@ -13,8 +13,7 @@ export default class Close_Approach {
 	}
 
 	static async getAllApproaches(page) {
-		const offset = page * 50
-
+		const offset = (page - 1) * 50
 		const query = `SELECT * FROM Close_Approaches LIMIT 50 OFFSET = ?`
 		const [result] = await db.query(query, [offset])
 

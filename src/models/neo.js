@@ -13,8 +13,7 @@ export default class Neo {
 	}
 
 	static async getAllNeos(page) {
-		const offset = page * 50
-
+		const offset = (page - 1) * 50
 		const query = `SELECT * FROM Near_Earth_Objects LIMIT 50 OFFSET ?`
 		const [result] = await db.query(query, [offset])
 
