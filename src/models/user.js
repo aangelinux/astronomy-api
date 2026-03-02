@@ -2,6 +2,8 @@
  * Queries to the Users table.
  */
 
+import db from '../config/db.js'
+
 export default class User {
 	static async getUser(username) {
 		const query = `SELECT * FROM Users WHERE username = ?`

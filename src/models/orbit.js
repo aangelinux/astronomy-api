@@ -2,6 +2,8 @@
  * Queries to the Orbits table.
  */
 
+import db from '../config/db.js'
+
 export default class Orbit {
 	static async getOrbit(id) {
 		const query = `SELECT * FROM Orbits WHERE spkid = ?`

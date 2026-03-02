@@ -2,6 +2,8 @@
  * Queries to the Close Approaches table.
  */
 
+import db from '../config/db.js'
+
 export default class Close_Approach {
 	static async getApproach(id) {
 		const query = `SELECT * FROM Close_Approaches WHERE spkid = ?`
