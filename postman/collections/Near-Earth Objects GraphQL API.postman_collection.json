@@ -1,0 +1,366 @@
+{
+  "info": {
+    "_postman_id": "a9909f1a-502b-4e80-bd05-6ecda839db1e",
+    "name": "Astronomy GraphQL API",
+    "description": "GraphQL API for managing Near-Earth Objects (NEOs), their orbits, and close approaches. Uses JWT authentication for protected mutations.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "id": "5d520550-50ca-4009-8d69-9c61e8013046",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "graphql"
+            },
+            "url": {
+              "raw": "{{baseUrl}}",
+              "host": [
+                "{{baseUrl}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const response = pm.response.json();",
+                  "if (response.data && response.data.login) {",
+                  "  // Try to get token from response header",
+                  "  const authHeader = pm.response.headers.get('Authorization');",
+                  "  if (authHeader) {",
+                  "    pm.collectionVariables.set('token', authHeader.replace('Bearer ', ''));",
+                  "  }",
+                  "}",
+                  "pm.test(\"Login successful\", () => {",
+                  "  pm.response.to.have.status(200);",
+                  "  pm.expect(response.data.login).to.have.property('id');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "id": "264fe68b-cdcb-4370-a89d-d38fb6889670",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "graphql"
+            },
+            "url": {
+              "raw": "{{baseUrl}}",
+              "host": [
+                "{{baseUrl}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Account",
+          "id": "5882041a-f534-4480-a396-09a9d4f0ca14",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "graphql"
+            },
+            "url": {
+              "raw": "{{baseUrl}}",
+              "host": [
+                "{{baseUrl}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "id": "ee8852f5-7163-4427-ace5-419400080455"
+    },
+    {
+      "name": "NEOs",
+      "item": [
+        {
+          "name": "Get All NEOs",
+          "id": "cb1afd93-f426-4566-9574-e5e572549660",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "graphql"
+            },
+            "url": {
+              "raw": "{{baseUrl}}",
+              "host": [
+                "{{baseUrl}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get NEO by ID",
+          "id": "6d155848-55e8-446b-9c81-a197dbcafb2c",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "graphql"
+            },
+            "url": {
+              "raw": "{{baseUrl}}",
+              "host": [
+                "{{baseUrl}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Add NEO",
+          "id": "013009a0-fc74-462e-9a8a-a5ff74782a0a",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "graphql"
+            },
+            "url": {
+              "raw": "{{baseUrl}}",
+              "host": [
+                "{{baseUrl}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update NEO",
+          "id": "cf7fa8f6-fd00-41e0-b74e-cbdc079b1307",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "graphql"
+            },
+            "url": {
+              "raw": "{{baseUrl}}",
+              "host": [
+                "{{baseUrl}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete NEO",
+          "id": "28b93adb-a739-48ef-bace-b58225f5941f",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "graphql"
+            },
+            "url": {
+              "raw": "{{baseUrl}}",
+              "host": [
+                "{{baseUrl}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "id": "61bb201b-edf5-48a9-aa36-b7550e199c40"
+    },
+    {
+      "name": "Orbits",
+      "item": [
+        {
+          "name": "Get All Orbits",
+          "id": "1ca4cc0d-92a9-468b-bf5a-3d33f191f0c7",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "graphql"
+            },
+            "url": {
+              "raw": "{{baseUrl}}",
+              "host": [
+                "{{baseUrl}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Orbit by ID",
+          "id": "b4e2202c-b4ec-473e-83e0-1b2afb5caf10",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "graphql"
+            },
+            "url": {
+              "raw": "{{baseUrl}}",
+              "host": [
+                "{{baseUrl}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "id": "415a2314-f076-44fa-a9fb-e9db4c717651"
+    },
+    {
+      "name": "Close Approaches",
+      "item": [
+        {
+          "name": "Get All Close Approaches",
+          "id": "843b21ae-2c8c-4ea1-a5ae-807b5e7f9771",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "graphql"
+            },
+            "url": {
+              "raw": "{{baseUrl}}",
+              "host": [
+                "{{baseUrl}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Close Approach by ID",
+          "id": "a3630a54-3894-418e-83b6-c4a01ab712c0",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "graphql"
+            },
+            "url": {
+              "raw": "{{baseUrl}}",
+              "host": [
+                "{{baseUrl}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "id": "9651483a-0226-4cdd-9e55-b1e6e0d8d2a3"
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Get User by ID",
+          "id": "03986688-1901-4faa-b1b7-7e88bf9de1b3",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "graphql"
+            },
+            "url": {
+              "raw": "{{baseUrl}}",
+              "host": [
+                "{{baseUrl}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "id": "76f00900-c7b3-418c-b420-d9856278d90b"
+    },
+    {
+      "name": "Get NEO by ID",
+      "id": "6d155848-55e8-446b-9c81-a197dbcafb2c",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "graphql"
+        },
+        "url": {
+          "raw": "{{baseUrl}}",
+          "host": [
+            "{{baseUrl}}"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "id": "8523b954-e9c9-475d-832a-2961ec446af0",
+      "key": "baseUrl",
+      "value": "http://localhost:{{PORT}}/graphql"
+    },
+    {
+      "id": "038f994c-64c9-488c-95c6-aafae4708802",
+      "key": "token",
+      "value": ""
+    }
+  ]
+}

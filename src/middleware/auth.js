@@ -20,6 +20,8 @@ export async function verifyCredentials(username, password, context) {
 	const user = await User.getUser(username)
 	if (!user) throw new Error('Username or password invalid')
 
+	console.log(user)
+
 	const match = await bcrypt.compare(password, user.password_hash)
 	if (!match) throw new Error('Username or password invalid')
 
