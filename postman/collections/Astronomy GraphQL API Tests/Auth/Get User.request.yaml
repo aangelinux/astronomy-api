@@ -1,9 +1,9 @@
 $kind: graphql-request
-name: Register
+name: Get User
 url: "{{URL}}"
 query: |
-  mutation Register {
-      register(input: { username: "postman_test", password: "heyhey" }) {
+  query User {
+      user(userid: "1") {
           userid
           username
           created
@@ -12,4 +12,4 @@ query: |
 variables: ""
 schema:
   source: auto
-order: 1772459327527
+order: 2968927863415167

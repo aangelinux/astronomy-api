@@ -1,0 +1,18 @@
+$kind: graphql-request
+name: Get multiple NEOs
+url: "{{URL}}"
+query: |
+  query Neos {
+      neos(page: 1) {
+          spkid
+          name
+          earth_moid_ld
+          magnitude
+          rotation_hours
+          pot_hazardous_asteroid
+      }
+  }
+variables: ""
+schema:
+  source: auto
+order: 4462285610945275

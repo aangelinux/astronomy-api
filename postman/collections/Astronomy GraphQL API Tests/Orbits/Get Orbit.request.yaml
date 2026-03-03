@@ -1,0 +1,16 @@
+$kind: graphql-request
+name: Get Orbit
+url: "{{URL}}"
+query: |
+  query Orbit {
+      orbit(spkid: "3007574") {
+          spkid
+          orbital_class
+          eccentricity
+          years
+      }
+  }
+variables: ""
+schema:
+  source: auto
+order: 1772546234038

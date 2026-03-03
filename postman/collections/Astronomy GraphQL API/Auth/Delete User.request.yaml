@@ -1,0 +1,18 @@
+$kind: graphql-request
+name: Delete User
+url: "{{URL}}"
+query: |
+  mutation DeleteAccount {
+      deleteAccount(input: { username: "postman_test", password: "heyhey" }) {
+          message
+          deletedUser {
+              userid
+              username
+              created
+          }
+      }
+  }
+variables: ""
+schema:
+  source: auto
+order: 4479236422120212

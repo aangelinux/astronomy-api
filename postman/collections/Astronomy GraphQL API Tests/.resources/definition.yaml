@@ -1,0 +1,40 @@
+$kind: collection
+id: b01cfAFfdCdc51E98ab2b9Db
+name: Astronomy GraphQL API Tests
+scripts:
+  - type: graphql:afterResponse
+    code: "pm.test(\"Status is 200\", () => {\r
+
+      \    pm.response.to.have.status(200);\r
+
+      });\r
+
+      \r
+
+      pm.test(\"No GraphQL errors\", () => {\r
+
+      \    const response = pm.response.json();\r
+
+      \    pm.expect(response).to.not.have.property(\"errors\");\r
+
+      });\r
+
+      \r
+
+      pm.test(\"Data exists\", () => {\r
+
+      \    const response = pm.response.json();\r
+
+      \    pm.expect(response).to.have.property(\"data\");\r
+
+      \    pm.expect(response.data).to.not.be.null;\r
+
+      });\r
+
+      \r
+
+      pm.test(\"Response time under 2000ms\", () => {\r
+
+      \    pm.expect(pm.response.responseTime).to.be.below(2000);\r
+
+      });"

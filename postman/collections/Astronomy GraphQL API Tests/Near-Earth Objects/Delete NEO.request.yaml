@@ -1,0 +1,24 @@
+$kind: graphql-request
+name: Delete NEO
+url: "{{URL}}"
+query: |
+  mutation DeleteNeo {
+      deleteNeo(
+          spkid: "98"
+          token: {{token}}
+      ) {
+          message
+          deletedNeo {
+              spkid
+              name
+              earth_moid_ld
+              magnitude
+              rotation_hours
+              pot_hazardous_asteroid
+          }
+      }
+  }
+variables: ""
+schema:
+  source: auto
+order: 4503392020251488

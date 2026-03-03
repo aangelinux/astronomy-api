@@ -1,6 +1,9 @@
 name: Astronomy GraphQL API
 values:
-  - key: PORT
+  - key: URL
+    value: ''
+    enabled: true
+  - key: token
     value: ''
     enabled: true
 color: 180

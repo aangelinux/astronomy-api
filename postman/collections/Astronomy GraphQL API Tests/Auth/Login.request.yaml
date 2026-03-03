@@ -1,0 +1,11 @@
+$kind: graphql-request
+name: Login
+url: "{{URL}}"
+query: |
+  mutation Login {
+      login(input: { username: "postman_test", password: "heyhey" })
+  }
+variables: ""
+schema:
+  source: auto
+order: 2102479740235733
