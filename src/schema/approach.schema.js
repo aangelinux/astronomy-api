@@ -15,6 +15,6 @@ export const approach = `#graphql
 
 	extend type Query {
 		close_approach(id: ID!): Close_Approach
-		close_approaches: [Close_Approach!]!
+		close_approaches(page: Int!): [Close_Approach!]!
 	}
 `

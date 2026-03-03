@@ -12,6 +12,13 @@ export default class User {
 		return result[0]
 	}
 
+	static async findByUsername(username) {
+		const query = `SELECT * FROM Users WHERE username = ?`
+		const [result] = await db.query(query, [username])
+
+		return result[0]
+	}
+
 	static async register(data) {
 		const query = `
 		INSERT INTO Users (username, password_hash, created)
@@ -22,7 +29,7 @@ export default class User {
 			data.password_hash
 		])
 
-		return result
+		return result.insertId
 	}
 
 	static async delete(user) {

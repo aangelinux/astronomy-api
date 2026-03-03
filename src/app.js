@@ -29,15 +29,7 @@ app.use((err, req, res, next) => {
 
 const apolloServer = new ApolloServer({ 
 	typeDefs, 
-	resolvers, 
-	context: async ({ req }) => {
-		try {
-			const user = verifyToken(req)
-			return { user }
-		} catch (err) {
-			return { user: null }
-		}
-	}
+	resolvers
 })
 await apolloServer.start()
 

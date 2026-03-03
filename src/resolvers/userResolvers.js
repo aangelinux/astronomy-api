@@ -16,17 +16,16 @@ export const userResolvers = {
 		register: async (_, { input }) => {
 			const { username, password } = input
 			const password_hash = await bcrypt.hash(password, 12)
-			return await User.register({ username, password_hash })
+			const userid = await User.register({ username, password_hash })
+			return await User.getUser(userid)
 		},
-
-		login: async (_, { input }, context) => {
+		login: async (_, { input }) => {
 			const { username, password } = input
-			return await verifyCredentials(username, password, context)
+			return await verifyCredentials(username, password)
 		},
-
 		deleteAccount: async (_, { input }) => {
 			const { username, password } = input
-			const user = await User.getUser(username)
+			const user = await User.findByUsername(username)
 			await bcrypt.compare(password, user.password_hash)
 			await User.delete(username)
 

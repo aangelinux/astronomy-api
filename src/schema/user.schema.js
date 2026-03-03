@@ -35,7 +35,7 @@ export const user = `#graphql
 
 	extend type Mutation {
 		register(input: RegisterInput!): User
-		login(input: LoginInput!): User
+		login(input: LoginInput!): String!
 		deleteAccount(input: DeleteInput!): DeleteUserResponse
 	}
 `

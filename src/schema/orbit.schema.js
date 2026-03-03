@@ -12,6 +12,6 @@ export const orbit = `#graphql
 
 	extend type Query {
 		orbit(spkid: ID!): Orbit
-		orbits: [Orbit!]!
+		orbits(page: Int!): [Orbit!]!
 	}
 `

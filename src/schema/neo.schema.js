@@ -20,7 +20,7 @@ export const neo = `#graphql
 	}
 
 	input AddNeoInput {
-		spkid: ID!
+		spkid: Int!
 		name: String!
 		earth_moid_ld: Float!
 		magnitude: Float
@@ -38,12 +38,12 @@ export const neo = `#graphql
 
 	extend type Query {
 		neo(spkid: ID!): Neo
-		neos: [Neo!]!
+		neos(page: Int!): [Neo!]!
 	}
 
 	extend type Mutation {
-		addNeo(input: AddNeoInput!): Neo
-		updateNeo(spkid: ID!, input: UpdateNeoInput!): Neo
-		deleteNeo(spkid: ID!): DeleteNeoResponse
+		addNeo(input: AddNeoInput!, token: String!): Neo
+		updateNeo(spkid: ID!, input: UpdateNeoInput!, token: String!): Neo
+		deleteNeo(spkid: ID!, token: String!): DeleteNeoResponse
 	}
 `
