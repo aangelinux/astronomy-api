@@ -1,9 +1,9 @@
 $kind: graphql-request
 name: Get NEO
 url: "{{URL}}"
-query: "query Neo($neoId: ID!) {\r
+query: "query Neo {\r
 
-  \  neo(spkid: $neoId) {\r
+  \  neo(spkid: {{query_spkid}}) {\r
 
   \    spkid\r
 
@@ -20,7 +20,7 @@ query: "query Neo($neoId: ID!) {\r
   \  }\r
 
   }"
-variables: "{\r\n  \"neoId\": \"3007574\"\r\n}"
+variables: ""
 schema:
   source: auto
 scripts:

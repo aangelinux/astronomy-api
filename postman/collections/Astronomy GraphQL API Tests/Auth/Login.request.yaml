@@ -3,7 +3,10 @@ name: Login
 url: "{{URL}}"
 query: |
   mutation Login {
-      login(input: null)
+      login(input: { username: {{username}}, password: {{password}} }) {
+          token
+          message
+      }
   }
 variables: ""
 schema:
@@ -16,11 +19,21 @@ scripts:
 
       \r
 
-      pm.test(\"Returns token\", () => {\r
+      pm.test(\"Returns JWT token\", () => {\r
 
       \    pm.expect(login).to.have.property(\"token\")\r
 
       \    pm.expect(login.token).to.be.a(\"string\")\r
+
+      })\r
+
+      \r
+
+      pm.test(\"Returns success message\", () => {\r
+
+      \    pm.expect(login).to.have.property(\"message\")\r
+
+      \    pm.expect(login.message).to.equal(\"Login successful\")\r
 
       })"
     language: text/javascript

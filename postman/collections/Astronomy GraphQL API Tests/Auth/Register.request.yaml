@@ -3,7 +3,7 @@ name: Register
 url: "{{URL}}"
 query: |
   mutation Register {
-      register(input: { username: "postman_test", password: "heyhey" }) {
+      register(input: { username: {{username}}, password: {{password}} }) {
           userid
           username
           created

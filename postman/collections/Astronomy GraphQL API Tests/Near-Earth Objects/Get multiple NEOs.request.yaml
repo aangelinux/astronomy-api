@@ -3,7 +3,7 @@ name: Get multiple NEOs
 url: "{{URL}}"
 query: |
   query Neos {
-      neos(page: 1) {
+      neos(page: {{page}}) {
           spkid
           name
           earth_moid_ld

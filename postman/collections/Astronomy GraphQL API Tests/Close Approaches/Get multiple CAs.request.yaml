@@ -3,7 +3,7 @@ name: Get multiple CAs
 url: "{{URL}}"
 query: |
   query Close_approaches {
-      close_approaches(page: 10) {
+      close_approaches(page: {{page}}) {
           id
           spkid
           date

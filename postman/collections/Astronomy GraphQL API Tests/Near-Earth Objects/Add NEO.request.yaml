@@ -4,7 +4,11 @@ url: "{{URL}}"
 query: |
   mutation AddNeo {
       addNeo(
-          input: { spkid: 98, name: "postman_test", earth_moid_ld: 1.1 }
+          input: { 
+              spkid: {{mutate_spkid}}, 
+              name: "test", 
+              earth_moid_ld: 1.1 
+          }
           token: {{token}}
       ) {
           spkid
@@ -18,4 +22,50 @@ query: |
 variables: ""
 schema:
   source: auto
+scripts:
+  - type: afterResponse
+    code: "const jsonResponse = pm.response.data\r
+
+      const neo = jsonResponse.addNeo\r
+
+      \r
+
+      pm.test(\"Returns NEO object\", () => {\r
+
+      \    pm.expect(neo).to.not.be.null\r
+
+      \    pm.expect(neo).to.be.an(\"object\")\r
+
+      })\r
+
+      \r
+
+      pm.test(\"Object contains valid spkid\", () => {\r
+
+      \    pm.expect(neo).to.have.property(\"spkid\")\r
+
+      \    pm.expect(neo.spkid).to.be.a(\"string\")\r
+
+      })\r
+
+      \r
+
+      pm.test(\"Object contains valid name\", () => {\r
+
+      \    pm.expect(neo).to.have.property(\"name\")\r
+
+      \    pm.expect(neo.name).to.be.a(\"string\")\r
+
+      })\r
+
+      \r
+
+      pm.test(\"Object contains valid earth_moid_ld\", () => {\r
+
+      \    pm.expect(neo).to.have.property(\"earth_moid_ld\")\r
+
+      \    pm.expect(neo.earth_moid_ld).to.be.a(\"number\")\r
+
+      })"
+    language: text/javascript
 order: 4467643231131962

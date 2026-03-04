@@ -3,7 +3,7 @@ name: Delete User
 url: "{{URL}}"
 query: |
   mutation DeleteAccount {
-      deleteAccount(input: { username: "postman_test4", password: "heyhey" }) {
+      deleteAccount(input: { username: {{username}}, password: {{password}} }) {
           message
           deletedUser {
               userid
@@ -20,6 +20,16 @@ scripts:
     code: "const jsonResponse = pm.response.data\r
 
       const deleted = jsonResponse.deleteAccount\r
+
+      \r
+
+      pm.test(\"Returns deleted user\", () => {\r
+
+      \    pm.expect(deleted).to.have.property(\"deletedUser\")\r
+
+      \    pm.expect(deleted.deletedUser).to.be.an(\"object\")  \r
+
+      })\r
 
       \r
 

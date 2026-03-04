@@ -3,7 +3,7 @@ name: Get multiple Orbits
 url: "{{URL}}"
 query: |
   query Orbits {
-      orbits(page: 1) {
+      orbits(page: {{page}}) {
           spkid
           orbital_class
           eccentricity

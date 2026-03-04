@@ -22,7 +22,7 @@ export const userResolvers = {
 		login: async (_, { input }) => {
 			const { username, password } = input
 			const token = await verifyCredentials(username, password)
-			return await {
+			return {
 				token,
 				message: 'Login successful'
 			}
