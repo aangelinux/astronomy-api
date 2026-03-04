@@ -11,14 +11,6 @@ scripts:
 
       \r
 
-      pm.test(\"No GraphQL errors\", () => {\r
-
-      \    pm.expect(pm.response.errors).to.be.empty;\r
-
-      });\r
-
-      \r
-
       pm.test(\"Data exists\", () => {\r
 
       \    pm.expect(pm.response).to.have.property(\"data\");\r
@@ -34,3 +26,111 @@ scripts:
       \    pm.expect(pm.response.responseTime).to.be.below(2000);\r
 
       });"
+  - type: graphql:beforeQuery
+    code: "function success() {\r
+
+      \    pm.test(\"No GraphQL errors\", () => {\r
+
+      \        pm.expect(pm.response.errors).to.be.empty;\r
+
+      \    });\r
+
+      }\r
+
+      \r
+
+      function errors() {\r
+
+      \    pm.test(\"Returns GraphQL errors\", () => {\r
+
+      \        pm.expect(pm.response.errors).to.not.be.empty;\r
+
+      \    });\r
+
+      }\r
+
+      \r
+
+      function isObject(type) {\r
+
+      \    pm.test(\"Returns an object\", (type) => {\r
+
+      \        pm.expect(type).to.not.be.null\r
+
+      \        pm.expect(type).to.be.an(\"object\")\r
+
+      \    })\r
+
+      }\r
+
+      \r
+
+      function isAstronomicalObject(type) {\r
+
+      \    pm.test(\"Returns an astronomical objects\", (type) => {\r
+
+      \        pm.expect(type[0]).to.be.an(\"object\")\r
+
+      \        pm.expect(type[0]).to.have.property(\"spkid\")\r
+
+      \        pm.expect(type[0].spkid).to.be.a(\"string\")\r
+
+      \    })\r
+
+      }\r
+
+      \r
+
+      function returnsMultipleObjects(objects) {  \r
+
+      \    pm.test(\"Returns 50 objects\", (objects) => {\r
+
+      \        const limit = 50;\r
+
+      \        pm.expect(objects.length).to.eql(limit)\r
+
+      \    })\r
+
+      }\r
+
+      \r
+
+      function hasSpkid(object) {\r
+
+      \    pm.test(\"Object contains valid spkid\", (object) => {\r
+
+      \        pm.expect(object).to.have.property(\"spkid\")\r
+
+      \        pm.expect(object.spkid).to.be.a(\"string\")\r
+
+      \    })\r
+
+      }\r
+
+      \r
+
+      function returnsMessage(object, text) {\r
+
+      \    pm.test(\"Returns message\", (object, text) => {\r
+
+      \        pm.expect(object).to.have.property(\"message\")\r
+
+      \        pm.expect(object.message).to.equal(text)\r
+
+      \    })\r
+
+      }\r
+
+      \r
+
+      function returnsErrorMessage(text) {\r
+
+      \    pm.test(\"Returns error message\", (text) => {\r
+
+      \        pm.expect(pm.response.errors).to.not.be.empty;\r
+
+      \        pm.expect(pm.response.errors[0].message).to.contain(text)\r
+
+      \    })\r
+
+      }"
