@@ -4,7 +4,6 @@
 
 import Neo from '../models/neo.js'
 import { verifyToken } from '../middleware/auth.js'
-import { request } from 'express'
 
 export const neoResolvers = {
 	Query: {

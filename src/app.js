@@ -10,7 +10,6 @@ import { expressMiddleware } from '@as-integrations/express5'
 import { ApolloServer } from '@apollo/server'
 import { typeDefs } from './schema/index.js'
 import { resolvers } from './resolvers/index.js'
-import { verifyToken } from './middleware/auth.js'
 
 dotenv.config()
 

@@ -1,6 +1,6 @@
 $kind: collection
 id: b01cfAFfdCdc51E98ab2b9Db
-name: Astronomy GraphQL API Tests
+name: Astronomy Tests
 scripts:
   - type: graphql:afterResponse
     code: "pm.test(\"Status is 200\", () => {\r
