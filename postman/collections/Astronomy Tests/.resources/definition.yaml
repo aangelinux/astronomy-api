@@ -13,7 +13,7 @@ scripts:
 
       pm.test(\"No GraphQL errors\", () => {\r
 
-      \    pm.expect(pm.response).to.not.have.property(\"error\");\r
+      \    pm.expect(pm.response.errors).to.be.empty;\r
 
       });\r
 

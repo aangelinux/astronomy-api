@@ -1,12 +1,13 @@
 $kind: graphql-request
-name: Update NEO
+name: Add NEO
 url: "{{URL}}"
 query: |
-  mutation UpdateNeo {
-      updateNeo(
-          spkid: {{mutate_spkid}}
+  mutation AddNeo {
+      addNeo(
           input: { 
-              name: "update" 
+              spkid: {{mutate_spkid}}, 
+              name: "test", 
+              earth_moid_ld: 1.1 
           }
           token: {{token}}
       ) {
@@ -25,7 +26,7 @@ scripts:
   - type: afterResponse
     code: "const jsonResponse = pm.response.data\r
 
-      const neo = jsonResponse.updateNeo\r
+      const neo = jsonResponse.addNeo\r
 
       \r
 
@@ -49,12 +50,22 @@ scripts:
 
       \r
 
-      pm.test(\"Input values have been updated\", () => {\r
+      pm.test(\"Object contains valid name\", () => {\r
 
       \    pm.expect(neo).to.have.property(\"name\")\r
 
-      \    pm.expect(neo.name).to.equal(\"update\")\r
+      \    pm.expect(neo.name).to.be.a(\"string\")\r
+
+      })\r
+
+      \r
+
+      pm.test(\"Object contains valid earth_moid_ld\", () => {\r
+
+      \    pm.expect(neo).to.have.property(\"earth_moid_ld\")\r
+
+      \    pm.expect(neo.earth_moid_ld).to.be.a(\"number\")\r
 
       })"
     language: text/javascript
-order: 4498619119033333
+order: 1772633715496

@@ -1,5 +1,5 @@
 $kind: graphql-request
-name: Register
+name: Register - Success
 url: "{{URL}}"
 query: |
   mutation Register {

@@ -1,5 +1,5 @@
 $kind: graphql-request
-name: Delete User
+name: Delete User - Success
 url: "{{URL}}"
 query: |
   mutation DeleteAccount {
