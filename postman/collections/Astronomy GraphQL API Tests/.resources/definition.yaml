@@ -13,9 +13,7 @@ scripts:
 
       pm.test(\"No GraphQL errors\", () => {\r
 
-      \    const response = pm.response.json();\r
-
-      \    pm.expect(response).to.not.have.property(\"errors\");\r
+      \    pm.expect(pm.response).to.not.have.property(\"error\");\r
 
       });\r
 
@@ -23,11 +21,9 @@ scripts:
 
       pm.test(\"Data exists\", () => {\r
 
-      \    const response = pm.response.json();\r
+      \    pm.expect(pm.response).to.have.property(\"data\");\r
 
-      \    pm.expect(response).to.have.property(\"data\");\r
-
-      \    pm.expect(response.data).to.not.be.null;\r
+      \    pm.expect(pm.response.data).to.not.be.null;\r
 
       });\r
 

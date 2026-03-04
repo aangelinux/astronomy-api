@@ -16,4 +16,30 @@ query: |
 variables: ""
 schema:
   source: auto
+scripts:
+  - type: afterResponse
+    code: "const jsonResponse = pm.response.data\r
+
+      const approaches = jsonResponse.close_approaches\r
+
+      \r
+
+      pm.test(\"Returns 50 approaches\", () => {\r
+
+      \    pm.expect(approaches.length).to.eql(50)\r
+
+      })\r
+
+      \r
+
+      pm.test(\"Returns valid CA objects\", () => {\r
+
+      \    pm.expect(approaches[0]).to.be.an(\"object\")\r
+
+      \    pm.expect(approaches[0]).to.have.property(\"spkid\")\r
+
+      \    pm.expect(approaches[0].spkid).to.be.a(\"string\")\r
+
+      })"
+    language: text/javascript
 order: 736686167620318

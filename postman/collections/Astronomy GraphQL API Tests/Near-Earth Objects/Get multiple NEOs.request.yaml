@@ -15,4 +15,30 @@ query: |
 variables: ""
 schema:
   source: auto
+scripts:
+  - type: afterResponse
+    code: "const jsonResponse = pm.response.data\r
+
+      const neos = jsonResponse.neos\r
+
+      \r
+
+      pm.test(\"Returns 50 NEOs\", () => {\r
+
+      \    pm.expect(neos.length).to.eql(50)\r
+
+      })\r
+
+      \r
+
+      pm.test(\"Returns valid NEO objects\", () => {\r
+
+      \    pm.expect(neos[0]).to.be.an(\"object\")\r
+
+      \    pm.expect(neos[0]).to.have.property(\"spkid\")\r
+
+      \    pm.expect(neos[0].spkid).to.be.a(\"string\")\r
+
+      })"
+    language: text/javascript
 order: 4462285610945275

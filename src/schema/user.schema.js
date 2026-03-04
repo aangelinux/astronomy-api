@@ -14,6 +14,11 @@ export const user = `#graphql
 		message: String
 	}
 
+	type LoginResponse {
+		token: String!
+		message: String
+	}
+
 	input RegisterInput {
 		username: String!
 		password: String!
@@ -35,7 +40,7 @@ export const user = `#graphql
 
 	extend type Mutation {
 		register(input: RegisterInput!): User
-		login(input: LoginInput!): String!
+		login(input: LoginInput!): LoginResponse
 		deleteAccount(input: DeleteInput!): DeleteUserResponse
 	}
 `

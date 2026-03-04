@@ -21,14 +21,17 @@ export const userResolvers = {
 		},
 		login: async (_, { input }) => {
 			const { username, password } = input
-			return await verifyCredentials(username, password)
+			const token = await verifyCredentials(username, password)
+			return await {
+				token,
+				message: 'Login successful'
+			}
 		},
 		deleteAccount: async (_, { input }) => {
 			const { username, password } = input
 			const user = await User.findByUsername(username)
 			await bcrypt.compare(password, user.password_hash)
 			await User.delete(username)
-
 			return {
 				deletedUser: user,
 				message: 'Account deleted successfully'

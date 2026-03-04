@@ -13,4 +13,40 @@ query: |
 variables: ""
 schema:
   source: auto
+scripts:
+  - type: afterResponse
+    code: "const jsonResponse = pm.response.data\r
+
+      const orbit = jsonResponse.orbit\r
+
+      \r
+
+      pm.test(\"Returns Orbit object\", () => {\r
+
+      \    pm.expect(orbit).to.not.be.null\r
+
+      \    pm.expect(orbit).to.be.an(\"object\")\r
+
+      })\r
+
+      \r
+
+      pm.test(\"Object contains valid spkid\", () => {\r
+
+      \    pm.expect(orbit).to.have.property(\"spkid\")\r
+
+      \    pm.expect(orbit.spkid).to.be.a(\"string\")\r
+
+      })\r
+
+      \r
+
+      pm.test(\"Object contains valid orbital class\", () => {\r
+
+      \    pm.expect(orbit).to.have.property(\"orbital_class\")\r
+
+      \    pm.expect(orbit.orbital_class).to.be.a(\"string\")\r
+
+      })"
+    language: text/javascript
 order: 1772546234038
