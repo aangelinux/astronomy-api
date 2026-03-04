@@ -40,8 +40,8 @@ GraphQL
 
 | Field | Description |
 |---|---|
-| **Dataset source** | CSV files from ![NASA Small-Body DB](https://ssd.jpl.nasa.gov/tools/sbdb_query.html#!#results) and ![NASA Close Approaches](https://cneos.jpl.nasa.gov/ca/) |
-| **Primary resource (CRUD)** | Near-Earth Objects (spkid, name, earth_moid_ld, magnitude, rotation_hours, pha)* |
+| **Dataset source** | CSV files from [NASA Small-Body DB](https://ssd.jpl.nasa.gov/tools/sbdb_query.html#!#results) and [NASA Close Approaches](https://cneos.jpl.nasa.gov/ca/) |
+| **Primary resource (CRUD)** | Near-Earth Objects (spkid, name, earth_moid_ld, magnitude, rotation_hours, pha) |
 | **Secondary resource 1 (read-only)** | Orbits (spkid, orbital_class, eccentricity, years) |
 | **Secondary resource 2 (read-only)** | Close Approaches (id, spkid, date, nominal_distance_km, minimum_distance_km, relative_velocity_km_s, rarity) |
 
@@ -54,7 +54,6 @@ GraphQL
 
 ### API Design
 
-**GraphQL students:**
 <!--- *How did you design your schema (types, queries, mutations)?*
 - *How did you implement nested queries? How does the single-endpoint approach affect your design?*-->
 
