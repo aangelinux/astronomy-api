@@ -5,7 +5,7 @@ query: |
   mutation DeleteNeo {
       deleteNeo(
           spkid: {{mutate_spkid}}
-          token: {{token}}
+          token: null
       ) {
           message
           deletedNeo {
@@ -23,34 +23,19 @@ schema:
   source: auto
 scripts:
   - type: afterResponse
-    code: "const jsonResponse = pm.response.data\r
+    code: "eval(pm.collectionVariables.get(\"status\"))\r
 
-      const deleted = jsonResponse.deleteNeo\r
+      eval(pm.collectionVariables.get(\"errors\"))\r
 
-      \r
-
-      eval(pm.collectionVariables.get(\"status\"))\r
-
-      eval(pm.collectionVariables.get(\"success\"))\r
-
-      eval(pm.collectionVariables.get(\"returnsMessage\"))\r
+      eval(pm.collectionVariables.get(\"returnsErrorMessage\"))\r
 
       \r
 
-      hasStatus(200)\r
+      hasStatus(400)\r
 
-      success()\r
+      errors()\r
 
-      returnsMessage(deleted, \"Near-Earth Object deleted successfully\")\r
-
-      \r
-
-      pm.test(\"Returns deleted NEO\", () => {\r
-
-      \    pm.expect(deleted).to.have.property(\"deletedNeo\")\r
-
-      \    pm.expect(deleted.deletedNeo).to.be.an(\"object\")  \r
-
-      })"
+      returnsErrorMessage(\"Expected value of type \\\"String!\\\", found
+      null.\")"
     language: text/javascript
 order: 4062344719632441

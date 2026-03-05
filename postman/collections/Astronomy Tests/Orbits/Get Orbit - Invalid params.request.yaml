@@ -3,7 +3,7 @@ name: Get Orbit - Invalid params
 url: "{{URL}}"
 query: |
   query Orbit {
-      orbit(spkid: {{query_spkid}}) {
+      orbit(spkid: null) {
           spkid
           orbital_class
           eccentricity
@@ -15,38 +15,18 @@ schema:
   source: auto
 scripts:
   - type: afterResponse
-    code: "const jsonResponse = pm.response.data\r
+    code: "eval(pm.collectionVariables.get(\"status\"))\r
 
-      const orbit = jsonResponse.orbit\r
+      eval(pm.collectionVariables.get(\"errors\"))\r
 
-      \r
-
-      eval(pm.collectionVariables.get(\"status\"))\r
-
-      eval(pm.collectionVariables.get(\"success\"))\r
-
-      eval(pm.collectionVariables.get(\"isObject\"))\r
-
-      eval(pm.collectionVariables.get(\"hasSpkid\"))\r
+      eval(pm.collectionVariables.get(\"returnsErrorMessage\"))\r
 
       \r
 
-      hasStatus(200)\r
+      hasStatus(400)\r
 
-      success()\r
+      errors()\r
 
-      isObject(orbit)\r
-
-      hasSpkid(orbit)\r
-
-      \r
-
-      pm.test(\"Object contains valid orbital class\", () => {\r
-
-      \    pm.expect(orbit).to.have.property(\"orbital_class\")\r
-
-      \    pm.expect(orbit.orbital_class).to.be.a(\"string\")\r
-
-      })"
+      returnsErrorMessage(\"Expected value of type \\\"ID!\\\", found null.\")"
     language: text/javascript
 order: 205260424131593

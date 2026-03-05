@@ -9,7 +9,7 @@ query: |
               name: "test", 
               earth_moid_ld: 1.1 
           }
-          token: {{token}}
+          token: null
       ) {
           spkid
           name
@@ -24,48 +24,19 @@ schema:
   source: auto
 scripts:
   - type: afterResponse
-    code: "const jsonResponse = pm.response.data\r
+    code: "eval(pm.collectionVariables.get(\"status\"))\r
 
-      const neo = jsonResponse.addNeo\r
+      eval(pm.collectionVariables.get(\"errors\"))\r
 
-      \r
-
-      eval(pm.collectionVariables.get(\"status\"))\r
-
-      eval(pm.collectionVariables.get(\"success\"))\r
-
-      eval(pm.collectionVariables.get(\"isObject\"))\r
-
-      eval(pm.collectionVariables.get(\"hasSpkid\"))\r
+      eval(pm.collectionVariables.get(\"returnsErrorMessage\"))\r
 
       \r
 
-      hasStatus(200)\r
+      hasStatus(400)\r
 
-      success()\r
+      errors()\r
 
-      isObject(neo)\r
-
-      hasSpkid(neo)\r
-
-      \r
-
-      pm.test(\"Object contains valid name\", () => {\r
-
-      \    pm.expect(neo).to.have.property(\"name\")\r
-
-      \    pm.expect(neo.name).to.be.a(\"string\")\r
-
-      })\r
-
-      \r
-
-      pm.test(\"Object contains valid earth_moid_ld\", () => {\r
-
-      \    pm.expect(neo).to.have.property(\"earth_moid_ld\")\r
-
-      \    pm.expect(neo.earth_moid_ld).to.be.a(\"number\")\r
-
-      })"
+      returnsErrorMessage(\"Expected value of type \\\"String!\\\", found
+      null.\")"
     language: text/javascript
 order: 810193550116384

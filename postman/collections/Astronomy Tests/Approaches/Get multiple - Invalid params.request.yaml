@@ -3,7 +3,7 @@ name: Get multiple - Invalid params
 url: "{{URL}}"
 query: |
   query Close_approaches {
-      close_approaches(page: {{page}}) {
+      close_approaches(page: null) {
           id
           spkid
           date
@@ -18,28 +18,18 @@ schema:
   source: auto
 scripts:
   - type: afterResponse
-    code: "const jsonResponse = pm.response.data\r
+    code: "eval(pm.collectionVariables.get(\"status\"))\r
 
-      const approaches = jsonResponse.close_approaches\r
+      eval(pm.collectionVariables.get(\"errors\"))\r
 
-      \r
-
-      eval(pm.collectionVariables.get(\"status\"))\r
-
-      eval(pm.collectionVariables.get(\"success\"))\r
-
-      eval(pm.collectionVariables.get(\"returnsMultipleObjects\"))\r
-
-      eval(pm.collectionVariables.get(\"isAstronomicalObject\"))\r
+      eval(pm.collectionVariables.get(\"returnsErrorMessage\"))\r
 
       \r
 
-      hasStatus(200)\r
+      hasStatus(400)\r
 
-      success()\r
+      errors()\r
 
-      returnsMultipleObjects(approaches)\r
-
-      isAstronomicalObject(approaches)"
+      returnsErrorMessage(\"Expected value of type \\\"Int!\\\", found null.\")"
     language: text/javascript
 order: 2869438039212033
