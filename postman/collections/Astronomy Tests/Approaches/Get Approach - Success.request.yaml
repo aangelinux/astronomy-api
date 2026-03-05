@@ -1,5 +1,5 @@
 $kind: graphql-request
-name: Get Close Approach
+name: Get Approach - Success
 url: "{{URL}}"
 query: |
   query Close_approach {
@@ -24,23 +24,23 @@ scripts:
 
       \r
 
-      pm.test(\"Returns CA object\", () => {\r
+      eval(pm.collectionVariables.get(\"status\"))\r
 
-      \    pm.expect(approach).to.not.be.null\r
+      eval(pm.collectionVariables.get(\"success\"))\r
 
-      \    pm.expect(approach).to.be.an(\"object\")\r
+      eval(pm.collectionVariables.get(\"isObject\"))\r
 
-      })\r
+      eval(pm.collectionVariables.get(\"hasSpkid\"))\r
 
       \r
 
-      pm.test(\"Object contains valid spkid\", () => {\r
+      hasStatus(200)\r
 
-      \    pm.expect(approach).to.have.property(\"spkid\")\r
+      success()\r
 
-      \    pm.expect(approach.spkid).to.be.a(\"string\")\r
+      isObject(approach)\r
 
-      })\r
+      hasSpkid(approach)\r
 
       \r
 

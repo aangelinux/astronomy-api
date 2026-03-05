@@ -1,5 +1,5 @@
 $kind: graphql-request
-name: Get multiple Orbits
+name: Get multiple - Success
 url: "{{URL}}"
 query: |
   query Orbits {
@@ -21,22 +21,22 @@ scripts:
 
       \r
 
-      pm.test(\"Returns 50 orbits\", () => {\r
+      eval(pm.collectionVariables.get(\"status\"))\r
 
-      \    pm.expect(orbits.length).to.eql(50)\r
+      eval(pm.collectionVariables.get(\"success\"))\r
 
-      })\r
+      eval(pm.collectionVariables.get(\"returnsMultipleObjects\"))\r
+
+      eval(pm.collectionVariables.get(\"isAstronomicalObject\"))\r
 
       \r
 
-      pm.test(\"Returns valid Orbit objects\", () => {\r
+      hasStatus(200)\r
 
-      \    pm.expect(orbits[0]).to.be.an(\"object\")\r
+      success()\r
 
-      \    pm.expect(orbits[0]).to.have.property(\"spkid\")\r
+      returnsMultipleObjects(orbits)\r
 
-      \    pm.expect(orbits[0].spkid).to.be.a(\"string\")\r
-
-      })"
+      isAstronomicalObject(orbits)"
     language: text/javascript
 order: 3564397893374976

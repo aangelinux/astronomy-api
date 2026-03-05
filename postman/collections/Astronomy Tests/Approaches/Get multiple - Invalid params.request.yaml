@@ -1,0 +1,45 @@
+$kind: graphql-request
+name: Get multiple - Invalid params
+url: "{{URL}}"
+query: |
+  query Close_approaches {
+      close_approaches(page: {{page}}) {
+          id
+          spkid
+          date
+          nominal_distance_km
+          minimum_distance_km
+          relative_velocity_km_s
+          rarity
+      }
+  }
+variables: ""
+schema:
+  source: auto
+scripts:
+  - type: afterResponse
+    code: "const jsonResponse = pm.response.data\r
+
+      const approaches = jsonResponse.close_approaches\r
+
+      \r
+
+      eval(pm.collectionVariables.get(\"status\"))\r
+
+      eval(pm.collectionVariables.get(\"success\"))\r
+
+      eval(pm.collectionVariables.get(\"returnsMultipleObjects\"))\r
+
+      eval(pm.collectionVariables.get(\"isAstronomicalObject\"))\r
+
+      \r
+
+      hasStatus(200)\r
+
+      success()\r
+
+      returnsMultipleObjects(approaches)\r
+
+      isAstronomicalObject(approaches)"
+    language: text/javascript
+order: 2869438039212033

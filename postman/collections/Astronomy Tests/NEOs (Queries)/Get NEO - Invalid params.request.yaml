@@ -1,8 +1,8 @@
 $kind: graphql-request
-name: Delete User - Invalid creds
+name: Get NEO - Invalid params
 url: ""
 query: ""
 variables: ""
 schema:
   source: none
-order: 4503589049463550
+order: 2512570326844798

@@ -1,5 +1,5 @@
 $kind: graphql-request
-name: Add NEO
+name: Add NEO - Success
 url: "{{URL}}"
 query: |
   mutation AddNeo {
@@ -30,23 +30,23 @@ scripts:
 
       \r
 
-      pm.test(\"Returns NEO object\", () => {\r
+      eval(pm.collectionVariables.get(\"status\"))\r
 
-      \    pm.expect(neo).to.not.be.null\r
+      eval(pm.collectionVariables.get(\"success\"))\r
 
-      \    pm.expect(neo).to.be.an(\"object\")\r
+      eval(pm.collectionVariables.get(\"isObject\"))\r
 
-      })\r
+      eval(pm.collectionVariables.get(\"hasSpkid\"))\r
 
       \r
 
-      pm.test(\"Object contains valid spkid\", () => {\r
+      hasStatus(200)\r
 
-      \    pm.expect(neo).to.have.property(\"spkid\")\r
+      success()\r
 
-      \    pm.expect(neo.spkid).to.be.a(\"string\")\r
+      isObject(neo)\r
 
-      })\r
+      hasSpkid(neo)\r
 
       \r
 

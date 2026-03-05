@@ -1,8 +1,34 @@
 $kind: graphql-request
 name: Register - Missing fields
-url: ""
-query: ""
+url: "{{URL}}"
+query: |
+  mutation Register {
+      register(input: null) {
+          userid
+          username
+          created
+      }
+  }
 variables: ""
 schema:
-  source: none
-order: 4503450690738641
+  source: auto
+scripts:
+  - type: afterResponse
+    code: "eval(pm.collectionVariables.get(\"status\"))\r
+
+      \r
+
+      hasStatus(400)\r
+
+      \r
+
+      pm.test(\"Returns error message\", () => {\r
+
+      \    pm.expect(pm.response).to.not.be.ok\r
+
+      \    pm.expect(pm.response.errors[0].message).to.contain(\"Expected value
+      of type\")\r
+
+      })"
+    language: text/javascript
+order: 2094367253137076

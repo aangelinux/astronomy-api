@@ -1,5 +1,5 @@
 $kind: graphql-request
-name: Get multiple CAs
+name: Get multiple - Success
 url: "{{URL}}"
 query: |
   query Close_approaches {
@@ -24,22 +24,22 @@ scripts:
 
       \r
 
-      pm.test(\"Returns 50 approaches\", () => {\r
+      eval(pm.collectionVariables.get(\"status\"))\r
 
-      \    pm.expect(approaches.length).to.eql(50)\r
+      eval(pm.collectionVariables.get(\"success\"))\r
 
-      })\r
+      eval(pm.collectionVariables.get(\"returnsMultipleObjects\"))\r
+
+      eval(pm.collectionVariables.get(\"isAstronomicalObject\"))\r
 
       \r
 
-      pm.test(\"Returns valid CA objects\", () => {\r
+      hasStatus(200)\r
 
-      \    pm.expect(approaches[0]).to.be.an(\"object\")\r
+      success()\r
 
-      \    pm.expect(approaches[0]).to.have.property(\"spkid\")\r
+      returnsMultipleObjects(approaches)\r
 
-      \    pm.expect(approaches[0].spkid).to.be.a(\"string\")\r
-
-      })"
+      isAstronomicalObject(approaches)"
     language: text/javascript
 order: 736686167620318

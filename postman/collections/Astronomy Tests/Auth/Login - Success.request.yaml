@@ -19,21 +19,27 @@ scripts:
 
       \r
 
+      eval(pm.collectionVariables.get(\"status\"))\r
+
+      eval(pm.collectionVariables.get(\"success\"))\r
+
+      eval(pm.collectionVariables.get(\"returnsMessage\"))\r
+
+      \r
+
+      hasStatus(200)\r
+
+      success()\r
+
+      returnsMessage(login, \"Login successful\")\r
+
+      \r
+
       pm.test(\"Returns JWT token\", () => {\r
 
       \    pm.expect(login).to.have.property(\"token\")\r
 
       \    pm.expect(login.token).to.be.a(\"string\")\r
-
-      })\r
-
-      \r
-
-      pm.test(\"Returns success message\", () => {\r
-
-      \    pm.expect(login).to.have.property(\"message\")\r
-
-      \    pm.expect(login.message).to.equal(\"Login successful\")\r
 
       })"
     language: text/javascript

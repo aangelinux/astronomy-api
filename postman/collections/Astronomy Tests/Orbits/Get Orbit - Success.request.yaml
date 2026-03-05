@@ -1,5 +1,5 @@
 $kind: graphql-request
-name: Get Orbit
+name: Get Orbit - Success
 url: "{{URL}}"
 query: |
   query Orbit {
@@ -21,23 +21,23 @@ scripts:
 
       \r
 
-      pm.test(\"Returns Orbit object\", () => {\r
+      eval(pm.collectionVariables.get(\"status\"))\r
 
-      \    pm.expect(orbit).to.not.be.null\r
+      eval(pm.collectionVariables.get(\"success\"))\r
 
-      \    pm.expect(orbit).to.be.an(\"object\")\r
+      eval(pm.collectionVariables.get(\"isObject\"))\r
 
-      })\r
+      eval(pm.collectionVariables.get(\"hasSpkid\"))\r
 
       \r
 
-      pm.test(\"Object contains valid spkid\", () => {\r
+      hasStatus(200)\r
 
-      \    pm.expect(orbit).to.have.property(\"spkid\")\r
+      success()\r
 
-      \    pm.expect(orbit.spkid).to.be.a(\"string\")\r
+      isObject(orbit)\r
 
-      })\r
+      hasSpkid(orbit)\r
 
       \r
 

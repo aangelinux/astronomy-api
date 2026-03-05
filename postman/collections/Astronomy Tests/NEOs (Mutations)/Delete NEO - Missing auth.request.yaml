@@ -1,5 +1,5 @@
 $kind: graphql-request
-name: Delete NEO
+name: Delete NEO - Missing auth
 url: "{{URL}}"
 query: |
   mutation DeleteNeo {
@@ -29,23 +29,28 @@ scripts:
 
       \r
 
+      eval(pm.collectionVariables.get(\"status\"))\r
+
+      eval(pm.collectionVariables.get(\"success\"))\r
+
+      eval(pm.collectionVariables.get(\"returnsMessage\"))\r
+
+      \r
+
+      hasStatus(200)\r
+
+      success()\r
+
+      returnsMessage(deleted, \"Near-Earth Object deleted successfully\")\r
+
+      \r
+
       pm.test(\"Returns deleted NEO\", () => {\r
 
       \    pm.expect(deleted).to.have.property(\"deletedNeo\")\r
 
       \    pm.expect(deleted.deletedNeo).to.be.an(\"object\")  \r
 
-      })\r
-
-      \r
-
-      pm.test(\"Returns success message\", () => {\r
-
-      \    pm.expect(deleted).to.have.property(\"message\")\r
-
-      \    pm.expect(deleted.message).to.equal(\"Near-Earth Object deleted
-      successfully\")\r
-
       })"
     language: text/javascript
-order: 2991850601311862
+order: 4062344719632441

@@ -1,17 +1,20 @@
 $kind: collection
 id: b01cfAFfdCdc51E98ab2b9Db
 name: Astronomy Tests
+variables:
+  success: ""
+  errors: ""
+  isObject: ""
+  isAstronomicalObject: ""
+  returnsMultipleObjects: ""
+  hasSpkid: ""
+  returnsMessage: ""
+  returnsErrorMessage: ""
+  status: ""
+  isErrorObject: ""
 scripts:
   - type: graphql:afterResponse
-    code: "pm.test(\"Status is 200\", () => {\r
-
-      \    pm.response.to.have.status(200);\r
-
-      });\r
-
-      \r
-
-      pm.test(\"Data exists\", () => {\r
+    code: "pm.test(\"Data exists\", () => {\r
 
       \    pm.expect(pm.response).to.have.property(\"data\");\r
 
@@ -27,110 +30,158 @@ scripts:
 
       });"
   - type: graphql:beforeQuery
-    code: "function success() {\r
+    code: "pm.collectionVariables.set(\"status\",\r
 
-      \    pm.test(\"No GraphQL errors\", () => {\r
+      \    `function hasStatus(code) {\r
 
-      \        pm.expect(pm.response.errors).to.be.empty;\r
+      \        pm.test(\"Returns correct status code\", () => {\r
 
-      \    });\r
+      \            pm.response.to.have.status(code);\r
 
-      }\r
+      \        });\r
 
-      \r
+      \    }`\r
 
-      function errors() {\r
-
-      \    pm.test(\"Returns GraphQL errors\", () => {\r
-
-      \        pm.expect(pm.response.errors).to.not.be.empty;\r
-
-      \    });\r
-
-      }\r
+      )\r
 
       \r
 
-      function isObject(type) {\r
+      pm.collectionVariables.set(\"success\",\r
 
-      \    pm.test(\"Returns an object\", (type) => {\r
+      \    `function success() {\r
 
-      \        pm.expect(type).to.not.be.null\r
+      \        pm.test(\"No GraphQL errors\", () => {\r
 
-      \        pm.expect(type).to.be.an(\"object\")\r
+      \            pm.expect(pm.response.errors).to.be.an(\"undefined\");\r
 
-      \    })\r
+      \        });\r
 
-      }\r
+      \    }`\r
 
-      \r
-
-      function isAstronomicalObject(type) {\r
-
-      \    pm.test(\"Returns an astronomical objects\", (type) => {\r
-
-      \        pm.expect(type[0]).to.be.an(\"object\")\r
-
-      \        pm.expect(type[0]).to.have.property(\"spkid\")\r
-
-      \        pm.expect(type[0].spkid).to.be.a(\"string\")\r
-
-      \    })\r
-
-      }\r
+      )\r
 
       \r
 
-      function returnsMultipleObjects(objects) {  \r
+      pm.collectionVariables.set(\"errors\",\r
 
-      \    pm.test(\"Returns 50 objects\", (objects) => {\r
+      \    `function errors() {\r
 
-      \        const limit = 50;\r
+      \        pm.test(\"Contains GraphQL errors\", () => {\r
 
-      \        pm.expect(objects.length).to.eql(limit)\r
+      \            pm.expect(pm.response.errors).to.not.be.empty;\r
 
-      \    })\r
+      \        });\r
 
-      }\r
+      \    }`\r
 
-      \r
-
-      function hasSpkid(object) {\r
-
-      \    pm.test(\"Object contains valid spkid\", (object) => {\r
-
-      \        pm.expect(object).to.have.property(\"spkid\")\r
-
-      \        pm.expect(object.spkid).to.be.a(\"string\")\r
-
-      \    })\r
-
-      }\r
+      )\r
 
       \r
 
-      function returnsMessage(object, text) {\r
+      pm.collectionVariables.set(\"isObject\",\r
 
-      \    pm.test(\"Returns message\", (object, text) => {\r
+      \    `function isObject(type) {\r
 
-      \        pm.expect(object).to.have.property(\"message\")\r
+      \        pm.test(\"Returns an object\", () => {\r
 
-      \        pm.expect(object.message).to.equal(text)\r
+      \            pm.expect(type).to.not.be.null\r
 
-      \    })\r
+      \            pm.expect(type).to.be.an(\"object\")\r
 
-      }\r
+      \        })\r
+
+      \    }`\r
+
+      )\r
 
       \r
 
-      function returnsErrorMessage(text) {\r
+      pm.collectionVariables.set(\"isAstronomicalObject\",\r
 
-      \    pm.test(\"Returns error message\", (text) => {\r
+      \    `function isAstronomicalObject(type) {\r
 
-      \        pm.expect(pm.response.errors).to.not.be.empty;\r
+      \        pm.test(\"Returns an astronomical object\", () => {\r
 
-      \        pm.expect(pm.response.errors[0].message).to.contain(text)\r
+      \            pm.expect(type[0]).to.be.an(\"object\")\r
 
-      \    })\r
+      \            pm.expect(type[0]).to.have.property(\"spkid\")\r
 
-      }"
+      \            pm.expect(type[0].spkid).to.be.a(\"string\")\r
+
+      \        })\r
+
+      \    }`\r
+
+      )\r
+
+      \r
+
+      pm.collectionVariables.set(\"returnsMultipleObjects\", \r
+
+      \    `function returnsMultipleObjects(objects) {  \r
+
+      \        pm.test(\"Returns 50 objects\", () => {\r
+
+      \            const limit = 50;\r
+
+      \            pm.expect(objects.length).to.eql(limit)\r
+
+      \        })\r
+
+      \    }`\r
+
+      )\r
+
+      \r
+
+      pm.collectionVariables.set(\"hasSpkid\", \r
+
+      \    `function hasSpkid(object) {\r
+
+      \        pm.test(\"Object contains valid spkid\", () => {\r
+
+      \            pm.expect(object).to.have.property(\"spkid\")\r
+
+      \            pm.expect(object.spkid).to.be.a(\"string\")\r
+
+      \        })\r
+
+      \    }`\r
+
+      )\r
+
+      \r
+
+      pm.collectionVariables.set(\"returnsMessage\", \r
+
+      \    `function returnsMessage(object, text) {\r
+
+      \        pm.test(\"Returns message\", () => {\r
+
+      \            pm.expect(object).to.have.property(\"message\")\r
+
+      \            pm.expect(object.message).to.equal(text)\r
+
+      \        })\r
+
+      \    }`\r
+
+      )\r
+
+      \r
+
+      pm.collectionVariables.set(\"returnsErrorMessage\",\r
+
+      \    `function returnsErrorMessage(text) {\r
+
+      \        pm.test(\"Returns error message\", () => {\r
+
+      \            pm.expect(pm.response.errors).to.not.be.empty;\r
+
+      \            pm.expect(pm.response.errors[0].message).to.contain(text)\r
+
+      \        })\r
+
+      \    }`\r
+
+      )"

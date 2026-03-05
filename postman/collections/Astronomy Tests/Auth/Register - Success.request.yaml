@@ -3,7 +3,11 @@ name: Register - Success
 url: "{{URL}}"
 query: |
   mutation Register {
-      register(input: { username: {{username}}, password: {{password}} }) {
+      register(input: { 
+          username: {{username}}, 
+          password: {{password}} 
+      }) 
+      {
           userid
           username
           created
@@ -20,13 +24,19 @@ scripts:
 
       \r
 
-      pm.test(\"Returns User object\", () => {\r
+      eval(pm.collectionVariables.get(\"status\"))\r
 
-      \    pm.expect(user).to.not.be.null\r
+      eval(pm.collectionVariables.get(\"success\"))\r
 
-      \    pm.expect(user).to.be.an(\"object\")\r
+      eval(pm.collectionVariables.get(\"isObject\"))\r
 
-      })\r
+      \r
+
+      hasStatus(200)\r
+
+      success()\r
+
+      isObject(user)\r
 
       \r
 

@@ -1,8 +1,0 @@
-$kind: graphql-request
-name: Login - Invalid creds
-url: ""
-query: ""
-variables: ""
-schema:
-  source: none
-order: 4503549014282827

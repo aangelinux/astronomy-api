@@ -1,5 +1,5 @@
 $kind: graphql-request
-name: Delete User - Success
+name: Delete - Success
 url: "{{URL}}"
 query: |
   mutation DeleteAccount {
@@ -23,22 +23,19 @@ scripts:
 
       \r
 
+      eval(pm.collectionVariables.get(\"returnsMessage\"))\r
+
+      \r
+
+      returnsMessage(deleted, \"Account deleted successfully\")\r
+
+      \r
+
       pm.test(\"Returns deleted user\", () => {\r
 
       \    pm.expect(deleted).to.have.property(\"deletedUser\")\r
 
       \    pm.expect(deleted.deletedUser).to.be.an(\"object\")  \r
-
-      })\r
-
-      \r
-
-      pm.test(\"Returns success message\", () => {\r
-
-      \    pm.expect(deleted).to.have.property(\"message\")\r
-
-      \    pm.expect(deleted.message).to.equal(\"Account deleted
-      successfully\")\r
 
       })"
     language: text/javascript
