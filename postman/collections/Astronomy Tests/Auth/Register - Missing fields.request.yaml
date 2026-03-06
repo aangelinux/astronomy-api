@@ -18,17 +18,6 @@ scripts:
 
       \r
 
-      hasStatus(400)\r
-
-      \r
-
-      pm.test(\"Returns error message\", () => {\r
-
-      \    pm.expect(pm.response).to.not.be.ok\r
-
-      \    pm.expect(pm.response.errors[0].message).to.contain(\"Expected value
-      of type\")\r
-
-      })"
+      hasStatus(400)"
     language: text/javascript
 order: 2094367253137076

@@ -30,11 +30,15 @@ export const userResolvers = {
 		deleteAccount: async (_, { input }) => {
 			const { username, password } = input
 			const user = await User.findByUsername(username)
-			await bcrypt.compare(password, user.password_hash)
-			await User.delete(username)
-			return {
-				deletedUser: user,
-				message: 'Account deleted successfully'
+			const match = await bcrypt.compare(password, user.password_hash)
+			if (match) {
+				await User.delete(username)
+				return {
+					deletedUser: user,
+					message: 'Account deleted successfully'
+				}
+			} else {
+				return Error("Username or password invalid")
 			}
 		}
 	}

@@ -12,6 +12,7 @@ variables:
   returnsErrorMessage: ""
   status: ""
   isErrorObject: ""
+  graphqlErrors: ""
 scripts:
   - type: graphql:afterResponse
     code: "pm.test(\"Data exists\", () => {\r
