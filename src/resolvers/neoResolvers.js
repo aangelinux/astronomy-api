@@ -12,11 +12,11 @@ export const neoResolvers = {
 		neo: async (_, { spkid }) => {
 			const neo = await Neo.getNeo(spkid)
 			const orbit = await Orbit.getOrbit(spkid)
-			const close_approaches = await Close_Approach.getApproach(spkid)
+			const close_approach = await Close_Approach.getApproachBySpkid(spkid)
 			return {
 				...neo,
 				orbit,
-				...close_approaches
+				close_approach
 			}
 		},
 		neos: async (_, { page }) => {

@@ -12,6 +12,13 @@ export default class Close_Approach {
 		return result[0]
 	}
 
+	static async getApproachBySpkid(spkid) {
+		const query = `SELECT * FROM Close_Approaches WHERE spkid = ? LIMIT 1`
+		const [result] = await db.query(query, [spkid])
+
+		return result[0]
+	}
+
 	static async getAllApproaches(page) {
 		const offset = (page - 1) * 50
 		const query = `SELECT * FROM Close_Approaches LIMIT 50 OFFSET ?`
