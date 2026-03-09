@@ -3,12 +3,21 @@
  */
 
 import Neo from '../models/neo.js'
+import Orbit from '../models/orbit.js'
+import Close_Approach from '../models/approach.js'
 import { verifyToken } from '../middleware/auth.js'
 
 export const neoResolvers = {
 	Query: {
 		neo: async (_, { spkid }) => {
-			return await Neo.getNeo(spkid)
+			const neo = await Neo.getNeo(spkid)
+			const orbit = await Orbit.getOrbit(spkid)
+			const close_approaches = await Close_Approach.getApproach(spkid)
+			return {
+				...neo,
+				orbit,
+				...close_approaches
+			}
 		},
 		neos: async (_, { page }) => {
 			return await Neo.getAllNeos(page)

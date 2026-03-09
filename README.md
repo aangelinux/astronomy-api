@@ -14,6 +14,8 @@ Orbits and Close Approaches are linked to their corresponding Near-Earth Object 
   
 ## Implementation Type
 
+<!-- https://community.postman.com/t/how-to-export-graphql-collection/45147/2 -->
+
 GraphQL  
   
 ## Links and Testing
