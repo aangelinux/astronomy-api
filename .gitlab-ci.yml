@@ -17,8 +17,8 @@ postman_tests:
   script:
     - npm install
     - npm run seed
-    - newman run "https://api.getpostman.com/collections/$POSTMAN_COLLECTION_ID?apikey=$POSTMAN_API_KEY" \
-      --environment "https://api.getpostman.com/environments/$POSTMAN_ENV_ID?apikey=$POSTMAN_API_KEY" \
+    - newman run "../postman/astronomy_postman_collection.json" \
+      --environment "../postman/astronomy_postman_environment.json" \
       --reporters cli,junit \
       --reporter-junit-export newman-report.xml
   artifacts:

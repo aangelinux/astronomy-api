@@ -1,0 +1,2078 @@
+{
+  "info": {
+    "_postman_id": "f62feb45-0ba8-4631-b843-c900b9a335df",
+    "name": "Astronomy - HTTP Version",
+    "description": "Collection containing all possible requests to a single GraphQL endpoint. Serves the following astronomical data:\n\n- Near-Earth Objects (NEOs) - CRUD-functionality\n    \n- Orbits - Read-only\n    \n- Close Approaches - Read-only\n    \n\nMutation requests for NEOs require a JWT token to be passed in the body. The token is obtained via login, which requires first registering an account.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "42893409"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "item": [
+            {
+              "name": "Register - Success",
+              "event": [
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      "const randomUsername = pm.variables.replaceIn('{{$guid}}')\r",
+                      "const randomPassword = pm.variables.replaceIn('{{$guid}}')\r",
+                      "\r",
+                      "\r",
+                      "pm.collectionVariables.set(\"randomUsername\", randomUsername)\r",
+                      "pm.collectionVariables.set(\"randomPassword\", randomPassword)"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "const response = pm.response.json()\r",
+                      "const user = response.data.register\r",
+                      "\r",
+                      "eval(pm.collectionVariables.get(\"isSuccess\"))\r",
+                      "eval(pm.collectionVariables.get(\"hasStatus\"))\r",
+                      "eval(pm.collectionVariables.get(\"isObject\"))\r",
+                      "\r",
+                      "\r",
+                      "isSuccess()\r",
+                      "hasStatus(200)\r",
+                      "isObject(user)"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "graphql",
+                  "graphql": {
+                    "query": "mutation Register {\r\n    register(input: { \r\n        username: \"{{randomUsername}}\", \r\n        password: \"{{randomPassword}}\"\r\n    }) \r\n    {\r\n        userid\r\n        username\r\n        created\r\n    }\r\n}",
+                    "variables": ""
+                  }
+                },
+                "url": {
+                  "raw": "{{URL}}",
+                  "host": [
+                    "{{URL}}"
+                  ]
+                },
+                "description": "**Example request:**\n\n``` graphql\nmutation Register {\n    register(input: { \n        username: \"\", \n        password: \"\"\n    }) \n    {\n        userid\n        username\n        created\n    }\n}\n\n ```\n\n**Response:**\n\n``` graphql\n{\n    \"data\": {\n        \"register\": {\n            \"userid\": \"1\",\n            \"username\": \"53089f40-8007-4956-9fde-edb49b8dffa7\",\n            \"created\": \"2026-03-09T16:50:54.000Z\"\n        }\n    }\n}\n\n ```"
+              },
+              "response": []
+            },
+            {
+              "name": "Register - Duplicate user",
+              "event": [
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "const response = pm.response.json()\r",
+                      "const user = response.data.register\r",
+                      "\r",
+                      "eval(pm.collectionVariables.get(\"hasErrors\"))\r",
+                      "eval(pm.collectionVariables.get(\"hasStatus\"))\r",
+                      "eval(pm.collectionVariables.get(\"hasErrorMessage\"))\r",
+                      "\r",
+                      "\r",
+                      "hasErrors()\r",
+                      "hasStatus(200)\r",
+                      "hasErrorMessage(\"Duplicate entry\")"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "graphql",
+                  "graphql": {
+                    "query": "mutation Register {\r\n    register(input: {\r\n        username: \"{{$randomUsername}}\"\r\n        password: \"{{$randomPassword}}\"\r\n    })\r\n    {\r\n        userid\r\n        username\r\n        created\r\n    }\r\n}",
+                    "variables": ""
+                  }
+                },
+                "url": {
+                  "raw": "{{URL}}",
+                  "host": [
+                    "{{URL}}"
+                  ]
+                },
+                "description": "**Response:**\n\n``` graphql\n{\n    \"data\": {\n        \"register\": null\n    },\n    \"errors\": [\n        {\n            \"message\": \"Duplicate entry '53089f40-8007-4956-9fde-edb49b8dffa7' for key 'users.username'\",\n            \"path\": [\n                \"register\"\n            ],\n            \"locations\": [\n                {\n                    \"line\": 2,\n                    \"column\": 5\n                }\n            ],\n            \"extensions\": {\n                \"code\": \"INTERNAL_SERVER_ERROR\",\n                \"stacktrace\": [\n                    \"Error: Duplicate entry '53089f40-8007-4956-9fde-edb49b8dffa7' for key 'users.username'\",\n                    \"    at PromisePool.query (C:\\\\Users\\\\angel\\\\OneDrive\\\\Documents\\\\Kurser\\\\1DV027\\\\assignment-api-design\\\\node_modules\\\\mysql2\\\\lib\\\\promise\\\\pool.js:36:22)\",\n                    \"    at User.register (file:///C:/Users/angel/OneDrive/Documents/Kurser/1DV027/assignment-api-design/src/models/user.js:27:29)\",\n                    \"    at Object.register (file:///C:/Users/angel/OneDrive/Documents/Kurser/1DV027/assignment-api-design/src/resolvers/userResolvers.js:19:30)\"\n                ]\n            }\n        }\n    ]\n}\n\n ```"
+              },
+              "response": []
+            },
+            {
+              "name": "Register - Missing fields",
+              "event": [
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "eval(pm.collectionVariables.get(\"hasStatus\"))\r",
+                      "\r",
+                      "\r",
+                      "hasStatus(400)"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "graphql",
+                  "graphql": {
+                    "query": "mutation Register {\r\n    register(input: null) {\r\n        userid\r\n        username\r\n        created\r\n    }\r\n}\r\n",
+                    "variables": ""
+                  }
+                },
+                "url": {
+                  "raw": "{{URL}}",
+                  "host": [
+                    "{{URL}}"
+                  ]
+                },
+                "description": "**Response:**\n\n``` graphql\n{\n    \"errors\": [\n        {\n            \"message\": \"Expected value of type \\\"RegisterInput!\\\", found null.\",\n            \"locations\": [\n                {\n                    \"line\": 2,\n                    \"column\": 21\n                }\n            ],\n            \"extensions\": {\n                \"code\": \"GRAPHQL_VALIDATION_FAILED\",\n                \"stacktrace\": [\n                    \"GraphQLError: Expected value of type \\\"RegisterInput!\\\", found null.\",\n                    \"    at Object.NullValue (C:\\\\Users\\\\angel\\\\OneDrive\\\\Documents\\\\Kurser\\\\1DV027\\\\assignment-api-design\\\\node_modules\\\\graphql\\\\validation\\\\rules\\\\ValuesOfCorrectTypeRule.js:120:11)\",\n                    \"    at Object.enter (C:\\\\Users\\\\angel\\\\OneDrive\\\\Documents\\\\Kurser\\\\1DV027\\\\assignment-api-design\\\\node_modules\\\\graphql\\\\language\\\\visitor.js:298:32)\",\n                    \"    at Object.enter (C:\\\\Users\\\\angel\\\\OneDrive\\\\Documents\\\\Kurser\\\\1DV027\\\\assignment-api-design\\\\node_modules\\\\graphql\\\\utilities\\\\TypeInfo.js:391:27)\",\n                    \"    at visit (C:\\\\Users\\\\angel\\\\OneDrive\\\\Documents\\\\Kurser\\\\1DV027\\\\assignment-api-design\\\\node_modules\\\\graphql\\\\language\\\\visitor.js:194:21)\",\n                    \"    at validate (C:\\\\Users\\\\angel\\\\OneDrive\\\\Documents\\\\Kurser\\\\1DV027\\\\assignment-api-design\\\\node_modules\\\\graphql\\\\validation\\\\validate.js:102:24)\",\n                    \"    at processGraphQLRequest (file:///C:/Users/angel/OneDrive/Documents/Kurser/1DV027/assignment-api-design/node_modules/@apollo/server/dist/esm/requestPipeline.js:101:36)\",\n                    \"    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\",\n                    \"    at async internalExecuteOperation (file:///C:/Users/angel/OneDrive/Documents/Kurser/1DV027/assignment-api-design/node_modules/@apollo/server/dist/esm/ApolloServer.js:635:16)\",\n                    \"    at async runHttpQuery (file:///C:/Users/angel/OneDrive/Documents/Kurser/1DV027/assignment-api-design/node_modules/@apollo/server/dist/esm/runHttpQuery.js:129:29)\",\n                    \"    at async runPotentiallyBatchedHttpQuery (file:///C:/Users/angel/OneDrive/Documents/Kurser/1DV027/assignment-api-design/node_modules/@apollo/server/dist/esm/httpBatching.js:34:16)\"\n                ]\n            }\n        }\n    ]\n}\n\n ```"
+              },
+              "response": []
+            }
+          ],
+          "description": "Folder containing registration requests, with different queries to test for both success and failure."
+        },
+        {
+          "name": "Login",
+          "item": [
+            {
+              "name": "Register (Setup)",
+              "event": [
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      "const randomUsername = pm.variables.replaceIn('{{$guid}}')\r",
+                      "const randomPassword = pm.variables.replaceIn('{{$guid}}')\r",
+                      "\r",
+                      "\r",
+                      "pm.collectionVariables.set(\"randomUsername\", randomUsername)\r",
+                      "pm.collectionVariables.set(\"randomPassword\", randomPassword)"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "graphql",
+                  "graphql": {
+                    "query": "mutation Register {\r\n    register(input: { \r\n        username: \"{{randomUsername}}\", \r\n        password: \"{{randomPassword}}\"\r\n    }) \r\n    {\r\n        userid\r\n        username\r\n        created\r\n    }\r\n}",
+                    "variables": ""
+                  }
+                },
+                "url": {
+                  "raw": "{{URL}}",
+                  "host": [
+                    "{{URL}}"
+                  ]
+                },
+                "description": "See Register - Success request."
+              },
+              "response": []
+            },
+            {
+              "name": "Login - Success",
+              "event": [
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "const response = pm.response.json().data\r",
+                      "const login = response.login\r",
+                      "\r",
+                      "\r",
+                      "eval(pm.collectionVariables.get(\"isSuccess\"))\r",
+                      "eval(pm.collectionVariables.get(\"hasStatus\"))\r",
+                      "eval(pm.collectionVariables.get(\"hasSuccessMessage\"))\r",
+                      "\r",
+                      "\r",
+                      "isSuccess()\r",
+                      "hasStatus(200)\r",
+                      "hasSuccessMessage(login.message, \"Login successful\")\r",
+                      "\r",
+                      "\r",
+                      "pm.test(\"Returns a token\", () => {\r",
+                      "    pm.expect(login.token).to.exist\r",
+                      "    pm.expect(login.token).to.be.a(\"string\")\r",
+                      "})\r",
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "graphql",
+                  "graphql": {
+                    "query": "mutation Login {\r\n    login(input: {\r\n        username: \"{{randomUsername}}\",\r\n        password: \"{{randomPassword}}\"\r\n    })\r\n    {\r\n        token\r\n        message\r\n    }\r\n}\r\n",
+                    "variables": ""
+                  }
+                },
+                "url": {
+                  "raw": "{{URL}}",
+                  "host": [
+                    "{{URL}}"
+                  ]
+                },
+                "description": "**Example request:**\n\n``` graphql\nmutation Login {\n    login(input: { \n        username: \"{{randomUsername}}\", \n        password: \"{{randomPassword}}\" \n    }) \n    {\n        token\n        message\n    }\n}\n\n ```\n\n**Response:**\n\n``` graphql\n{\n    \"data\": {\n        \"login\": {\n            \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOjMsImlhdCI6MTc3MzA3NTM0NiwiZXhwIjoxNzczMDc4OTQ2fQ.QDefkLBkX734bYO12DAFl1bT0hJGPhggmmYjefVkuRg\",\n            \"message\": \"Login successful\"\n        }\n    }\n}\n\n ```"
+              },
+              "response": []
+            },
+            {
+              "name": "Login - Invalid credentials",
+              "event": [
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "eval(pm.collectionVariables.get(\"hasStatus\"))\r",
+                      "eval(pm.collectionVariables.get(\"hasErrors\"))\r",
+                      "eval(pm.collectionVariables.get(\"hasErrorMessage\"))\r",
+                      "\r",
+                      "\r",
+                      "hasStatus(200)\r",
+                      "hasErrors()\r",
+                      "hasErrorMessage(\"Username or password invalid\")"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "graphql",
+                  "graphql": {
+                    "query": "mutation Login {\r\n    login(input: {\r\n        username: \"{{randomUsername}}\",\r\n        password: \"null\"\r\n    })\r\n    {\r\n        token\r\n        message\r\n    }\r\n}\r\n",
+                    "variables": ""
+                  }
+                },
+                "url": {
+                  "raw": "{{URL}}",
+                  "host": [
+                    "{{URL}}"
+                  ]
+                },
+                "description": "**Response:**\n\n``` graphql\n{\n    \"data\": {\n        \"login\": null\n    },\n    \"errors\": [\n        {\n            \"message\": \"Username or password invalid\",\n            \"path\": [\n                \"login\"\n            ],\n            \"locations\": [\n                {\n                    \"line\": 2,\n                    \"column\": 5\n                }\n            ],\n            \"extensions\": {\n                \"code\": \"INTERNAL_SERVER_ERROR\",\n                \"stacktrace\": [\n                    \"Error: Username or password invalid\",\n                    \"    at verifyCredentials (file:///C:/Users/angel/OneDrive/Documents/Kurser/1DV027/assignment-api-design/src/middleware/auth.js:17:20)\",\n                    \"    at async Object.login (file:///C:/Users/angel/OneDrive/Documents/Kurser/1DV027/assignment-api-design/src/resolvers/userResolvers.js:24:18)\"\n                ]\n            }\n        }\n    ]\n}\n\n ```"
+              },
+              "response": []
+            }
+          ],
+          "description": "Folder containing login requests and setup, with different queries to test for both success and failure."
+        },
+        {
+          "name": "Delete",
+          "item": [
+            {
+              "name": "Register (Setup)",
+              "event": [
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      "const randomUsername = pm.variables.replaceIn('{{$guid}}')\r",
+                      "const randomPassword = pm.variables.replaceIn('{{$guid}}')\r",
+                      "\r",
+                      "\r",
+                      "pm.collectionVariables.set(\"randomUsername\", randomUsername)\r",
+                      "pm.collectionVariables.set(\"randomPassword\", randomPassword)"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "graphql",
+                  "graphql": {
+                    "query": "mutation Register {\r\n    register(input: { \r\n        username: \"{{randomUsername}}\", \r\n        password: \"{{randomPassword}}\"\r\n    }) \r\n    {\r\n        userid\r\n        username\r\n        created\r\n    }\r\n}",
+                    "variables": ""
+                  }
+                },
+                "url": {
+                  "raw": "{{URL}}",
+                  "host": [
+                    "{{URL}}"
+                  ]
+                },
+                "description": "See Register - Success request."
+              },
+              "response": []
+            },
+            {
+              "name": "Delete - Invalid credentials",
+              "event": [
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "eval(pm.collectionVariables.get(\"hasStatus\"))\r",
+                      "eval(pm.collectionVariables.get(\"hasErrors\"))\r",
+                      "eval(pm.collectionVariables.get(\"hasErrorMessage\"))\r",
+                      "\r",
+                      "\r",
+                      "hasStatus(200)\r",
+                      "hasErrors()\r",
+                      "hasErrorMessage(\"Username or password invalid\")"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "graphql",
+                  "graphql": {
+                    "query": "mutation DeleteAccount {\r\n    deleteAccount(input: {\r\n        username: \"{{randomUsername}}\",\r\n        password: \"null\"\r\n    })\r\n    {\r\n        message\r\n        deletedUser {\r\n            userid\r\n            username\r\n            created\r\n        }\r\n    }\r\n}\r\n",
+                    "variables": ""
+                  }
+                },
+                "url": {
+                  "raw": "{{URL}}",
+                  "host": [
+                    "{{URL}}"
+                  ]
+                },
+                "description": "**Response:**\n\n``` graphql\n{\n    \"data\": {\n        \"deleteAccount\": null\n    },\n    \"errors\": [\n        {\n            \"message\": \"Username or password invalid\",\n            \"path\": [\n                \"deleteAccount\"\n            ],\n            \"locations\": [\n                {\n                    \"line\": 2,\n                    \"column\": 5\n                }\n            ],\n            \"extensions\": {\n                \"code\": \"INTERNAL_SERVER_ERROR\",\n                \"stacktrace\": [\n                    \"Error: Username or password invalid\",\n                    \"    at Object.deleteAccount (file:///C:/Users/angel/OneDrive/Documents/Kurser/1DV027/assignment-api-design/src/resolvers/userResolvers.js:41:12)\"\n                ]\n            }\n        }\n    ]\n}\n\n ```"
+              },
+              "response": []
+            },
+            {
+              "name": "Delete - Success",
+              "event": [
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "const response = pm.response.json().data\r",
+                      "const deleted = response.deleteAccount\r",
+                      "\r",
+                      "\r",
+                      "eval(pm.collectionVariables.get(\"isSuccess\"))\r",
+                      "eval(pm.collectionVariables.get(\"hasStatus\"))\r",
+                      "eval(pm.collectionVariables.get(\"hasSuccessMessage\"))\r",
+                      "eval(pm.collectionVariables.get(\"isObject\"))\r",
+                      "\r",
+                      "\r",
+                      "isSuccess()\r",
+                      "hasStatus(200)\r",
+                      "hasSuccessMessage(deleted.message, \"Account deleted successfully\")\r",
+                      "isObject(deleted.deletedUser)\r",
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "graphql",
+                  "graphql": {
+                    "query": "mutation DeleteAccount {\r\n    deleteAccount(input: {\r\n        username: \"{{randomUsername}}\",\r\n        password: \"{{randomPassword}}\"\r\n    })\r\n    {\r\n        message\r\n        deletedUser {\r\n            userid\r\n            username\r\n            created\r\n        }\r\n    }\r\n}\r\n",
+                    "variables": ""
+                  }
+                },
+                "url": {
+                  "raw": "{{URL}}",
+                  "host": [
+                    "{{URL}}"
+                  ]
+                },
+                "description": "**Example request:**\n\n``` graphql\nmutation DeleteAccount {\n    deleteAccount(input: { \n        username: \"{{randomUsername}}\", \n        password: \"{{randomPassword}}\" \n    }) \n    {\n        message\n        deletedUser {\n            userid\n            username\n            created\n        }\n    }\n}\n\n ```\n\n**Response:**\n\n``` graphql\n{\n    \"data\": {\n        \"deleteAccount\": {\n            \"message\": \"Account deleted successfully\",\n            \"deletedUser\": {\n                \"userid\": \"5\",\n                \"username\": \"6e741723-479d-4656-8f06-be14bc64ee4d\",\n                \"created\": \"2026-03-09T17:02:55.000Z\"\n            }\n        }\n    }\n}\n\n ```"
+              },
+              "response": []
+            }
+          ],
+          "description": "Folder containing account deletion requests and setup, with different queries to test for both success and failure."
+        }
+      ],
+      "description": "Folder containing all requests related to personal accounts and authentication."
+    },
+    {
+      "name": "NEOs",
+      "item": [
+        {
+          "name": "Setup",
+          "item": [
+            {
+              "name": "Register (Setup)",
+              "event": [
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      "const randomUsername = pm.variables.replaceIn('{{$guid}}')\r",
+                      "const randomPassword = pm.variables.replaceIn('{{$guid}}')\r",
+                      "\r",
+                      "\r",
+                      "pm.collectionVariables.set(\"randomUsername\", randomUsername)\r",
+                      "pm.collectionVariables.set(\"randomPassword\", randomPassword)"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "graphql",
+                  "graphql": {
+                    "query": "mutation Register {\r\n    register(input: { \r\n        username: \"{{randomUsername}}\", \r\n        password: \"{{randomPassword}}\"\r\n    }) \r\n    {\r\n        userid\r\n        username\r\n        created\r\n    }\r\n}",
+                    "variables": ""
+                  }
+                },
+                "url": {
+                  "raw": "{{URL}}",
+                  "host": [
+                    "{{URL}}"
+                  ]
+                },
+                "description": "See Register - Success request."
+              },
+              "response": []
+            },
+            {
+              "name": "Login (Setup)",
+              "event": [
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.collectionVariables.set(\"token\", pm.response.json().data.login.token)"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "graphql",
+                  "graphql": {
+                    "query": "mutation Login {\r\n    login(input: {\r\n        username: \"{{randomUsername}}\",\r\n        password: \"{{randomPassword}}\"\r\n    })\r\n    {\r\n        token\r\n        message\r\n    }\r\n}\r\n",
+                    "variables": ""
+                  }
+                },
+                "url": {
+                  "raw": "{{URL}}",
+                  "host": [
+                    "{{URL}}"
+                  ]
+                },
+                "description": "See Login - Success request."
+              },
+              "response": []
+            },
+            {
+              "name": "Add NEO - Success",
+              "event": [
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      "const randomSpkid = pm.variables.replaceIn('{{$randomInt}}')\r",
+                      "\r",
+                      "pm.collectionVariables.set(\"randomSpkid\", randomSpkid)"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "const response = pm.response.json().data\r",
+                      "const neo = response.addNeo\r",
+                      "\r",
+                      "\r",
+                      "eval(pm.collectionVariables.get(\"isSuccess\"))\r",
+                      "eval(pm.collectionVariables.get(\"hasStatus\"))\r",
+                      "eval(pm.collectionVariables.get(\"isObject\"))\r",
+                      "eval(pm.collectionVariables.get(\"hasSpkid\"))\r",
+                      "\r",
+                      "\r",
+                      "isSuccess()\r",
+                      "hasStatus(200)\r",
+                      "isObject(neo)\r",
+                      "hasSpkid(neo)"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "graphql",
+                  "graphql": {
+                    "query": "mutation AddNeo {\r\n    addNeo(input: {\r\n        spkid: {{randomSpkid}},\r\n        name: \"test_neo\",\r\n        earth_moid_ld: 1.1,\r\n        magnitude: 10\r\n        rotation_hours: 5\r\n        pot_hazardous_asteroid: true\r\n    },\r\n    token: \"{{token}}\") {\r\n        spkid\r\n        name\r\n        earth_moid_ld\r\n        magnitude\r\n        rotation_hours\r\n        pot_hazardous_asteroid\r\n    }\r\n}",
+                    "variables": ""
+                  }
+                },
+                "url": {
+                  "raw": "{{URL}}",
+                  "host": [
+                    "{{URL}}"
+                  ]
+                },
+                "description": "**Example reqest:**\n\n``` graphql\nmutation AddNeo {\n    addNeo(input: { \n        spkid: {{randomSpkid}}, \n        name: \"test_neo\", \n        earth_moid_ld: 1.1,\n        magnitude: 10\n        rotation_hours: 5\n        pot_hazardous_asteroid: true\n    }, \n    token: \"{{token}}\") {\n        spkid\n        name\n        earth_moid_ld\n        magnitude\n        rotation_hours\n        pot_hazardous_asteroid\n    }\n}\n\n ```\n\n**Response:**\n\n``` graphql\n{\n    \"data\": {\n        \"addNeo\": {\n            \"spkid\": \"602\",\n            \"name\": \"test_neo\",\n            \"earth_moid_ld\": 1.1,\n            \"magnitude\": 10,\n            \"rotation_hours\": 5,\n            \"pot_hazardous_asteroid\": true\n        }\n    }\n}\n\n ```"
+              },
+              "response": []
+            },
+            {
+              "name": "Add NEO - Unauthorized",
+              "event": [
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "eval(pm.collectionVariables.get(\"hasStatus\"))\r",
+                      "eval(pm.collectionVariables.get(\"hasErrors\"))\r",
+                      "eval(pm.collectionVariables.get(\"hasErrorMessage\"))\r",
+                      "\r",
+                      "\r",
+                      "hasStatus(200)\r",
+                      "hasErrors()\r",
+                      "hasErrorMessage(\"Invalid or expired token\")\r",
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "graphql",
+                  "graphql": {
+                    "query": "mutation AddNeo {\r\n    addNeo(input: {\r\n        spkid: {{randomSpkid}},\r\n        name: \"test\",\r\n        earth_moid_ld: 1.1\r\n    },\r\n    token: \"null\") {\r\n        spkid\r\n        name\r\n        earth_moid_ld\r\n        magnitude\r\n        rotation_hours\r\n        pot_hazardous_asteroid\r\n    }\r\n}\r\n",
+                    "variables": ""
+                  }
+                },
+                "url": {
+                  "raw": "{{URL}}",
+                  "host": [
+                    "{{URL}}"
+                  ]
+                },
+                "description": "**Response:**\n\n``` graphql\n{\n    \"data\": {\n        \"addNeo\": null\n    },\n    \"errors\": [\n        {\n            \"message\": \"Invalid or expired token\",\n            \"path\": [\n                \"addNeo\"\n            ],\n            \"locations\": [\n                {\n                    \"line\": 2,\n                    \"column\": 5\n                }\n            ],\n            \"extensions\": {\n                \"code\": \"INTERNAL_SERVER_ERROR\",\n                \"stacktrace\": [\n                    \"Error: Invalid or expired token\",\n                    \"    at verifyToken (file:///C:/Users/angel/OneDrive/Documents/Kurser/1DV027/assignment-api-design/src/middleware/auth.js:32:9)\",\n                    \"    at Object.addNeo (file:///C:/Users/angel/OneDrive/Documents/Kurser/1DV027/assignment-api-design/src/resolvers/neoResolvers.js:19:4)\",\n                    \"    at field.resolve (file:///C:/Users/angel/OneDrive/Documents/Kurser/1DV027/assignment-api-design/node_modules/@apollo/server/dist/esm/utils/schemaInstrumentation.js:36:28)\",\n                    \"    at executeField (C:\\\\Users\\\\angel\\\\OneDrive\\\\Documents\\\\Kurser\\\\1DV027\\\\assignment-api-design\\\\node_modules\\\\graphql\\\\execution\\\\execute.js:550:20)\",\n                    \"    at C:\\\\Users\\\\angel\\\\OneDrive\\\\Documents\\\\Kurser\\\\1DV027\\\\assignment-api-design\\\\node_modules\\\\graphql\\\\execution\\\\execute.js:435:22\",\n                    \"    at promiseReduce (C:\\\\Users\\\\angel\\\\OneDrive\\\\Documents\\\\Kurser\\\\1DV027\\\\assignment-api-design\\\\node_modules\\\\graphql\\\\jsutils\\\\promiseReduce.js:23:9)\",\n                    \"    at executeFieldsSerially (C:\\\\Users\\\\angel\\\\OneDrive\\\\Documents\\\\Kurser\\\\1DV027\\\\assignment-api-design\\\\node_modules\\\\graphql\\\\execution\\\\execute.js:431:43)\",\n                    \"    at executeOperation (C:\\\\Users\\\\angel\\\\OneDrive\\\\Documents\\\\Kurser\\\\1DV027\\\\assignment-api-design\\\\node_modules\\\\graphql\\\\execution\\\\execute.js:405:14)\",\n                    \"    at execute (C:\\\\Users\\\\angel\\\\OneDrive\\\\Documents\\\\Kurser\\\\1DV027\\\\assignment-api-design\\\\node_modules\\\\graphql\\\\execution\\\\execute.js:185:20)\",\n                    \"    at executeIncrementally (file:///C:/Users/angel/OneDrive/Documents/Kurser/1DV027/assignment-api-design/node_modules/@apollo/server/dist/esm/incrementalDeliveryPolyfill.js:36:12)\"\n                ]\n            }\n        }\n    ]\n}\n\n ```"
+              },
+              "response": []
+            }
+          ],
+          "description": "Folder containing setup for NEO requests including registration, login, and creation of a test-NEO with different queries to test for both success and failure."
+        },
+        {
+          "name": "Queries",
+          "item": [
+            {
+              "name": "Get NEO - Success (DB)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "const response = pm.response.json().data\r",
+                      "const neo = response.neo\r",
+                      "\r",
+                      "\r",
+                      "eval(pm.collectionVariables.get(\"isSuccess\"))\r",
+                      "eval(pm.collectionVariables.get(\"hasStatus\"))\r",
+                      "eval(pm.collectionVariables.get(\"isObject\"))\r",
+                      "eval(pm.collectionVariables.get(\"hasSpkid\"))\r",
+                      "\r",
+                      "\r",
+                      "isSuccess()\r",
+                      "hasStatus(200)\r",
+                      "isObject(neo)\r",
+                      "hasSpkid(neo)\r",
+                      "\r",
+                      "\r",
+                      "pm.test(\"Returns orbit data\", () => {\r",
+                      "    pm.expect(neo.orbit).to.be.an(\"object\" || null)\r",
+                      "})\r",
+                      "\r",
+                      "\r",
+                      "pm.test(\"Returns approach data\", () => {\r",
+                      "    pm.expect(neo.close_approach).to.be.an(\"object\" || null)\r",
+                      "})\r",
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "graphql",
+                  "graphql": {
+                    "query": "query Neo {\r\n    neo(spkid: 3018335) {\r\n        spkid\r\n        name\r\n        earth_moid_ld\r\n        magnitude\r\n        rotation_hours\r\n        pot_hazardous_asteroid\r\n        orbit {\r\n            spkid\r\n            eccentricity\r\n        }\r\n        close_approach {\r\n            id\r\n            spkid\r\n            date\r\n        }\r\n    }\r\n}\r\n",
+                    "variables": ""
+                  }
+                },
+                "url": {
+                  "raw": "{{URL}}",
+                  "host": [
+                    "{{URL}}"
+                  ]
+                },
+                "description": "**Example request:**\n\n``` graphql\nquery Neo {\n    neo(spkid: 3018335) {\n        spkid\n        name\n        earth_moid_ld\n        magnitude\n        rotation_hours\n        pot_hazardous_asteroid\n        orbit {\n            spkid\n            eccentricity\n        }\n        close_approach {\n            id\n            spkid\n            date\n        }\n    }\n}\n\n ```\n\n**Response:**\n\n``` graphql\n{\n    \"data\": {\n        \"neo\": {\n            \"spkid\": \"3018335\",\n            \"name\": \"(1999 FN19)\",\n            \"earth_moid_ld\": 6.07,\n            \"magnitude\": 22.5,\n            \"rotation_hours\": 26.8,\n            \"pot_hazardous_asteroid\": false,\n            \"orbit\": {\n                \"spkid\": \"3018335\",\n                \"eccentricity\": 0.3917\n            },\n            \"close_approach\": {\n                \"id\": \"4059\",\n                \"spkid\": \"3018335\",\n                \"date\": \"1999-04-17T04:34:00.000Z\"\n            }\n        }\n    }\n}\n\n ```"
+              },
+              "response": []
+            },
+            {
+              "name": "Get NEO - Success",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "const response = pm.response.json().data\r",
+                      "const neo = response.neo\r",
+                      "\r",
+                      "\r",
+                      "eval(pm.collectionVariables.get(\"isSuccess\"))\r",
+                      "eval(pm.collectionVariables.get(\"hasStatus\"))\r",
+                      "eval(pm.collectionVariables.get(\"isObject\"))\r",
+                      "eval(pm.collectionVariables.get(\"hasSpkid\"))\r",
+                      "\r",
+                      "\r",
+                      "isSuccess()\r",
+                      "hasStatus(200)\r",
+                      "isObject(neo)\r",
+                      "hasSpkid(neo)"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "graphql",
+                  "graphql": {
+                    "query": "query Neo {\r\n    neo(spkid: {{randomSpkid}}) {\r\n        spkid\r\n        name\r\n        earth_moid_ld\r\n        magnitude\r\n        rotation_hours\r\n        pot_hazardous_asteroid\r\n    }\r\n}\r\n",
+                    "variables": ""
+                  }
+                },
+                "url": {
+                  "raw": "{{URL}}",
+                  "host": [
+                    "{{URL}}"
+                  ]
+                },
+                "description": "**Example request:**\n\n``` graphql\nquery Neo {\n    neo(spkid: {{randomSpkid}}) {\n        spkid\n        name\n        earth_moid_ld\n        magnitude\n        rotation_hours\n        pot_hazardous_asteroid\n    }\n}\n\n ```\n\n**Response:**\n\n``` graphql\n{\n    \"data\": {\n        \"neo\": {\n            \"spkid\": \"602\",\n            \"name\": \"test_neo\",\n            \"earth_moid_ld\": 1.1,\n            \"magnitude\": 10,\n            \"rotation_hours\": 5,\n            \"pot_hazardous_asteroid\": true\n        }\n    }\n}\n\n ```"
+              },
+              "response": []
+            },
+            {
+              "name": "Get NEO - Invalid params",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "const response = pm.response.json().data\r",
+                      "const neo = response.neo\r",
+                      "\r",
+                      "\r",
+                      "eval(pm.collectionVariables.get(\"hasErrors\"))\r",
+                      "eval(pm.collectionVariables.get(\"hasStatus\"))\r",
+                      "eval(pm.collectionVariables.get(\"isNull\"))\r",
+                      "\r",
+                      "\r",
+                      "hasErrors()\r",
+                      "hasStatus(200)\r",
+                      "isNull(neo)\r",
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "graphql",
+                  "graphql": {
+                    "query": "query Neo {\r\n    neo(spkid: {{nonexistent_spkid}}) {\r\n        spkid\r\n        name\r\n        earth_moid_ld\r\n        magnitude\r\n        rotation_hours\r\n        pot_hazardous_asteroid\r\n    }\r\n}",
+                    "variables": ""
+                  }
+                },
+                "url": {
+                  "raw": "{{URL}}",
+                  "host": [
+                    "{{URL}}"
+                  ]
+                },
+                "description": "**Response:**\n\n``` graphql\n{\n    \"errors\": [\n        {\n            \"message\": \"Cannot return null for non-nullable field Neo.spkid.\",\n            \"locations\": [\n                {\n                    \"line\": 3,\n                    \"column\": 9\n                }\n            ],\n            \"path\": [\n                \"neo\",\n                \"spkid\"\n            ],\n            \"extensions\": {\n                \"code\": \"INTERNAL_SERVER_ERROR\",\n                \"stacktrace\": [\n                    \"Error: Cannot return null for non-nullable field Neo.spkid.\",\n                    \"    at completeValue (C:\\\\Users\\\\angel\\\\OneDrive\\\\Documents\\\\Kurser\\\\1DV027\\\\assignment-api-design\\\\node_modules\\\\graphql\\\\execution\\\\execute.js:663:13)\",\n                    \"    at executeField (C:\\\\Users\\\\angel\\\\OneDrive\\\\Documents\\\\Kurser\\\\1DV027\\\\assignment-api-design\\\\node_modules\\\\graphql\\\\execution\\\\execute.js:558:19)\",\n                    \"    at executeFields (C:\\\\Users\\\\angel\\\\OneDrive\\\\Documents\\\\Kurser\\\\1DV027\\\\assignment-api-design\\\\node_modules\\\\graphql\\\\execution\\\\execute.js:472:22)\",\n                    \"    at completeObjectValue (C:\\\\Users\\\\angel\\\\OneDrive\\\\Documents\\\\Kurser\\\\1DV027\\\\assignment-api-design\\\\node_modules\\\\graphql\\\\execution\\\\execute.js:983:10)\",\n                    \"    at completeValue (C:\\\\Users\\\\angel\\\\OneDrive\\\\Documents\\\\Kurser\\\\1DV027\\\\assignment-api-design\\\\node_modules\\\\graphql\\\\execution\\\\execute.js:704:12)\",\n                    \"    at C:\\\\Users\\\\angel\\\\OneDrive\\\\Documents\\\\Kurser\\\\1DV027\\\\assignment-api-design\\\\node_modules\\\\graphql\\\\execution\\\\execute.js:555:9\",\n                    \"    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\",\n                    \"    at async Promise.all (index 0)\",\n                    \"    at async execute (file:///C:/Users/angel/OneDrive/Documents/Kurser/1DV027/assignment-api-design/node_modules/@apollo/server/dist/esm/requestPipeline.js:242:37)\",\n                    \"    at async processGraphQLRequest (file:///C:/Users/angel/OneDrive/Documents/Kurser/1DV027/assignment-api-design/node_modules/@apollo/server/dist/esm/requestPipeline.js:163:32)\"\n                ]\n            }\n        }\n    ],\n    \"data\": {\n        \"neo\": null\n    }\n}\n\n ```"
+              },
+              "response": []
+            },
+            {
+              "name": "Get NEO - Missing fields",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "eval(pm.collectionVariables.get(\"hasStatus\"))\r",
+                      "\r",
+                      "\r",
+                      "hasStatus(400)"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "graphql",
+                  "graphql": {
+                    "query": "query Neo {\r\n    neo(spkid: null) {\r\n        spkid\r\n        name\r\n        earth_moid_ld\r\n        magnitude\r\n        rotation_hours\r\n        pot_hazardous_asteroid\r\n    }\r\n}\r\n",
+                    "variables": ""
+                  }
+                },
+                "url": {
+                  "raw": "{{URL}}",
+                  "host": [
+                    "{{URL}}"
+                  ]
+                },
+                "description": "**Response:**\n\n``` graphql\n{\n    \"errors\": [\n        {\n            \"message\": \"Expected value of type \\\"ID!\\\", found null.\",\n            \"locations\": [\n                {\n                    \"line\": 2,\n                    \"column\": 16\n                }\n            ],\n            \"extensions\": {\n                \"code\": \"GRAPHQL_VALIDATION_FAILED\",\n                \"stacktrace\": [\n                    \"GraphQLError: Expected value of type \\\"ID!\\\", found null.\",\n                    \"    at Object.NullValue (C:\\\\Users\\\\angel\\\\OneDrive\\\\Documents\\\\Kurser\\\\1DV027\\\\assignment-api-design\\\\node_modules\\\\graphql\\\\validation\\\\rules\\\\ValuesOfCorrectTypeRule.js:120:11)\",\n                    \"    at Object.enter (C:\\\\Users\\\\angel\\\\OneDrive\\\\Documents\\\\Kurser\\\\1DV027\\\\assignment-api-design\\\\node_modules\\\\graphql\\\\language\\\\visitor.js:298:32)\",\n                    \"    at Object.enter (C:\\\\Users\\\\angel\\\\OneDrive\\\\Documents\\\\Kurser\\\\1DV027\\\\assignment-api-design\\\\node_modules\\\\graphql\\\\utilities\\\\TypeInfo.js:391:27)\",\n                    \"    at visit (C:\\\\Users\\\\angel\\\\OneDrive\\\\Documents\\\\Kurser\\\\1DV027\\\\assignment-api-design\\\\node_modules\\\\graphql\\\\language\\\\visitor.js:194:21)\",\n                    \"    at validate (C:\\\\Users\\\\angel\\\\OneDrive\\\\Documents\\\\Kurser\\\\1DV027\\\\assignment-api-design\\\\node_modules\\\\graphql\\\\validation\\\\validate.js:102:24)\",\n                    \"    at processGraphQLRequest (file:///C:/Users/angel/OneDrive/Documents/Kurser/1DV027/assignment-api-design/node_modules/@apollo/server/dist/esm/requestPipeline.js:101:36)\",\n                    \"    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\",\n                    \"    at async internalExecuteOperation (file:///C:/Users/angel/OneDrive/Documents/Kurser/1DV027/assignment-api-design/node_modules/@apollo/server/dist/esm/ApolloServer.js:635:16)\",\n                    \"    at async runHttpQuery (file:///C:/Users/angel/OneDrive/Documents/Kurser/1DV027/assignment-api-design/node_modules/@apollo/server/dist/esm/runHttpQuery.js:129:29)\",\n                    \"    at async runPotentiallyBatchedHttpQuery (file:///C:/Users/angel/OneDrive/Documents/Kurser/1DV027/assignment-api-design/node_modules/@apollo/server/dist/esm/httpBatching.js:34:16)\"\n                ]\n            }\n        }\n    ]\n}\n\n ```"
+              },
+              "response": []
+            },
+            {
+              "name": "Get multiple NEOs - Success",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "const response = pm.response.json().data\r",
+                      "const neos = response.neos\r",
+                      "\r",
+                      "\r",
+                      "eval(pm.collectionVariables.get(\"isSuccess\"))\r",
+                      "eval(pm.collectionVariables.get(\"hasStatus\"))\r",
+                      "eval(pm.collectionVariables.get(\"returnsMultipleObjects\"))\r",
+                      "eval(pm.collectionVariables.get(\"isObject\"))\r",
+                      "eval(pm.collectionVariables.get(\"hasSpkid\"))\r",
+                      "\r",
+                      "\r",
+                      "isSuccess()\r",
+                      "hasStatus(200)\r",
+                      "returnsMultipleObjects(neos)\r",
+                      "isObject(neos[0])\r",
+                      "hasSpkid(neos[0])"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "graphql",
+                  "graphql": {
+                    "query": "query Neos {\r\n    neos(page: {{page}}) {\r\n        spkid\r\n        name\r\n        earth_moid_ld\r\n        magnitude\r\n        rotation_hours\r\n        pot_hazardous_asteroid\r\n    }\r\n}\r\n",
+                    "variables": ""
+                  }
+                },
+                "url": {
+                  "raw": "{{URL}}",
+                  "host": [
+                    "{{URL}}"
+                  ]
+                },
+                "description": "**Example request:**\n\n``` graphql\nquery Neos {\n    neos(page: {{page}}) {\n        spkid\n        name\n        earth_moid_ld\n        magnitude\n        rotation_hours\n        pot_hazardous_asteroid\n    }\n}\n\n ```\n\n**Response:**\n\n``` graphql\n{\n    \"data\": {\n        \"neos\": [\n            {\n                \"spkid\": \"257\",\n                \"name\": \"test_neo\",\n                \"earth_moid_ld\": 1.1,\n                \"magnitude\": 10,\n                \"rotation_hours\": 5,\n                \"pot_hazardous_asteroid\": true\n            },\n            {\n                \"spkid\": \"602\",\n                \"name\": \"test_neo\",\n                \"earth_moid_ld\": 1.1,\n                \"magnitude\": 10,\n                \"rotation_hours\": 5,\n                \"pot_hazardous_asteroid\": true\n            },\n...\n\n ```"
+              },
+              "response": []
+            },
+            {
+              "name": "Get multiple NEOs - Invalid params",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "eval(pm.collectionVariables.get(\"hasErrors\"))\r",
+                      "eval(pm.collectionVariables.get(\"hasErrorMessage\"))\r",
+                      "eval(pm.collectionVariables.get(\"hasStatus\"))\r",
+                      "\r",
+                      "\r",
+                      "hasErrors()\r",
+                      "hasErrorMessage(\"You have an error in your SQL syntax\")\r",
+                      "hasStatus(200)"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "graphql",
+                  "graphql": {
+                    "query": "query Neos {\r\n    neos(page: {{invalid_page}}) {\r\n        spkid\r\n        name\r\n        earth_moid_ld\r\n        magnitude\r\n        rotation_hours\r\n        pot_hazardous_asteroid\r\n    }\r\n}\r\n",
+                    "variables": ""
+                  }
+                },
+                "url": {
+                  "raw": "{{URL}}",
+                  "host": [
+                    "{{URL}}"
+                  ]
+                },
+                "description": "**Response:**\n\n``` graphql\n{\n    \"data\": null,\n    \"errors\": [\n        {\n            \"message\": \"You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '-100' at line 1\",\n            \"path\": [\n                \"neos\"\n            ],\n            \"locations\": [\n                {\n                    \"line\": 2,\n                    \"column\": 5\n                }\n            ],\n            \"extensions\": {\n                \"code\": \"INTERNAL_SERVER_ERROR\",\n                \"stacktrace\": [\n                    \"Error: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '-100' at line 1\",\n                    \"    at PromisePool.query (C:\\\\Users\\\\angel\\\\OneDrive\\\\Documents\\\\Kurser\\\\1DV027\\\\assignment-api-design\\\\node_modules\\\\mysql2\\\\lib\\\\promise\\\\pool.js:36:22)\",\n                    \"    at Neo.getAllNeos (file:///C:/Users/angel/OneDrive/Documents/Kurser/1DV027/assignment-api-design/src/models/neo.js:18:29)\",\n                    \"    at Object.neos (file:///C:/Users/angel/OneDrive/Documents/Kurser/1DV027/assignment-api-design/src/resolvers/neoResolvers.js:14:21)\",\n                    \"    at field.resolve (file:///C:/Users/angel/OneDrive/Documents/Kurser/1DV027/assignment-api-design/node_modules/@apollo/server/dist/esm/utils/schemaInstrumentation.js:36:28)\",\n                    \"    at executeField (C:\\\\Users\\\\angel\\\\OneDrive\\\\Documents\\\\Kurser\\\\1DV027\\\\assignment-api-design\\\\node_modules\\\\graphql\\\\execution\\\\execute.js:550:20)\",\n                    \"    at executeFields (C:\\\\Users\\\\angel\\\\OneDrive\\\\Documents\\\\Kurser\\\\1DV027\\\\assignment-api-design\\\\node_modules\\\\graphql\\\\execution\\\\execute.js:472:22)\",\n                    \"    at executeOperation (C:\\\\Users\\\\angel\\\\OneDrive\\\\Documents\\\\Kurser\\\\1DV027\\\\assignment-api-design\\\\node_modules\\\\graphql\\\\execution\\\\execute.js:402:14)\",\n                    \"    at execute (C:\\\\Users\\\\angel\\\\OneDrive\\\\Documents\\\\Kurser\\\\1DV027\\\\assignment-api-design\\\\node_modules\\\\graphql\\\\execution\\\\execute.js:185:20)\",\n                    \"    at executeIncrementally (file:///C:/Users/angel/OneDrive/Documents/Kurser/1DV027/assignment-api-design/node_modules/@apollo/server/dist/esm/incrementalDeliveryPolyfill.js:36:12)\",\n                    \"    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\"\n                ]\n            }\n        }\n    ]\n}\n\n ```"
+              },
+              "response": []
+            }
+          ],
+          "description": "Folder containing all data requests for NEOs, with different queries to test for both success and failure."
+        },
+        {
+          "name": "Mutations",
+          "item": [
+            {
+              "name": "Update NEO - Unauthorized",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "eval(pm.collectionVariables.get(\"hasStatus\"))\r",
+                      "eval(pm.collectionVariables.get(\"hasErrors\"))\r",
+                      "eval(pm.collectionVariables.get(\"hasErrorMessage\"))\r",
+                      "\r",
+                      "\r",
+                      "hasStatus(200)\r",
+                      "hasErrors()\r",
+                      "hasErrorMessage(\"Invalid or expired token\")"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "graphql",
+                  "graphql": {
+                    "query": "mutation UpdateNeo {\r\n    updateNeo(\r\n    spkid: {{randomSpkid}},\r\n    input: {\r\n        name: \"update\"\r\n    },\r\n    token: \"\")\r\n    {\r\n        spkid\r\n        name\r\n        earth_moid_ld\r\n        magnitude\r\n        rotation_hours\r\n        pot_hazardous_asteroid\r\n    }\r\n}\r\n\r\n",
+                    "variables": ""
+                  }
+                },
+                "url": {
+                  "raw": "{{URL}}",
+                  "host": [
+                    "{{URL}}"
+                  ]
+                },
+                "description": "**Response:**\n\n``` graphql\n{\n    \"data\": {\n        \"updateNeo\": null\n    },\n    \"errors\": [\n        {\n            \"message\": \"Invalid or expired token\",\n            \"path\": [\n                \"updateNeo\"\n            ],\n            \"locations\": [\n                {\n                    \"line\": 2,\n                    \"column\": 5\n                }\n            ],\n            \"extensions\": {\n                \"code\": \"INTERNAL_SERVER_ERROR\",\n                \"stacktrace\": [\n                    \"Error: Invalid or expired token\",\n                    \"    at verifyToken (file:///C:/Users/angel/OneDrive/Documents/Kurser/1DV027/assignment-api-design/src/middleware/auth.js:32:9)\",\n                    \"    at Object.updateNeo (file:///C:/Users/angel/OneDrive/Documents/Kurser/1DV027/assignment-api-design/src/resolvers/neoResolvers.js:24:4)\",\n                    \"    at field.resolve (file:///C:/Users/angel/OneDrive/Documents/Kurser/1DV027/assignment-api-design/node_modules/@apollo/server/dist/esm/utils/schemaInstrumentation.js:36:28)\",\n                    \"    at executeField (C:\\\\Users\\\\angel\\\\OneDrive\\\\Documents\\\\Kurser\\\\1DV027\\\\assignment-api-design\\\\node_modules\\\\graphql\\\\execution\\\\execute.js:550:20)\",\n                    \"    at C:\\\\Users\\\\angel\\\\OneDrive\\\\Documents\\\\Kurser\\\\1DV027\\\\assignment-api-design\\\\node_modules\\\\graphql\\\\execution\\\\execute.js:435:22\",\n                    \"    at promiseReduce (C:\\\\Users\\\\angel\\\\OneDrive\\\\Documents\\\\Kurser\\\\1DV027\\\\assignment-api-design\\\\node_modules\\\\graphql\\\\jsutils\\\\promiseReduce.js:23:9)\",\n                    \"    at executeFieldsSerially (C:\\\\Users\\\\angel\\\\OneDrive\\\\Documents\\\\Kurser\\\\1DV027\\\\assignment-api-design\\\\node_modules\\\\graphql\\\\execution\\\\execute.js:431:43)\",\n                    \"    at executeOperation (C:\\\\Users\\\\angel\\\\OneDrive\\\\Documents\\\\Kurser\\\\1DV027\\\\assignment-api-design\\\\node_modules\\\\graphql\\\\execution\\\\execute.js:405:14)\",\n                    \"    at execute (C:\\\\Users\\\\angel\\\\OneDrive\\\\Documents\\\\Kurser\\\\1DV027\\\\assignment-api-design\\\\node_modules\\\\graphql\\\\execution\\\\execute.js:185:20)\",\n                    \"    at executeIncrementally (file:///C:/Users/angel/OneDrive/Documents/Kurser/1DV027/assignment-api-design/node_modules/@apollo/server/dist/esm/incrementalDeliveryPolyfill.js:36:12)\"\n                ]\n            }\n        }\n    ]\n}\n\n ```"
+              },
+              "response": []
+            },
+            {
+              "name": "Update NEO - Success",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "const response = pm.response.json().data\r",
+                      "const neo = response.updateNeo\r",
+                      "\r",
+                      "\r",
+                      "eval(pm.collectionVariables.get(\"isSuccess\"))\r",
+                      "eval(pm.collectionVariables.get(\"hasStatus\"))\r",
+                      "eval(pm.collectionVariables.get(\"isObject\"))\r",
+                      "eval(pm.collectionVariables.get(\"hasSpkid\"))\r",
+                      "\r",
+                      "\r",
+                      "isSuccess()\r",
+                      "hasStatus(200)\r",
+                      "isObject(neo)\r",
+                      "hasSpkid(neo)\r",
+                      "\r",
+                      "\r",
+                      "pm.test(\"Returns updated input\", () => {\r",
+                      "    pm.expect(neo.name).to.equal(\"update\")\r",
+                      "})"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "graphql",
+                  "graphql": {
+                    "query": "mutation UpdateNeo {\r\n    updateNeo(\r\n    spkid: {{randomSpkid}},\r\n    input: {\r\n        name: \"update\"\r\n    },\r\n    token: \"{{token}}\")\r\n    {\r\n        spkid\r\n        name\r\n        earth_moid_ld\r\n        magnitude\r\n        rotation_hours\r\n        pot_hazardous_asteroid\r\n    }\r\n}\r\n",
+                    "variables": ""
+                  }
+                },
+                "url": {
+                  "raw": "{{URL}}",
+                  "host": [
+                    "{{URL}}"
+                  ]
+                },
+                "description": "**Example request:**\n\n``` graphql\nmutation UpdateNeo {\n    updateNeo(\n    spkid: {{randomSpkid}}, \n    input: { \n        name: \"update\" \n    }, \n    token: \"{{token}}\") \n    {\n        spkid\n        name\n        earth_moid_ld\n        magnitude\n        rotation_hours\n        pot_hazardous_asteroid\n    }\n}\n\n ```\n\n**Response:**\n\n``` graphql\n{\n    \"data\": {\n        \"updateNeo\": {\n            \"spkid\": \"602\",\n            \"name\": \"update\",\n            \"earth_moid_ld\": 1.1,\n            \"magnitude\": 10,\n            \"rotation_hours\": 5,\n            \"pot_hazardous_asteroid\": true\n        }\n    }\n}\n\n ```"
+              },
+              "response": []
+            },
+            {
+              "name": "Delete NEO - Unauthorized",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "eval(pm.collectionVariables.get(\"hasStatus\"))\r",
+                      "eval(pm.collectionVariables.get(\"hasErrors\"))\r",
+                      "eval(pm.collectionVariables.get(\"hasErrorMessage\"))\r",
+                      "\r",
+                      "\r",
+                      "hasStatus(200)\r",
+                      "hasErrors()\r",
+                      "hasErrorMessage(\"Invalid or expired token\")"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "graphql",
+                  "graphql": {
+                    "query": "mutation DeleteNeo {\r\n    deleteNeo(\r\n    spkid: {{randomSpkid}},\r\n    token: \"\")\r\n    {\r\n        message\r\n        deletedNeo {\r\n            spkid\r\n            name\r\n            earth_moid_ld\r\n            magnitude\r\n            rotation_hours\r\n            pot_hazardous_asteroid\r\n        }\r\n    }\r\n}\r\n",
+                    "variables": ""
+                  }
+                },
+                "url": {
+                  "raw": "{{URL}}",
+                  "host": [
+                    "{{URL}}"
+                  ]
+                },
+                "description": "**Response:**\n\n``` graphql\n{\n    \"data\": {\n        \"deleteNeo\": null\n    },\n    \"errors\": [\n        {\n            \"message\": \"Invalid or expired token\",\n            \"path\": [\n                \"deleteNeo\"\n            ],\n            \"locations\": [\n                {\n                    \"line\": 2,\n                    \"column\": 5\n                }\n            ],\n            \"extensions\": {\n                \"code\": \"INTERNAL_SERVER_ERROR\",\n                \"stacktrace\": [\n                    \"Error: Invalid or expired token\",\n                    \"    at verifyToken (file:///C:/Users/angel/OneDrive/Documents/Kurser/1DV027/assignment-api-design/src/middleware/auth.js:32:9)\",\n                    \"    at Object.deleteNeo (file:///C:/Users/angel/OneDrive/Documents/Kurser/1DV027/assignment-api-design/src/resolvers/neoResolvers.js:29:4)\",\n                    \"    at field.resolve (file:///C:/Users/angel/OneDrive/Documents/Kurser/1DV027/assignment-api-design/node_modules/@apollo/server/dist/esm/utils/schemaInstrumentation.js:36:28)\",\n                    \"    at executeField (C:\\\\Users\\\\angel\\\\OneDrive\\\\Documents\\\\Kurser\\\\1DV027\\\\assignment-api-design\\\\node_modules\\\\graphql\\\\execution\\\\execute.js:550:20)\",\n                    \"    at C:\\\\Users\\\\angel\\\\OneDrive\\\\Documents\\\\Kurser\\\\1DV027\\\\assignment-api-design\\\\node_modules\\\\graphql\\\\execution\\\\execute.js:435:22\",\n                    \"    at promiseReduce (C:\\\\Users\\\\angel\\\\OneDrive\\\\Documents\\\\Kurser\\\\1DV027\\\\assignment-api-design\\\\node_modules\\\\graphql\\\\jsutils\\\\promiseReduce.js:23:9)\",\n                    \"    at executeFieldsSerially (C:\\\\Users\\\\angel\\\\OneDrive\\\\Documents\\\\Kurser\\\\1DV027\\\\assignment-api-design\\\\node_modules\\\\graphql\\\\execution\\\\execute.js:431:43)\",\n                    \"    at executeOperation (C:\\\\Users\\\\angel\\\\OneDrive\\\\Documents\\\\Kurser\\\\1DV027\\\\assignment-api-design\\\\node_modules\\\\graphql\\\\execution\\\\execute.js:405:14)\",\n                    \"    at execute (C:\\\\Users\\\\angel\\\\OneDrive\\\\Documents\\\\Kurser\\\\1DV027\\\\assignment-api-design\\\\node_modules\\\\graphql\\\\execution\\\\execute.js:185:20)\",\n                    \"    at executeIncrementally (file:///C:/Users/angel/OneDrive/Documents/Kurser/1DV027/assignment-api-design/node_modules/@apollo/server/dist/esm/incrementalDeliveryPolyfill.js:36:12)\"\n                ]\n            }\n        }\n    ]\n}\n\n ```"
+              },
+              "response": []
+            },
+            {
+              "name": "Delete NEO - Success",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "const response = pm.response.json().data\r",
+                      "const deleted = response.deleteNeo\r",
+                      "\r",
+                      "\r",
+                      "eval(pm.collectionVariables.get(\"isSuccess\"))\r",
+                      "eval(pm.collectionVariables.get(\"hasStatus\"))\r",
+                      "eval(pm.collectionVariables.get(\"hasSuccessMessage\"))\r",
+                      "eval(pm.collectionVariables.get(\"isObject\"))\r",
+                      "\r",
+                      "\r",
+                      "isSuccess()\r",
+                      "hasStatus(200)\r",
+                      "hasSuccessMessage(deleted.message, \"Near-Earth Object deleted successfully\")\r",
+                      "isObject(deleted.deletedNeo)\r",
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "exec": [
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "graphql",
+                  "graphql": {
+                    "query": "mutation DeleteNeo {\r\n    deleteNeo(\r\n    spkid: {{randomSpkid}},\r\n    token: \"{{token}}\")\r\n    {\r\n        message\r\n        deletedNeo {\r\n            spkid\r\n            name\r\n            earth_moid_ld\r\n            magnitude\r\n            rotation_hours\r\n            pot_hazardous_asteroid\r\n        }\r\n    }\r\n}\r\n",
+                    "variables": ""
+                  }
+                },
+                "url": {
+                  "raw": "{{URL}}",
+                  "host": [
+                    "{{URL}}"
+                  ]
+                },
+                "description": "**Example request:**\n\n``` graphql\nmutation DeleteNeo {\n    deleteNeo(\n    spkid: {{randomSpkid}}, \n    token: \"{{token}}\") \n    {\n        message\n        deletedNeo {\n            spkid\n            name\n            earth_moid_ld\n            magnitude\n            rotation_hours\n            pot_hazardous_asteroid\n        }\n    }\n}\n\n ```\n\n**Response:**\n\n``` graphql\n{\n    \"data\": {\n        \"deleteNeo\": {\n            \"message\": \"Near-Earth Object deleted successfully\",\n            \"deletedNeo\": {\n                \"spkid\": \"602\",\n                \"name\": \"update\",\n                \"earth_moid_ld\": 1.1,\n                \"magnitude\": 10,\n                \"rotation_hours\": 5,\n                \"pot_hazardous_asteroid\": true\n            }\n        }\n    }\n}\n\n ```"
+              },
+              "response": []
+            }
+          ],
+          "description": "Folder containing all mutation requests for NEOs, with different queries to test for both success and failure."
+        }
+      ],
+      "description": "Folder containing all queries and mutations related to Near-Earth Objects."
+    },
+    {
+      "name": "Orbits",
+      "item": [
+        {
+          "name": "Get orbit - Success",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const response = pm.response.json().data\r",
+                  "const orbit = response.orbit\r",
+                  "\r",
+                  "\r",
+                  "eval(pm.collectionVariables.get(\"isSuccess\"))\r",
+                  "eval(pm.collectionVariables.get(\"hasStatus\"))\r",
+                  "eval(pm.collectionVariables.get(\"isObject\"))\r",
+                  "eval(pm.collectionVariables.get(\"hasSpkid\"))\r",
+                  "\r",
+                  "\r",
+                  "isSuccess()\r",
+                  "hasStatus(200)\r",
+                  "isObject(orbit)\r",
+                  "hasSpkid(orbit)\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "query Orbit {\r\n    orbit(spkid: {{query_spkid}}) {\r\n        spkid\r\n        orbital_class\r\n        eccentricity\r\n        years\r\n    }\r\n}\r\n\r\n",
+                "variables": ""
+              }
+            },
+            "url": {
+              "raw": "{{URL}}",
+              "host": [
+                "{{URL}}"
+              ]
+            },
+            "description": "**Example request:**\n\n``` graphql\nquery Orbit {\n    orbit(spkid: {{query_spkid}}) {\n        spkid\n        orbital_class\n        eccentricity\n        years\n    }\n}\n\n ```\n\n**Response:**\n\n``` graphql\n{\n    \"data\": {\n        \"orbit\": {\n            \"spkid\": \"1000027\",\n            \"orbital_class\": \"JFc\",\n            \"eccentricity\": 0.7202,\n            \"years\": 6.52\n        }\n    }\n}\n\n ```"
+          },
+          "response": []
+        },
+        {
+          "name": "Get orbit - Invalid params",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const response = pm.response.json().data\r",
+                  "const orbit = response.orbit\r",
+                  "\r",
+                  "\r",
+                  "eval(pm.collectionVariables.get(\"isSuccess\"))\r",
+                  "eval(pm.collectionVariables.get(\"hasStatus\"))\r",
+                  "eval(pm.collectionVariables.get(\"isNull\"))\r",
+                  "\r",
+                  "\r",
+                  "isSuccess()\r",
+                  "hasStatus(200)\r",
+                  "isNull(orbit)\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "query Orbit {\r\n    orbit(spkid: {{nonexistent_spkid}}) {\r\n        spkid\r\n        orbital_class\r\n        eccentricity\r\n        years\r\n    }\r\n}\r\n\r\n",
+                "variables": ""
+              }
+            },
+            "url": {
+              "raw": "{{URL}}",
+              "host": [
+                "{{URL}}"
+              ]
+            },
+            "description": "**Response:**\n\n``` graphql\n{\n    \"data\": {\n        \"orbit\": null\n    }\n}\n\n ```"
+          },
+          "response": []
+        },
+        {
+          "name": "Get orbit - Missing fields",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "eval(pm.collectionVariables.get(\"hasStatus\"))\r",
+                  "\r",
+                  "\r",
+                  "hasStatus(400)\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "query Orbit {\r\n    orbit(spkid: null) {\r\n        spkid\r\n        orbital_class\r\n        eccentricity\r\n        years\r\n    }\r\n}\r\n\r\n",
+                "variables": ""
+              }
+            },
+            "url": {
+              "raw": "{{URL}}",
+              "host": [
+                "{{URL}}"
+              ]
+            },
+            "description": "**Response:**\n\n``` graphql\n{\n    \"errors\": [\n        {\n            \"message\": \"Expected value of type \\\"ID!\\\", found null.\",\n            \"locations\": [\n                {\n                    \"line\": 2,\n                    \"column\": 18\n                }\n            ],\n            \"extensions\": {\n                \"code\": \"GRAPHQL_VALIDATION_FAILED\",\n                \"stacktrace\": [\n                    \"GraphQLError: Expected value of type \\\"ID!\\\", found null.\",\n                    \"    at Object.NullValue (C:\\\\Users\\\\angel\\\\OneDrive\\\\Documents\\\\Kurser\\\\1DV027\\\\assignment-api-design\\\\node_modules\\\\graphql\\\\validation\\\\rules\\\\ValuesOfCorrectTypeRule.js:120:11)\",\n                    \"    at Object.enter (C:\\\\Users\\\\angel\\\\OneDrive\\\\Documents\\\\Kurser\\\\1DV027\\\\assignment-api-design\\\\node_modules\\\\graphql\\\\language\\\\visitor.js:298:32)\",\n                    \"    at Object.enter (C:\\\\Users\\\\angel\\\\OneDrive\\\\Documents\\\\Kurser\\\\1DV027\\\\assignment-api-design\\\\node_modules\\\\graphql\\\\utilities\\\\TypeInfo.js:391:27)\",\n                    \"    at visit (C:\\\\Users\\\\angel\\\\OneDrive\\\\Documents\\\\Kurser\\\\1DV027\\\\assignment-api-design\\\\node_modules\\\\graphql\\\\language\\\\visitor.js:194:21)\",\n                    \"    at validate (C:\\\\Users\\\\angel\\\\OneDrive\\\\Documents\\\\Kurser\\\\1DV027\\\\assignment-api-design\\\\node_modules\\\\graphql\\\\validation\\\\validate.js:102:24)\",\n                    \"    at processGraphQLRequest (file:///C:/Users/angel/OneDrive/Documents/Kurser/1DV027/assignment-api-design/node_modules/@apollo/server/dist/esm/requestPipeline.js:101:36)\",\n                    \"    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\",\n                    \"    at async internalExecuteOperation (file:///C:/Users/angel/OneDrive/Documents/Kurser/1DV027/assignment-api-design/node_modules/@apollo/server/dist/esm/ApolloServer.js:635:16)\",\n                    \"    at async runHttpQuery (file:///C:/Users/angel/OneDrive/Documents/Kurser/1DV027/assignment-api-design/node_modules/@apollo/server/dist/esm/runHttpQuery.js:129:29)\",\n                    \"    at async runPotentiallyBatchedHttpQuery (file:///C:/Users/angel/OneDrive/Documents/Kurser/1DV027/assignment-api-design/node_modules/@apollo/server/dist/esm/httpBatching.js:34:16)\"\n                ]\n            }\n        }\n    ]\n}\n\n ```"
+          },
+          "response": []
+        },
+        {
+          "name": "Get multiple orbits - Success",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const response = pm.response.json().data\r",
+                  "const orbits = response.orbits\r",
+                  "\r",
+                  "\r",
+                  "eval(pm.collectionVariables.get(\"isSuccess\"))\r",
+                  "eval(pm.collectionVariables.get(\"hasStatus\"))\r",
+                  "eval(pm.collectionVariables.get(\"returnsMultipleObjects\"))\r",
+                  "eval(pm.collectionVariables.get(\"isObject\"))\r",
+                  "eval(pm.collectionVariables.get(\"hasSpkid\"))\r",
+                  "\r",
+                  "\r",
+                  "isSuccess()\r",
+                  "hasStatus(200)\r",
+                  "returnsMultipleObjects(orbits)\r",
+                  "isObject(orbits[0])\r",
+                  "hasSpkid(orbits[0])\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "query Orbits {\r\n    orbits(page: {{page}}) {\r\n        spkid\r\n        orbital_class\r\n        eccentricity\r\n        years\r\n    }\r\n}\r\n\r\n\r\n",
+                "variables": ""
+              }
+            },
+            "url": {
+              "raw": "{{URL}}",
+              "host": [
+                "{{URL}}"
+              ]
+            },
+            "description": "**Example request:**\n\n``` graphql\nquery Orbits {\n    orbits(page: {{page}}) {\n        spkid\n        orbital_class\n        eccentricity\n        years\n    }\n}\n\n ```\n\n**Response:**\n\n``` graphql\n{\n    \"data\": {\n        \"orbits\": [\n            {\n                \"spkid\": \"1000027\",\n                \"orbital_class\": \"JFc\",\n                \"eccentricity\": 0.7202,\n                \"years\": 6.52\n            },\n            {\n                \"spkid\": \"1000032\",\n                \"orbital_class\": \"JFc\",\n                \"eccentricity\": 0.7105,\n                \"years\": 6.55\n            },\n...\n\n ```"
+          },
+          "response": []
+        },
+        {
+          "name": "Get multiple orbits - Invalid params",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "eval(pm.collectionVariables.get(\"hasErrors\"))\r",
+                  "eval(pm.collectionVariables.get(\"hasErrorMessage\"))\r",
+                  "eval(pm.collectionVariables.get(\"hasStatus\"))\r",
+                  "\r",
+                  "\r",
+                  "hasErrors()\r",
+                  "hasErrorMessage(\"You have an error in your SQL syntax\")\r",
+                  "hasStatus(200)\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "query Orbits {\r\n    orbits(page: {{invalid_page}}) {\r\n        spkid\r\n        orbital_class\r\n        eccentricity\r\n        years\r\n    }\r\n}\r\n\r\n\r\n",
+                "variables": ""
+              }
+            },
+            "url": {
+              "raw": "{{URL}}",
+              "host": [
+                "{{URL}}"
+              ]
+            },
+            "description": "**Response:**\n\n``` graphql\n{\n    \"data\": null,\n    \"errors\": [\n        {\n            \"message\": \"You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '-100' at line 1\",\n            \"path\": [\n                \"orbits\"\n            ],\n            \"locations\": [\n                {\n                    \"line\": 2,\n                    \"column\": 5\n                }\n            ],\n            \"extensions\": {\n                \"code\": \"INTERNAL_SERVER_ERROR\",\n                \"stacktrace\": [\n                    \"Error: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '-100' at line 1\",\n                    \"    at PromisePool.query (C:\\\\Users\\\\angel\\\\OneDrive\\\\Documents\\\\Kurser\\\\1DV027\\\\assignment-api-design\\\\node_modules\\\\mysql2\\\\lib\\\\promise\\\\pool.js:36:22)\",\n                    \"    at Orbit.getAllOrbits (file:///C:/Users/angel/OneDrive/Documents/Kurser/1DV027/assignment-api-design/src/models/orbit.js:18:29)\",\n                    \"    at Object.orbits (file:///C:/Users/angel/OneDrive/Documents/Kurser/1DV027/assignment-api-design/src/resolvers/orbitResolvers.js:13:23)\",\n                    \"    at field.resolve (file:///C:/Users/angel/OneDrive/Documents/Kurser/1DV027/assignment-api-design/node_modules/@apollo/server/dist/esm/utils/schemaInstrumentation.js:36:28)\",\n                    \"    at executeField (C:\\\\Users\\\\angel\\\\OneDrive\\\\Documents\\\\Kurser\\\\1DV027\\\\assignment-api-design\\\\node_modules\\\\graphql\\\\execution\\\\execute.js:550:20)\",\n                    \"    at executeFields (C:\\\\Users\\\\angel\\\\OneDrive\\\\Documents\\\\Kurser\\\\1DV027\\\\assignment-api-design\\\\node_modules\\\\graphql\\\\execution\\\\execute.js:472:22)\",\n                    \"    at executeOperation (C:\\\\Users\\\\angel\\\\OneDrive\\\\Documents\\\\Kurser\\\\1DV027\\\\assignment-api-design\\\\node_modules\\\\graphql\\\\execution\\\\execute.js:402:14)\",\n                    \"    at execute (C:\\\\Users\\\\angel\\\\OneDrive\\\\Documents\\\\Kurser\\\\1DV027\\\\assignment-api-design\\\\node_modules\\\\graphql\\\\execution\\\\execute.js:185:20)\",\n                    \"    at executeIncrementally (file:///C:/Users/angel/OneDrive/Documents/Kurser/1DV027/assignment-api-design/node_modules/@apollo/server/dist/esm/incrementalDeliveryPolyfill.js:36:12)\",\n                    \"    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\"\n                ]\n            }\n        }\n    ]\n}\n\n ```"
+          },
+          "response": []
+        }
+      ],
+      "description": "Folder containing all requests for Orbits, with different queries to test for both success and failure."
+    },
+    {
+      "name": "Approaches",
+      "item": [
+        {
+          "name": "Get approach - Success",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const response = pm.response.json().data\r",
+                  "const close_approach = response.close_approach\r",
+                  "\r",
+                  "\r",
+                  "eval(pm.collectionVariables.get(\"isSuccess\"))\r",
+                  "eval(pm.collectionVariables.get(\"hasStatus\"))\r",
+                  "eval(pm.collectionVariables.get(\"isObject\"))\r",
+                  "eval(pm.collectionVariables.get(\"hasSpkid\"))\r",
+                  "\r",
+                  "\r",
+                  "isSuccess()\r",
+                  "hasStatus(200)\r",
+                  "isObject(close_approach)\r",
+                  "hasSpkid(close_approach)"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "query Close_approach {\r\n    close_approach(id: \"1\") {\r\n        id\r\n        spkid\r\n        date\r\n        nominal_distance_km\r\n        minimum_distance_km\r\n        relative_velocity_km_s\r\n        rarity\r\n    }\r\n}\r\n",
+                "variables": ""
+              }
+            },
+            "url": {
+              "raw": "{{URL}}",
+              "host": [
+                "{{URL}}"
+              ]
+            },
+            "description": "**Example request:**\n\n``` graphql\nquery Close_approach {\n    close_approach(id: \"1\") {\n        id\n        spkid\n        date\n        nominal_distance_km\n        minimum_distance_km\n        relative_velocity_km_s\n        rarity\n    }\n}\n\n ```\n\n**Response:**\n\n``` graphql\n{\n    \"data\": {\n        \"close_approach\": {\n            \"id\": \"1\",\n            \"spkid\": \"20509352\",\n            \"date\": \"1900-01-04T21:25:00.000Z\",\n            \"nominal_distance_km\": 1440920,\n            \"minimum_distance_km\": 1439920,\n            \"relative_velocity_km_s\": 8.69,\n            \"rarity\": 2\n        }\n    }\n}\n\n ```"
+          },
+          "response": []
+        },
+        {
+          "name": "Get approach - Invalid params",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const response = pm.response.json().data\r",
+                  "const close_approach = response.close_approach\r",
+                  "\r",
+                  "\r",
+                  "eval(pm.collectionVariables.get(\"isSuccess\"))\r",
+                  "eval(pm.collectionVariables.get(\"hasStatus\"))\r",
+                  "eval(pm.collectionVariables.get(\"isNull\"))\r",
+                  "\r",
+                  "\r",
+                  "isSuccess()\r",
+                  "hasStatus(200)\r",
+                  "isNull(close_approach)\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "query Close_approach {\r\n    close_approach(id: \"-1\") {\r\n        id\r\n        spkid\r\n        date\r\n        nominal_distance_km\r\n        minimum_distance_km\r\n        relative_velocity_km_s\r\n        rarity\r\n    }\r\n}\r\n\r\n",
+                "variables": ""
+              }
+            },
+            "url": {
+              "raw": "{{URL}}",
+              "host": [
+                "{{URL}}"
+              ]
+            },
+            "description": "**Response:**\n\n``` graphql\n{\n    \"data\": {\n        \"close_approach\": null\n    }\n}\n\n ```"
+          },
+          "response": []
+        },
+        {
+          "name": "Get approach - Missing fields",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "eval(pm.collectionVariables.get(\"hasStatus\"))\r",
+                  "\r",
+                  "\r",
+                  "hasStatus(400)\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "query Close_approach {\r\n    close_approach(id: null) {\r\n        id\r\n        spkid\r\n        date\r\n        nominal_distance_km\r\n        minimum_distance_km\r\n        relative_velocity_km_s\r\n        rarity\r\n    }\r\n}\r\n\r\n",
+                "variables": ""
+              }
+            },
+            "url": {
+              "raw": "{{URL}}",
+              "host": [
+                "{{URL}}"
+              ]
+            },
+            "description": "**Response:**\n\n``` graphql\n{\n    \"errors\": [\n        {\n            \"message\": \"Expected value of type \\\"ID!\\\", found null.\",\n            \"locations\": [\n                {\n                    \"line\": 2,\n                    \"column\": 24\n                }\n            ],\n            \"extensions\": {\n                \"code\": \"GRAPHQL_VALIDATION_FAILED\",\n                \"stacktrace\": [\n                    \"GraphQLError: Expected value of type \\\"ID!\\\", found null.\",\n                    \"    at Object.NullValue (C:\\\\Users\\\\angel\\\\OneDrive\\\\Documents\\\\Kurser\\\\1DV027\\\\assignment-api-design\\\\node_modules\\\\graphql\\\\validation\\\\rules\\\\ValuesOfCorrectTypeRule.js:120:11)\",\n                    \"    at Object.enter (C:\\\\Users\\\\angel\\\\OneDrive\\\\Documents\\\\Kurser\\\\1DV027\\\\assignment-api-design\\\\node_modules\\\\graphql\\\\language\\\\visitor.js:298:32)\",\n                    \"    at Object.enter (C:\\\\Users\\\\angel\\\\OneDrive\\\\Documents\\\\Kurser\\\\1DV027\\\\assignment-api-design\\\\node_modules\\\\graphql\\\\utilities\\\\TypeInfo.js:391:27)\",\n                    \"    at visit (C:\\\\Users\\\\angel\\\\OneDrive\\\\Documents\\\\Kurser\\\\1DV027\\\\assignment-api-design\\\\node_modules\\\\graphql\\\\language\\\\visitor.js:194:21)\",\n                    \"    at validate (C:\\\\Users\\\\angel\\\\OneDrive\\\\Documents\\\\Kurser\\\\1DV027\\\\assignment-api-design\\\\node_modules\\\\graphql\\\\validation\\\\validate.js:102:24)\",\n                    \"    at processGraphQLRequest (file:///C:/Users/angel/OneDrive/Documents/Kurser/1DV027/assignment-api-design/node_modules/@apollo/server/dist/esm/requestPipeline.js:101:36)\",\n                    \"    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\",\n                    \"    at async internalExecuteOperation (file:///C:/Users/angel/OneDrive/Documents/Kurser/1DV027/assignment-api-design/node_modules/@apollo/server/dist/esm/ApolloServer.js:635:16)\",\n                    \"    at async runHttpQuery (file:///C:/Users/angel/OneDrive/Documents/Kurser/1DV027/assignment-api-design/node_modules/@apollo/server/dist/esm/runHttpQuery.js:129:29)\",\n                    \"    at async runPotentiallyBatchedHttpQuery (file:///C:/Users/angel/OneDrive/Documents/Kurser/1DV027/assignment-api-design/node_modules/@apollo/server/dist/esm/httpBatching.js:34:16)\"\n                ]\n            }\n        }\n    ]\n}\n\n ```"
+          },
+          "response": []
+        },
+        {
+          "name": "Get multiple approaches - Success",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const response = pm.response.json().data\r",
+                  "const close_approaches = response.close_approaches\r",
+                  "\r",
+                  "\r",
+                  "eval(pm.collectionVariables.get(\"isSuccess\"))\r",
+                  "eval(pm.collectionVariables.get(\"hasStatus\"))\r",
+                  "eval(pm.collectionVariables.get(\"returnsMultipleObjects\"))\r",
+                  "eval(pm.collectionVariables.get(\"isObject\"))\r",
+                  "eval(pm.collectionVariables.get(\"hasSpkid\"))\r",
+                  "\r",
+                  "\r",
+                  "isSuccess()\r",
+                  "hasStatus(200)\r",
+                  "returnsMultipleObjects(close_approaches)\r",
+                  "isObject(close_approaches[0])\r",
+                  "hasSpkid(close_approaches[0])\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "query Close_approaches {\r\n    close_approaches(page: {{page}}) {\r\n        id\r\n        spkid\r\n        date\r\n        nominal_distance_km\r\n        minimum_distance_km\r\n        relative_velocity_km_s\r\n        rarity\r\n    }\r\n}\r\n",
+                "variables": ""
+              }
+            },
+            "url": {
+              "raw": "{{URL}}",
+              "host": [
+                "{{URL}}"
+              ]
+            },
+            "description": "**Example request:**\n\n``` graphql\nquery Close_approaches {\n    close_approaches(page: {{page}}) {\n        id\n        spkid\n        date\n        nominal_distance_km\n        minimum_distance_km\n        relative_velocity_km_s\n        rarity\n    }\n}\n\n ```\n\n**Response:**\n\n``` graphql\n{\n    \"data\": {\n        \"close_approaches\": [\n            {\n                \"id\": \"1\",\n                \"spkid\": \"20509352\",\n                \"date\": \"1900-01-04T21:25:00.000Z\",\n                \"nominal_distance_km\": 1440920,\n                \"minimum_distance_km\": 1439920,\n                \"relative_velocity_km_s\": 8.69,\n                \"rarity\": 2\n            },\n            {\n                \"id\": \"2\",\n                \"spkid\": \"54235406\",\n                \"date\": \"1900-01-28T08:11:00.000Z\",\n                \"nominal_distance_km\": 3095030,\n                \"minimum_distance_km\": 3090510,\n                \"relative_velocity_km_s\": 4.88,\n                \"rarity\": 0\n            },\n...\n\n ```"
+          },
+          "response": []
+        },
+        {
+          "name": "Get multiple approaches - Invalid params",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "eval(pm.collectionVariables.get(\"hasErrors\"))\r",
+                  "eval(pm.collectionVariables.get(\"hasErrorMessage\"))\r",
+                  "eval(pm.collectionVariables.get(\"hasStatus\"))\r",
+                  "\r",
+                  "\r",
+                  "hasErrors()\r",
+                  "hasErrorMessage(\"You have an error in your SQL syntax\")\r",
+                  "hasStatus(200)\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "graphql",
+              "graphql": {
+                "query": "query Close_approaches {\r\n    close_approaches(page: {{invalid_page}}) {\r\n        id\r\n        spkid\r\n        date\r\n        nominal_distance_km\r\n        minimum_distance_km\r\n        relative_velocity_km_s\r\n        rarity\r\n    }\r\n}\r\n",
+                "variables": ""
+              }
+            },
+            "url": {
+              "raw": "{{URL}}",
+              "host": [
+                "{{URL}}"
+              ]
+            },
+            "description": "**Response:**\n\n``` graphql\n{\n    \"data\": null,\n    \"errors\": [\n        {\n            \"message\": \"You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '-100' at line 1\",\n            \"path\": [\n                \"close_approaches\"\n            ],\n            \"locations\": [\n                {\n                    \"line\": 2,\n                    \"column\": 5\n                }\n            ],\n            \"extensions\": {\n                \"code\": \"INTERNAL_SERVER_ERROR\",\n                \"stacktrace\": [\n                    \"Error: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '-100' at line 1\",\n                    \"    at PromisePool.query (C:\\\\Users\\\\angel\\\\OneDrive\\\\Documents\\\\Kurser\\\\1DV027\\\\assignment-api-design\\\\node_modules\\\\mysql2\\\\lib\\\\promise\\\\pool.js:36:22)\",\n                    \"    at Close_Approach.getAllApproaches (file:///C:/Users/angel/OneDrive/Documents/Kurser/1DV027/assignment-api-design/src/models/approach.js:18:29)\",\n                    \"    at Object.close_approaches (file:///C:/Users/angel/OneDrive/Documents/Kurser/1DV027/assignment-api-design/src/resolvers/approachResolvers.js:13:32)\",\n                    \"    at field.resolve (file:///C:/Users/angel/OneDrive/Documents/Kurser/1DV027/assignment-api-design/node_modules/@apollo/server/dist/esm/utils/schemaInstrumentation.js:36:28)\",\n                    \"    at executeField (C:\\\\Users\\\\angel\\\\OneDrive\\\\Documents\\\\Kurser\\\\1DV027\\\\assignment-api-design\\\\node_modules\\\\graphql\\\\execution\\\\execute.js:550:20)\",\n                    \"    at executeFields (C:\\\\Users\\\\angel\\\\OneDrive\\\\Documents\\\\Kurser\\\\1DV027\\\\assignment-api-design\\\\node_modules\\\\graphql\\\\execution\\\\execute.js:472:22)\",\n                    \"    at executeOperation (C:\\\\Users\\\\angel\\\\OneDrive\\\\Documents\\\\Kurser\\\\1DV027\\\\assignment-api-design\\\\node_modules\\\\graphql\\\\execution\\\\execute.js:402:14)\",\n                    \"    at execute (C:\\\\Users\\\\angel\\\\OneDrive\\\\Documents\\\\Kurser\\\\1DV027\\\\assignment-api-design\\\\node_modules\\\\graphql\\\\execution\\\\execute.js:185:20)\",\n                    \"    at executeIncrementally (file:///C:/Users/angel/OneDrive/Documents/Kurser/1DV027/assignment-api-design/node_modules/@apollo/server/dist/esm/incrementalDeliveryPolyfill.js:36:12)\",\n                    \"    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\"\n                ]\n            }\n        }\n    ]\n}\n\n ```"
+          },
+          "response": []
+        }
+      ],
+      "description": "Folder containing all queries for Close Approaches, with different queries to test for both success and failure."
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          "pm.collectionVariables.set(\"isSuccess\",\r",
+          "    `function isSuccess() {\r",
+          "        pm.test(\"Returns success\", () => {\r",
+          "            pm.expect(pm.response.json().data).to.not.be.null;\r",
+          "            pm.expect(pm.response.json().errors).to.be.an(\"undefined\");\r",
+          "        })\r",
+          "    }`\r",
+          ")\r",
+          "\r",
+          "pm.collectionVariables.set(\"hasErrors\",\r",
+          "    `function hasErrors() {\r",
+          "        pm.test(\"Returns errors\", () => {\r",
+          "            pm.expect(pm.response.json().errors).to.not.be.empty;\r",
+          "        })\r",
+          "    }`\r",
+          ")\r",
+          "\r",
+          "pm.collectionVariables.set(\"isFailure\",\r",
+          "    `function isFailure() {\r",
+          "        pm.test(\"Returns failure\", () => {\r",
+          "            pm.expect(pm.response).to.not.be.ok;\r",
+          "        })\r",
+          "    }`\r",
+          ")\r",
+          "\r",
+          "pm.collectionVariables.set(\"hasStatus\",\r",
+          "    `function hasStatus(code) {\r",
+          "        pm.test(\"Returns correct status\", () => {\r",
+          "            pm.expect(pm.response).to.have.status(code);\r",
+          "        })\r",
+          "    }`\r",
+          ")\r",
+          "\r",
+          "pm.collectionVariables.set(\"hasSuccessMessage\",\r",
+          "    `function hasSuccessMessage(res, text) {\r",
+          "        pm.test(\"Returns success message\", () => {\r",
+          "            pm.expect(res).to.contain(text);\r",
+          "        })\r",
+          "    }`\r",
+          ")\r",
+          "\r",
+          "pm.collectionVariables.set(\"hasErrorMessage\",\r",
+          "    `function hasErrorMessage(text) {\r",
+          "        pm.test(\"Returns error message\", () => {\r",
+          "            pm.expect(pm.response.json().errors[0].message).to.contain(text);\r",
+          "        })\r",
+          "    }`\r",
+          ")\r",
+          "\r",
+          "pm.collectionVariables.set(\"returnsMultipleObjects\",\r",
+          "    `function returnsMultipleObjects(type) {\r",
+          "        pm.test(\"Returns multiple objects\", () => {\r",
+          "            pm.expect(type.length).to.eql(50);\r",
+          "        })\r",
+          "    }`\r",
+          ")\r",
+          "\r",
+          "pm.collectionVariables.set(\"isObject\",\r",
+          "    `function isObject(type) {\r",
+          "        pm.test(\"Returns an object\", () => {\r",
+          "            pm.expect(type).to.be.an(\"object\");\r",
+          "        })\r",
+          "    }`\r",
+          ")\r",
+          "\r",
+          "pm.collectionVariables.set(\"isNull\",\r",
+          "    `function isNull(type) {\r",
+          "        pm.test(\"Returns null\", () => {\r",
+          "            pm.expect(type).to.be.a(\"null\");\r",
+          "        })\r",
+          "    }`\r",
+          ")\r",
+          "\r",
+          "pm.collectionVariables.set(\"hasSpkid\",\r",
+          "    `function hasSpkid(object) {\r",
+          "        pm.test(\"Returns object with valid spkid\", () => {\r",
+          "            pm.expect(object).to.have.property(\"spkid\")\r",
+          "            pm.expect(object.spkid).to.be.a(\"string\");\r",
+          "        })\r",
+          "    }`\r",
+          ")\r",
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          "pm.test(\"Response time under 2000ms\", () => {\r",
+          "    pm.expect(pm.response.responseTime).to.be.lessThan(2000);\r",
+          "})\r",
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "isSuccess",
+      "value": ""
+    },
+    {
+      "key": "hasErrors",
+      "value": ""
+    },
+    {
+      "key": "isFailure",
+      "value": ""
+    },
+    {
+      "key": "hasStatus",
+      "value": ""
+    },
+    {
+      "key": "hasSuccessMessage",
+      "value": ""
+    },
+    {
+      "key": "hasErrorMessage",
+      "value": ""
+    },
+    {
+      "key": "returnsMultipleObjects",
+      "value": ""
+    },
+    {
+      "key": "isObject",
+      "value": ""
+    },
+    {
+      "key": "isNull",
+      "value": ""
+    },
+    {
+      "key": "hasSpkid",
+      "value": ""
+    },
+    {
+      "key": "randomUsername",
+      "value": ""
+    },
+    {
+      "key": "randomPassword",
+      "value": ""
+    },
+    {
+      "key": "token",
+      "value": ""
+    },
+    {
+      "key": "randomSpkid",
+      "value": ""
+    }
+  ]
+}
