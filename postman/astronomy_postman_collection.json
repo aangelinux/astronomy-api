@@ -2020,59 +2020,59 @@
   "variable": [
     {
       "key": "isSuccess",
-      "value": ""
+      "value": "function isSuccess() {\n        pm.test(\"Returns success\", () => {\n            pm.expect(pm.response.json().data).to.not.be.null;\n            pm.expect(pm.response.json().errors).to.be.an(\"undefined\");\n        })\n    }"
     },
     {
       "key": "hasErrors",
-      "value": ""
+      "value": "function hasErrors() {\n        pm.test(\"Returns errors\", () => {\n            pm.expect(pm.response.json().errors).to.not.be.empty;\n        })\n    }"
     },
     {
       "key": "isFailure",
-      "value": ""
+      "value": "function isFailure() {\n        pm.test(\"Returns failure\", () => {\n            pm.expect(pm.response).to.not.be.ok;\n        })\n    }"
     },
     {
       "key": "hasStatus",
-      "value": ""
+      "value": "function hasStatus(code) {\n        pm.test(\"Returns correct status\", () => {\n            pm.expect(pm.response).to.have.status(code);\n        })\n    }"
     },
     {
       "key": "hasSuccessMessage",
-      "value": ""
+      "value": "function hasSuccessMessage(res, text) {\n        pm.test(\"Returns success message\", () => {\n            pm.expect(res).to.contain(text);\n        })\n    }"
     },
     {
       "key": "hasErrorMessage",
-      "value": ""
+      "value": "function hasErrorMessage(text) {\n        pm.test(\"Returns error message\", () => {\n            pm.expect(pm.response.json().errors[0].message).to.contain(text);\n        })\n    }"
     },
     {
       "key": "returnsMultipleObjects",
-      "value": ""
+      "value": "function returnsMultipleObjects(type) {\n        pm.test(\"Returns multiple objects\", () => {\n            pm.expect(type.length).to.eql(50);\n        })\n    }"
     },
     {
       "key": "isObject",
-      "value": ""
+      "value": "function isObject(type) {\n        pm.test(\"Returns an object\", () => {\n            pm.expect(type).to.be.an(\"object\");\n        })\n    }"
     },
     {
       "key": "isNull",
-      "value": ""
+      "value": "function isNull(type) {\n        pm.test(\"Returns null\", () => {\n            pm.expect(type).to.be.a(\"null\");\n        })\n    }"
     },
     {
       "key": "hasSpkid",
-      "value": ""
+      "value": "function hasSpkid(object) {\n        pm.test(\"Returns object with valid spkid\", () => {\n            pm.expect(object).to.have.property(\"spkid\")\n            pm.expect(object.spkid).to.be.a(\"string\");\n        })\n    }"
     },
     {
       "key": "randomUsername",
-      "value": ""
+      "value": "8e38d737-91ce-4b0d-844f-21e73d31cad6"
     },
     {
       "key": "randomPassword",
-      "value": ""
-    },
-    {
-      "key": "token",
-      "value": ""
+      "value": "0afcf2e1-f231-418f-b49c-674f1f2864ea"
     },
     {
       "key": "randomSpkid",
-      "value": ""
+      "value": "34"
+    },
+    {
+      "key": "token",
+      "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOjMxLCJpYXQiOjE3NzMxNTQ4NDAsImV4cCI6MTc3MzE1ODQ0MH0.N80Csu92mzxELHg0FcXowvegg14Kxr7extklSKnxD2g"
     }
   ]
 }
