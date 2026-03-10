@@ -5,13 +5,16 @@ postman_tests:
   stage: test
   image: node:18
   before_script: 
-    - npm install -g newman
+    - npm install -g newman newman-reporter-junitfull
   script:
-    - newman run postman/astronomy.json \
-      -e postman/astronomyGraphQLAPI.json \
+    - npm run seed
+    - newman run "https://api.getpostman.com/collections/69ab5c5d99fcef7056ba1f58?apikey=PMAK-69affca233ea930001445d46-b5bedb2682f4493ef9c9f5f2790c2c98ef" \
+      --environment "https://api.getpostman.com/environments/42893409-9f6fb192-78dd-4ddc-a8b4-8d848fd9a765?apikey=PMAK-69affca233ea930001445d46-b5bedb2682f4493ef9c9f5f2790c2c98ef" \
       --reporters cli,junit \
-      --reporter-junit-export results.xml
+      --reporter-junit-export newman-report.xml
   artifacts:
     when: always
+    paths: 
+      - newman-report.xml
     reports:
-      junit: results.xml
+      - junit: newman-report.xml
