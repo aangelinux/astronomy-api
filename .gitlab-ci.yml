@@ -5,6 +5,11 @@
 stages:
   - test
 
+test_job:
+  stage: test
+  script:
+    - echo "CI working"
+
 postman_tests:
   stage: test
   image: node:18
