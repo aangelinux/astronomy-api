@@ -26,4 +26,4 @@ postman_tests:
     paths: 
       - newman-report.xml
     reports:
-      - junit: newman-report.xml
+      junit: newman-report.xml
