@@ -23,6 +23,7 @@ export const neoResolvers = {
 			return await Neo.getAllNeos(page)
 		}
 	},
+
 	Mutation: {
 		addNeo: async (_, { input, token }) => {
 			verifyToken(token)
@@ -38,7 +39,6 @@ export const neoResolvers = {
 			verifyToken(token)
 			const neo = await Neo.getNeo(spkid)
 			await Neo.deleteNeo(spkid)
-
 			return {
 				deletedNeo: neo,
 				message: 'Near-Earth Object deleted successfully'

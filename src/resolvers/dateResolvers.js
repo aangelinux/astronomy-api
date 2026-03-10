@@ -1,25 +1,34 @@
+/**
+ * Creates a custom scalar type, Date.
+ */
+
 import { GraphQLScalarType, Kind } from 'graphql'
 
 export const dateResolvers = {
   Date: new GraphQLScalarType({
     name: 'Date',
     description: 'ISO 8601 date scalar',
+
     serialize(value) {
-      // outgoing -> client
+      // Outgoing -> Client
       return (value instanceof Date) ? value.toISOString() : new Date(value).toISOString()
     },
+
     parseValue(value) {
-      // incoming from variables
-      const d = new Date(value)
-      if (isNaN(d)) throw new TypeError('Date cannot represent an invalid date-string')
-      return d
+      // Value from variables
+      const date = new Date(value)
+      if (isNaN(date)) throw new Error('Date format is invalid')
+
+      return date
     },
+
     parseLiteral(ast) {
-      // incoming from inline query
+      // Value from inline query
       if (ast.kind === Kind.STRING) {
-        const d = new Date(ast.value)
-        if (isNaN(d)) throw new TypeError('Date cannot represent an invalid date-string')
-        return d
+        const date = new Date(ast.value)
+        if (isNaN(date)) throw new Error('Date format is invalid')
+
+        return date
       }
       return null
     }

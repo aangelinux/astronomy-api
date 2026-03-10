@@ -4,7 +4,6 @@
 
 import dotenv from 'dotenv'
 import express from 'express'
-import session from 'express-session'
 import db from './config/db.js'
 import { expressMiddleware } from '@as-integrations/express5'
 import { ApolloServer } from '@apollo/server'
@@ -25,8 +24,8 @@ const apolloServer = new ApolloServer({
 	typeDefs, 
 	resolvers
 })
-await apolloServer.start()
 
+await apolloServer.start()
 app.use(expressMiddleware(apolloServer))
 
 try {

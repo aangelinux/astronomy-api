@@ -21,7 +21,6 @@
     "date-fns": "^4.1.0",
     "dotenv": "^17.3.1",
     "express": "^5.2.1",
-    "express-session": "^1.19.0",
     "graphql": "^16.13.0",
     "jsonwebtoken": "^9.0.3",
     "mysql2": "^3.17.5",

@@ -1,5 +1,5 @@
 /**
- * Connection to MySQL database.
+ * Connection to a MySQL database.
  */
 
 import mysql from 'mysql2/promise'

@@ -1,5 +1,5 @@
 /**
- * Defines a custom Date scalar type.
+ * Defines the GraphQL schema for Date.
  */
 
 export const date = `#graphql

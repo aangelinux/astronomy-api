@@ -12,7 +12,7 @@ export default class User {
 		return result[0]
 	}
 
-	static async findByUsername(username) {
+	static async getByUsername(username) {
 		const query = `SELECT * FROM Users WHERE username = ?`
 		const [result] = await db.query(query, [username])
 

@@ -12,6 +12,7 @@ export const userResolvers = {
 			return await User.getUser(userid)
 		}
 	},
+
 	Mutation: {
 		register: async (_, { input }) => {
 			const { username, password } = input
@@ -29,9 +30,9 @@ export const userResolvers = {
 		},
 		deleteAccount: async (_, { input }) => {
 			const { username, password } = input
-			const user = await User.findByUsername(username)
+			const user = await User.getByUsername(username)
 			const match = await bcrypt.compare(password, user.password_hash)
-			if (match) {
+			if (match) {  // Extract into auth function later
 				await User.delete(username)
 				return {
 					deletedUser: user,

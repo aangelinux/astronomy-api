@@ -12,8 +12,10 @@ const __dirname = path.dirname(__filename)
 
 const types = loadFilesSync(path.join(__dirname, '*.schema.js'),)
 
-// Check if the module is a schema object or DocumentNode (ie has 'kind'), and
-// if true then extract the first module value (schema type) to use in typeDefs
+/**
+ * Checks if each module is a GraphQL schema,
+ * and stores the schema type in the array if true
+ */
 const typesArray = types.map(module => {
 	if (module && typeof module === 'object' && !('kind' in module)) {
 		const values = Object.values(module)

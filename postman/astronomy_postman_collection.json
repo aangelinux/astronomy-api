@@ -116,7 +116,7 @@
                 "body": {
                   "mode": "graphql",
                   "graphql": {
-                    "query": "mutation Register {\r\n    register(input: {\r\n        username: \"{{$randomUsername}}\"\r\n        password: \"{{$randomPassword}}\"\r\n    })\r\n    {\r\n        userid\r\n        username\r\n        created\r\n    }\r\n}",
+                    "query": "mutation Register {\r\n    register(input: {\r\n        username: \"{{randomUsername}}\"\r\n        password: \"{{randomPassword}}\"\r\n    })\r\n    {\r\n        userid\r\n        username\r\n        created\r\n    }\r\n}",
                     "variables": ""
                   }
                 },

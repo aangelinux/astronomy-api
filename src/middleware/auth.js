@@ -10,11 +10,11 @@ import dotenv from 'dotenv'
 dotenv.config()
 
 export async function verifyCredentials(username, password) {
-	const user = await User.findByUsername(username)
+	const user = await User.getByUsername(username)
 	if (!user) throw new Error('Username or password invalid')
 
-	const match = await bcrypt.compare(password, user.password_hash)
-	if (!match) throw new Error('Username or password invalid')
+	const passwordMatch = await bcrypt.compare(password, user.password_hash)
+	if (!passwordMatch) throw new Error('Username or password invalid')
 
 	const token = jwt.sign(
 		{ userid: user.userid },

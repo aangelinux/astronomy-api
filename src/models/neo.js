@@ -1,5 +1,5 @@
 /**
- * Queries to the Near-Earth Objects table.
+ * Queries to the Near-Earth Objects attribute.
  */
 
 import db from '../config/db.js'
@@ -21,15 +21,15 @@ export default class Neo {
 	}
 
 	static async addNeo(data) {
-		const columns = Object.keys(data).join(', ')
-		const input = Object.values(data)
-		const inputLength = input.length
+		const attributes = Object.keys(data).join(', ')
+		const values = Object.values(data)
 
-		let values = `?`
-		for (let i = 0; i < inputLength; i++) values.concat(', ?')
+		let questionMarks = `?`
+		const valuesLength = values.length
+		for (let i = 0; i < valuesLength; i++) questionMarks.concat(', ?')
 
-		const query = `INSERT INTO Near_Earth_Objects (${columns}) VALUES (${values})`
-		const [result] = await db.query(query, [input])
+		const query = `INSERT INTO Near_Earth_Objects (${attributes}) VALUES (${questionMarks})`
+		const [result] = await db.query(query, [values])
 
 		return result
 	}
@@ -38,10 +38,10 @@ export default class Neo {
 		const rows = Object.keys(data)
 		if (rows.length === 0) return null
 
-		const updateTables = rows.map(table => `${table} = ?`).join(', ')
-		const values = rows.map(table => data[table])
+		const attributes = rows.map(attribute => `${attribute} = ?`).join(', ')
+		const values = rows.map(attribute => data[attribute])
 
-		const query = `UPDATE Near_Earth_Objects SET ${updateTables} WHERE spkid = ?`
+		const query = `UPDATE Near_Earth_Objects SET ${attributes} WHERE spkid = ?`
 		const [result] = await db.query(query, [...values, spkid])
 
 		return result
