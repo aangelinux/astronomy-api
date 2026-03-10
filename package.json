@@ -7,7 +7,8 @@
   "scripts": {
     "start": "node src/app.js",
     "startDev": "start http://localhost:3000 && node src/app.js",
-    "seed": "node scripts/seed.js"
+    "seed": "node scripts/seed.js",
+    "lint": "npx eslint ."
   },
   "author": "Angelina Larsson",
   "license": "MIT",
@@ -20,7 +21,9 @@
     "csv-parser": "^3.2.0",
     "date-fns": "^4.1.0",
     "dotenv": "^17.3.1",
+    "eslint": "^10.0.3",
     "express": "^5.2.1",
+    "globals": "^17.4.0",
     "graphql": "^16.13.0",
     "jsonwebtoken": "^9.0.3",
     "mysql2": "^3.17.5",
