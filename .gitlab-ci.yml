@@ -15,6 +15,7 @@ postman_tests:
   before_script: 
     - npm install -g newman newman-reporter-junitfull
   script:
+    - npm install
     - npm run seed
     - newman run "https://api.getpostman.com/collections/$POSTMAN_COLLECTION_ID?apikey=$POSTMAN_API_KEY" \
       --environment "https://api.getpostman.com/environments/$POSTMAN_ENV_ID?apikey=$POSTMAN_API_KEY" \
