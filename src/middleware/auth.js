@@ -9,14 +9,14 @@ import dotenv from 'dotenv'
 
 dotenv.config()
 
-export async function isVerified(username, password) {
+export async function verifyUser(username, password) {
 	const user = await User.getByUsername(username)
 	if (!user) throw new Error('Username or password invalid')
 
 	const passwordMatch = await bcrypt.compare(password, user.password_hash)
 	if (!passwordMatch) throw new Error('Username or password invalid')
 
-	return true
+	return user
 }
 
 export function createToken(user) {

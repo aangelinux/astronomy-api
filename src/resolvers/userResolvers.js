@@ -3,7 +3,7 @@
  */
 
 import User from '../models/user.js'
-import { isVerified } from '../middleware/auth.js'
+import { verifyUser, createToken } from '../middleware/auth.js'
 import bcrypt from 'bcrypt'
 
 export const userResolvers = {
@@ -22,7 +22,8 @@ export const userResolvers = {
 		},
 		login: async (_, { input }) => {
 			const { username, password } = input
-			const token = await isVerified(username, password)
+			const user = await verifyUser(username, password)
+			const token = createToken(user)
 			return {
 				token,
 				message: 'Login successful'
@@ -30,8 +31,7 @@ export const userResolvers = {
 		},
 		deleteAccount: async (_, { input }) => {
 			const { username, password } = input
-			const user = User.getByUsername(username)
-			await isVerified(username, password)
+			const user = await verifyUser(username, password)
 			await User.delete(username)
 			return {
 				deletedUser: user,
