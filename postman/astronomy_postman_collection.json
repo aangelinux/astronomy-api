@@ -2076,7 +2076,7 @@
     },
 		{
 			"key": "URL",
-			"value": "http://localhost:3000/graphql"
+			"value": "https://astronomy-api-production.up.railway.app/"
 		}
   ]
 }
