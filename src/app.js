@@ -5,6 +5,8 @@
 import dotenv from 'dotenv'
 import express from 'express'
 import db from './config/db.js'
+import cors from 'cors'
+import helmet from 'helmet'
 import { expressMiddleware } from '@as-integrations/express5'
 import { ApolloServer } from '@apollo/server'
 import { typeDefs } from './schema/index.js'
@@ -17,8 +19,14 @@ const app = express()
 app.use(express.json())
 app.use((err, req, res, next) => {
   console.error(err)
-  res.status(500).json({ message: "Oops! Something went wrong." })
+  res.status(500).json({ message: 'Oops! Something went wrong.' })
 })
+app.use(cors())
+app.use(helmet())
+
+if (process.env.NODE_ENV === 'production') {
+  app.set('trust proxy', 1)
+}
 
 const apolloServer = new ApolloServer({ 
 	typeDefs, 
@@ -36,6 +44,8 @@ try {
 	process.exit(1)
 }
 
-app.listen(process.env.PORT, () => {
-	console.log(`Server running on PORT ${process.env.PORT}`)	
+const PORT = process.env.PORT || 3000
+
+app.listen(PORT, () => {
+	console.log(`Server running on PORT ${PORT}`)	
 })

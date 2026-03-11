@@ -9,11 +9,12 @@ import { userResolvers } from './userResolvers.js'
 import { dateResolvers } from './dateResolvers.js'
 
 /**
- * Merges multiple resolvers into a single one,
+ * Merges multiple resolvers into a single object
  * before exporting it to the server
  */
 export const resolvers = {
-	...(dateResolvers.Date ? { Date: dateResolvers.Date } : {}),
+	// Adds the Date scalar to the other resolvers
+	...(dateResolvers.Date && { Date: dateResolvers.Date }),
 
 	Query: {
 		...(neoResolvers.Query || {}),

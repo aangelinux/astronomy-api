@@ -8,12 +8,10 @@ export const dateResolvers = {
   Date: new GraphQLScalarType({
     name: 'Date',
     description: 'ISO 8601 date scalar',
-
     serialize(value) {
       // Outgoing -> Client
       return (value instanceof Date) ? value.toISOString() : new Date(value).toISOString()
     },
-
     parseValue(value) {
       // Value from variables
       const date = new Date(value)
@@ -21,7 +19,6 @@ export const dateResolvers = {
 
       return date
     },
-
     parseLiteral(ast) {
       // Value from inline query
       if (ast.kind === Kind.STRING) {
@@ -30,7 +27,7 @@ export const dateResolvers = {
 
         return date
       }
-      return null
+      return null  // no inline query
     }
   })
 }

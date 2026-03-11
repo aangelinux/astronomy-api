@@ -1,13 +1,13 @@
 stages:
+  - lint
   - test
 
-test_job:
-  stage: test
+lint:
+  stage: lint
   image: node:18
-  script:
-    - echo "CI working"
-    - node --version
-    - npm --version
+  script: 
+    - npm ci
+    - npm run lint
 
 postman_tests:
   stage: test
@@ -15,7 +15,7 @@ postman_tests:
   before_script: 
     - npm install -g newman newman-reporter-junitfull
   script:
-    - npm install
+    - npm ci
     - npm run seed
     - npm start
     - newman run "./postman/astronomy_postman_collection.json" \

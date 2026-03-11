@@ -16,7 +16,7 @@ export default class Close_Approach {
 		const query = `SELECT * FROM Close_Approaches WHERE spkid = ? LIMIT 1`
 		const [result] = await db.query(query, [spkid])
 
-		return result[0]
+		return result[0]  // TODO return all if more than one
 	}
 
 	static async getAllApproaches(page) {
