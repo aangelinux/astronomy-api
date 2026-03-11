@@ -11,6 +11,7 @@ import { expressMiddleware } from '@as-integrations/express5'
 import { ApolloServer } from '@apollo/server'
 import { loadTypeDefs } from './schema/index.js'
 import { resolvers } from './resolvers/index.js'
+import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default'
 
 dotenv.config()
 
@@ -30,8 +31,12 @@ if (process.env.NODE_ENV === 'production') {
 
 const typeDefs = await loadTypeDefs()
 const apolloServer = new ApolloServer({ 
-	typeDefs, 
-	resolvers
+	typeDefs,
+	resolvers,
+	introspection: true,
+	plugins: [
+		ApolloServerPluginLandingPageLocalDefault({ embed: true })
+	]
 })
 
 await apolloServer.start()
