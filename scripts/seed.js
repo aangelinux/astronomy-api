@@ -13,10 +13,10 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 const PRIMARY = {
-	table: 'Near_Earth_Objects',
+	table: 'near_earth_objects',
 	filePath: path.join(__dirname, '../data/near_earth_objects.csv'),
 	batchSize: 500,
-	query: `INSERT INTO Near_Earth_Objects  
+	query: `INSERT INTO near_earth_objects  
 	(spkid, name, earth_moid_ld, magnitude, rotation_hours, pot_hazardous_asteroid) 
 	VALUES ?`,
  	values: (row) => [
@@ -30,10 +30,10 @@ const PRIMARY = {
 }
 
 const SECONDARY = {
-	table: 'Close_Approaches',
+	table: 'close_approaches',
 	filePath: path.join(__dirname, '../data/close_approaches.csv'),
 	batchSize: 500,
-	query: `INSERT INTO Close_Approaches  
+	query: `INSERT INTO close_approaches  
 	(spkid, date, nominal_distance_km, minimum_distance_km, relative_velocity_km_s, rarity) 
 	VALUES ?`,
   values: (row, spkid) => [
@@ -47,10 +47,10 @@ const SECONDARY = {
 }
 
 const TERTIARY = {
-	table: 'Orbits',
+	table: 'orbits',
 	filePath: path.join(__dirname, '../data/orbits.csv'),
 	batchSize: 500,
-	query: `INSERT INTO Orbits 
+	query: `INSERT INTO orbits 
 	(spkid, orbital_class, eccentricity, years) VALUES ?`,
 	values: (row) => [
 		row['spkid'],
@@ -130,7 +130,7 @@ async function streamSecondary(connection) {
 
 async function mapSpkid(connection) {
 	const [rows] = await connection.query(
-		`SELECT spkid, name FROM Near_Earth_Objects`)
+		`SELECT spkid, name FROM near_earth_objects`)
 	
 	const map = new Map()
 	for (const row of rows) {
