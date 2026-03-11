@@ -17,7 +17,8 @@ postman_tests:
   script:
     - npm ci
     - npm run seed
-    - npm start
+    - npm start &
+    - sleep 5 
     - newman run "./postman/astronomy_postman_collection.json" \
       --environment "./postman/astronomy_postman_environment.json" \
       --reporters cli,junit \
