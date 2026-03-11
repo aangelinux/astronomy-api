@@ -10,18 +10,20 @@ import path from 'path'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
-const types = loadFiles(path.join(__dirname, '*.schema.js'),)
-
 /**
  * Checks if each module is a GraphQL schema,
  * and stores the schema type in the array if true
  */
-const typesArray = types.map(module => {
-	if (module && typeof module === 'object' && !('kind' in module)) {
-		const values = Object.values(module)
-		return values[0]
-	}
-	return module
-})
+export const loadTypeDefs = async () => {
+	const types = await loadFiles(path.join(__dirname, '*.schema.js'))
 
-export const typeDefs = mergeTypeDefs(typesArray)
+	const typesArray = types.map(module => {
+		if (module && typeof module === 'object' && !('kind' in module)) {
+			const values = Object.values(module)
+			return values[0]
+		}
+		return module
+	})
+
+	return mergeTypeDefs(typesArray)
+}

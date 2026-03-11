@@ -9,7 +9,7 @@ import cors from 'cors'
 import helmet from 'helmet'
 import { expressMiddleware } from '@as-integrations/express5'
 import { ApolloServer } from '@apollo/server'
-import { typeDefs } from './schema/index.js'
+import { loadTypeDefs } from './schema/index.js'
 import { resolvers } from './resolvers/index.js'
 
 dotenv.config()
@@ -28,10 +28,12 @@ if (process.env.NODE_ENV === 'production') {
   app.set('trust proxy', 1)
 }
 
-const apolloServer = new ApolloServer({ 
-	typeDefs, 
-	resolvers
-})
+const apolloServer = async () => {
+	new ApolloServer({ 
+		typeDefs: await loadTypeDefs(), 
+		resolvers
+	})
+}
 
 await apolloServer.start()
 app.use(expressMiddleware(apolloServer))
