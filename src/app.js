@@ -28,12 +28,11 @@ if (process.env.NODE_ENV === 'production') {
   app.set('trust proxy', 1)
 }
 
-const apolloServer = async () => {
-	new ApolloServer({ 
-		typeDefs: await loadTypeDefs(), 
-		resolvers
-	})
-}
+const typeDefs = await loadTypeDefs()
+const apolloServer = new ApolloServer({ 
+	typeDefs, 
+	resolvers
+})
 
 await apolloServer.start()
 app.use(expressMiddleware(apolloServer))
