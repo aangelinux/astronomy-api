@@ -16,8 +16,8 @@ postman_tests:
     - npm install -g newman newman-reporter-junitfull
   script:
     - npm ci
-    - npm start
     - npm run seed
+    - npm start
     - newman run "./postman/astronomy_postman_collection.json" \
       --environment "./postman/astronomy_postman_environment.json" \
       --reporters cli,junit \
