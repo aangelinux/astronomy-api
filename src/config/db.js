@@ -15,9 +15,4 @@ const db = mysql.createPool({
 	database: process.env.DB_NAME
 })
 
-db.query('SHOW TABLES', (error, results) => {
-  if (error) throw error
-  console.log(results)
-})
-
 export default db
