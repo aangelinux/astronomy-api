@@ -32,11 +32,7 @@ if (process.env.NODE_ENV === 'production') {
 const typeDefs = await loadTypeDefs()
 const apolloServer = new ApolloServer({ 
 	typeDefs,
-	resolvers,
-	introspection: true,
-	plugins: [
-		ApolloServerPluginLandingPageLocalDefault()
-	]
+	resolvers
 })
 
 await apolloServer.start()
