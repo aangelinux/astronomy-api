@@ -10,6 +10,9 @@
     "seed": "node scripts/seed.js",
     "lint": "npx eslint ."
   },
+	"engines": {
+		"node": "18.x"
+	},
   "author": "Angelina Larsson",
   "license": "MIT",
   "dependencies": {
