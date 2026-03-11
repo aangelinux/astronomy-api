@@ -23,7 +23,17 @@ app.use((err, req, res, next) => {
   res.status(500).json({ message: 'Oops! Something went wrong.' })
 })
 app.use(cors())
-app.use(helmet())
+app.use(helmet({  // These configs are needed when using Apollo Server
+  crossOriginEmbedderPolicy: false,
+  contentSecurityPolicy: {
+    directives: {
+      imgSrc: [`'self'`, 'data:', 'apollo-server-landing-page.cdn.apollographql.com'],
+      scriptSrc: [`'self'`, `https: 'unsafe-inline'`],
+      manifestSrc: [`'self'`, 'apollo-server-landing-page.cdn.apollographql.com'],
+      frameSrc: [`'self'`, 'sandbox.embed.apollographql.com'],
+    },
+  },
+}))
 
 if (process.env.NODE_ENV === 'production') {
   app.set('trust proxy', 1)
