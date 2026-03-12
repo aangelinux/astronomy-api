@@ -18,10 +18,7 @@ postman_tests:
   script:
     - npm run seed
     - npm start &
-    - newman run "./postman/astronomy_postman_collection.json"
-      --environment "./postman/astronomy_postman_environment.json" \
-      --reporters cli,junit \
-      --reporter-junit-export newman-report.xml
+    - newman run "./postman/astronomy_postman_collection.json" --environment "./postman/astronomy_postman_environment.json" --reporters cli,junit --reporter-junit-export newman-report.xml
   artifacts:
     when: always
     paths: 
