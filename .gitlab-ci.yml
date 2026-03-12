@@ -19,7 +19,7 @@ postman_tests:
     - npm run seed
     - npm start &
     - sleep 5 
-    - newman run "./postman/astronomy_postman_collection.json" \
+    - newman run "./postman/astronomy_postman_collection.json"
       --environment "./postman/astronomy_postman_environment.json" \
       --reporters cli,junit \
       --reporter-junit-export newman-report.xml
