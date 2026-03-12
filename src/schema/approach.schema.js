@@ -13,8 +13,14 @@ export const approach = `#graphql
 		rarity: Int
 	}
 
+	input FilterInput {
+		limit: Int
+		page: Int
+		rarity: Int
+	}
+
 	extend type Query {
 		close_approach(id: ID!): Close_Approach
-		close_approaches(page: Int!): [Close_Approach!]!
+		close_approaches(input: FilterInput): [Close_Approach!]!
 	}
 `
