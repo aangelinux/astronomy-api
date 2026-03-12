@@ -11,7 +11,7 @@ export const neo = `#graphql
 		rotation_hours: Float
 		pot_hazardous_asteroid: Boolean
 		orbit: Orbit
-		close_approach: Close_Approach
+		close_approaches: [Close_Approach]
 	}
 
 	type DeleteNeoResponse {
