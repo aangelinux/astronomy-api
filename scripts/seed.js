@@ -81,9 +81,9 @@ async function seed() {
 }
 
 async function emptyTables(connection) {
-	await connection.query(`DELETE FROM ${TERTIARY.table}`)
-	await connection.query(`DELETE FROM ${SECONDARY.table}`)
-
+	await connection.query(`TRUNCATE TABLE ${TERTIARY.table}`)
+	// Must be TRUNCATE, not DELETE, to reset 'id' to 0
+	await connection.query(`TRUNCATE TABLE ${SECONDARY.table}`)
 	// Must be last because other tables have FKs that reference it
 	await connection.query(`DELETE FROM ${PRIMARY.table}`)
 }

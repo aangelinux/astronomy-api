@@ -9,23 +9,31 @@ lint:
     - npm ci
     - npm run lint
 
-postman_tests:
+newman_tests:
   stage: test
   image: node:18
+
   before_script: 
-    - npm install -g newman newman-reporter-junitfull
-  script:
     - npm ci
+    - npm i -g newman
+
+  script:
+    - mkdir -p newman
     - npm run seed
     - npm start &
     - sleep 5 
-    - newman run "./postman/astronomy_postman_collection.json"
-      --environment "./postman/astronomy_postman_environment.json" \
-      --reporters cli,junit \
-      --reporter-junit-export newman-report.xml
+    - newman run postman/astronomy_postman_collection.json
+      --environment postman/astronomy_postman_environment.json \
+      --delay-request 1000 \
+      --reporters junit,json \
+      --reporter-junit-export newman/junit.xml \
+      --reporter-json-export newman/report.json \
+      --silent
+
   artifacts:
     when: always
-    paths: 
-      - newman-report.xml
+    expire_in: 7 days
+    paths:
+      - newman/junit.xml
     reports:
-      junit: newman-report.xml
+      junit: newman/junit.xml
