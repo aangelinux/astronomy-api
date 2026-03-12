@@ -19,8 +19,8 @@ export const neoResolvers = {
 				close_approaches
 			}
 		},
-		neos: async (_, { page }) => {
-			return await Neo.getAllNeos(page)
+		neos: async (_, { input }) => {
+			return await Neo.getAllNeos(input)
 		}
 	},
 

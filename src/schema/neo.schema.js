@@ -19,6 +19,13 @@ export const neo = `#graphql
 		message: String
 	}
 
+	input FilterInput {
+		limit: Int
+		page: Int
+		name: String
+		pot_hazardous_asteroid: Boolean
+	}
+
 	input AddNeoInput {
 		spkid: Int!
 		name: String!
@@ -38,7 +45,7 @@ export const neo = `#graphql
 
 	extend type Query {
 		neo(spkid: ID!): Neo
-		neos(page: Int!): [Neo!]!
+		neos(input: FilterInput): [Neo!]!
 	}
 
 	extend type Mutation {

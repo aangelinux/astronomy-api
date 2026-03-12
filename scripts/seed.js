@@ -12,7 +12,7 @@ import { fileURLToPath } from 'url'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
-const PRIMARY = {
+const NEOS = {
 	table: 'near_earth_objects',
 	filePath: path.join(__dirname, '../data/near_earth_objects.csv'),
 	batchSize: 500,
@@ -29,7 +29,7 @@ const PRIMARY = {
 	]
 }
 
-const SECONDARY = {
+const APPROACHES = {
 	table: 'close_approaches',
 	filePath: path.join(__dirname, '../data/close_approaches.csv'),
 	batchSize: 500,
@@ -46,7 +46,7 @@ const SECONDARY = {
 	]
 }
 
-const TERTIARY = {
+const ORBITS = {
 	table: 'orbits',
 	filePath: path.join(__dirname, '../data/orbits.csv'),
 	batchSize: 500,
@@ -65,9 +65,9 @@ async function seed() {
 	try {
 		await connection.beginTransaction()
 		await emptyTables(connection)  // Prevent duplicates
-		await streamData(connection, PRIMARY)
-		await streamSecondary(connection)
-		await streamData(connection, TERTIARY)
+		await streamData(connection, NEOS)
+		await streamApproaches(connection)
+		await streamData(connection, ORBITS)
 		await connection.commit()
 		console.log('CSV file processed successfully')
 	} catch (error) {
@@ -81,11 +81,11 @@ async function seed() {
 }
 
 async function emptyTables(connection) {
-	await connection.query(`TRUNCATE TABLE ${TERTIARY.table}`)
+	await connection.query(`DELETE FROM ${ORBITS.table}`)
 	// Must be TRUNCATE, not DELETE, to reset 'id' to 0
-	await connection.query(`TRUNCATE TABLE ${SECONDARY.table}`)
+	await connection.query(`TRUNCATE TABLE ${APPROACHES.table}`)
 	// Must be last because other tables have FKs that reference it
-	await connection.query(`DELETE FROM ${PRIMARY.table}`)
+	await connection.query(`DELETE FROM ${NEOS.table}`)
 }
 
 async function streamData(connection, CONFIG) {
@@ -106,25 +106,25 @@ async function streamData(connection, CONFIG) {
 	}
 }
 
-async function streamSecondary(connection) {
+async function streamApproaches(connection) {
 	const batch = []
 	const spkidMap = await mapSpkid(connection)
-	const fileStream = createReadStream(SECONDARY.filePath)
+	const fileStream = createReadStream(APPROACHES.filePath)
 		.pipe(csvParser())
 
 	for await (const row of fileStream) {
 		const spkid = spkidMap.get(row['Object'])
 		if (!spkid) continue
 
-		const values = SECONDARY.values(row, spkid)
+		const values = APPROACHES.values(row, spkid)
 		batch.push(values)
-		if (batch.length >= SECONDARY.batchSize) {
-			await connection.query(SECONDARY.query, [batch])
+		if (batch.length >= APPROACHES.batchSize) {
+			await connection.query(APPROACHES.query, [batch])
 			batch.length = 0
 		}
 	}
-	if (batch.length > 0) {  // If there are remaining values
-		await connection.query(SECONDARY.query, [batch])
+	if (batch.length > 0) {
+		await connection.query(APPROACHES.query, [batch])
 	}
 }
 

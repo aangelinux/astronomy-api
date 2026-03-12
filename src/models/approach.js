@@ -23,7 +23,7 @@ export default class Close_Approach {
 		const filters = Object.keys(input)
 
 		const limit = filters.includes('limit') ? input['limit'] : 50
-		const offset = filters.includes('page') ? ((input['page'] - 1) * 50) : 0
+		const offset = filters.includes('page') ? ((input['page'] - 1) * limit) : 0
 		const rarity = filters.includes('rarity') ? input['rarity'] : null
 
 		let filter

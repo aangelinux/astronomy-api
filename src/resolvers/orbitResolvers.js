@@ -9,8 +9,8 @@ export const orbitResolvers = {
 		orbit: async (_, { spkid }) => {
 			return await Orbit.getOrbit(spkid)
 		},
-		orbits: async (_, { page }) => {
-			return await Orbit.getAllOrbits(page)
+		orbits: async (_, { input }) => {
+			return await Orbit.getAllOrbits(input)
 		}
 	}
 }
