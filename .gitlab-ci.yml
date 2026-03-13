@@ -18,7 +18,8 @@ tests:
   variables:
     MYSQLHOST: mysql
     MYSQLPORT: 3306
-    MYSQL_ROOT_PASSWORD: root
+    MYSQL_ROOT_PASSWORD: $MYSQLPASSWORD
+    MYSQL_DATABASE: $MYSQLDATABASE
   before_script: 
     - npm ci
     - npm install -g newman newman-reporter-junitfull newman-reporter-htmlextra
