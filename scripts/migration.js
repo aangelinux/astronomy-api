@@ -4,9 +4,6 @@
 
 import db from '../src/config/db.js'
 
-const dbQuery = `CREATE DATABASE astronomy_api`
-await db.query(dbQuery)
-
 const astronomyQuery = `USE astronomy_api`
 await db.query(astronomyQuery)
 
