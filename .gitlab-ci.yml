@@ -11,7 +11,7 @@ lint:
 
 tests:
   stage: test
-  image: node:18
+  image: node:20
   services:
     - name: mysql:8
       alias: mysql
@@ -23,6 +23,7 @@ tests:
     - npm ci
     - npm install -g newman newman-reporter-junitfull newman-reporter-htmlextra
   script:
+    - sleep 10
     - npm run seed
     - npm start &
     - newman run "./postman/astronomy_postman_collection.json" --environment "./postman/astronomy_postman_environment.json" --reporters cli,junit,htmlextra --reporter-junit-export newman-report.xml --reporter-htmlextra-export newman-report.html
