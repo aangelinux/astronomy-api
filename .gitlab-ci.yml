@@ -25,6 +25,7 @@ tests:
     - npm install -g newman newman-reporter-junitfull newman-reporter-htmlextra
   script:
     - sleep 20
+    - npm run migrate
     - npm run seed
     - npm start &
     - newman run "./postman/astronomy.postman_collection.json" --environment "./postman/astronomy_prod.postman_environment.json" --reporters cli,junit,htmlextra --reporter-junit-export newman-report.xml --reporter-htmlextra-export newman-report.html

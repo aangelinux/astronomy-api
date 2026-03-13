@@ -35,9 +35,7 @@ Orbits and Close Approaches are linked to their corresponding Near-Earth Object 
    ```
 
 ## Dataset
-
-*Describe the dataset you chose:*
-
+  
 | Field | Description |
 |---|---|
 | **Dataset source** | CSV files from [NASA Small-Body DB](https://ssd.jpl.nasa.gov/tools/sbdb_query.html#!#results) and [NASA Close Approaches](https://cneos.jpl.nasa.gov/ca/) |
