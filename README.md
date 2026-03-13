@@ -50,16 +50,18 @@ Orbits and Close Approaches are linked to their corresponding Near-Earth Object 
 
 ### Authentication
 
-<!--Describe your JWT authentication solution. Why did you choose this approach? What alternatives exist, and what are their trade-offs?-->
+The API uses JWT tokens to authenticate the user before mutation requests. Successful login returns a token in the response, allowing users to copy-paste it into any subsequent requests that require authentication. The token is then verified to ensure it's valid.  
+  
+This approach ensures that only verified users can make changes to the database. The token expires after 1 hour.  
 
 ### API Design
-
+  
 <!--- *How did you design your schema (types, queries, mutations)?*
 - *How did you implement nested queries? How does the single-endpoint approach affect your design?*-->
 
 ### Error Handling
-
-<!--*How does your API handle errors? Describe the format and consistency of your error responses.*-->
+  
+On errors related to business logic and SQL queries, the API will return a partical success response with a 200 status and an errors array containing info on the error that occurred. If required input is missing in a query, the API will return a 400 BAD REQUEST with an errors object describing the issue.  
 
 ## Core Technologies Used
 
