@@ -5,41 +5,42 @@
 import db from '../src/config/db.js'
 
 const query = `
+	CREATE DATABASE astronomy_api;
 	USE astronomy_api;
 
-	CREATE TABLE near_Earth_Objects (
+	CREATE TABLE near_earth_objects (
 		spkid INT NOT NULL PRIMARY KEY,
-			name VARCHAR(255) NOT NULL,
-			earth_moid_ld FLOAT NOT NULL,
-			magnitude FLOAT,
-			rotation_hours FLOAT,
-			pot_hazardous_asteroid BOOLEAN
+		name VARCHAR(255) NOT NULL,
+		earth_moid_ld FLOAT NOT NULL,
+		magnitude FLOAT,
+		rotation_hours FLOAT,
+		pot_hazardous_asteroid BOOLEAN
 	);
 
 	CREATE TABLE orbits (
 		spkid INT NOT NULL PRIMARY KEY,
-			orbital_class VARCHAR(3) NOT NULL,
-			eccentricity FLOAT,
-			years FLOAT,
-			FOREIGN KEY (spkid) REFERENCES Near_Earth_Objects(spkid)
+		orbital_class VARCHAR(3) NOT NULL,
+		eccentricity FLOAT,
+		years FLOAT,
+		FOREIGN KEY (spkid) REFERENCES near_earth_objects(spkid)
 	);
 
 	CREATE TABLE close_approaches (
 		id INT AUTO_INCREMENT PRIMARY KEY,
-			spkid INT NOT NULL,
-			date DATETIME NOT NULL,
-			nominal_distance_km FLOAT NOT NULL,
-			minimum_distance_km FLOAT NOT NULL,
-			relative_velocity_km_s FLOAT,
-			rarity INT,
-			FOREIGN KEY (spkid) REFERENCES Near_Earth_Objects(spkid)
+		spkid INT NOT NULL,
+		date DATETIME NOT NULL,
+		nominal_distance_km FLOAT NOT NULL,
+		minimum_distance_km FLOAT NOT NULL,
+		relative_velocity_km_s FLOAT,
+		rarity INT,
+		FOREIGN KEY (spkid) REFERENCES near_earth_objects(spkid)
 	);
 
-	CREATE TABLE Users (
+	CREATE TABLE users (
 		userid INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-			username VARCHAR(100) UNIQUE NOT NULL,
-			password_hash VARCHAR(255) NOT NULL,
-			created DATETIME
+		username VARCHAR(100) UNIQUE NOT NULL,
+		password_hash VARCHAR(255) NOT NULL,
+		created DATETIME
 	);
 `
 
