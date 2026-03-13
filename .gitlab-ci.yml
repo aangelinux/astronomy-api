@@ -12,6 +12,12 @@ lint:
 tests:
   stage: test
   image: node:18
+  services:
+    - name: mysql:8
+      alias: mysql
+  variables:
+    MYSQLHOST: mysql
+    MYSQLPORT: 3306
   before_script: 
     - npm ci
     - npm install -g newman newman-reporter-junitfull newman-reporter-htmlextra
