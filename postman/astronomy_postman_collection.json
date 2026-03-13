@@ -2073,10 +2073,6 @@
     {
       "key": "token",
       "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOjMxLCJpYXQiOjE3NzMxNTQ4NDAsImV4cCI6MTc3MzE1ODQ0MH0.N80Csu92mzxELHg0FcXowvegg14Kxr7extklSKnxD2g"
-    },
-		{
-			"key": "URL",
-			"value": "https://astronomy-api-production.up.railway.app/"
-		}
+    }
   ]
 }

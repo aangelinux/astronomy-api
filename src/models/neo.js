@@ -1,5 +1,5 @@
 /**
- * Queries to the Near-Earth Objects attribute.
+ * Queries to the Near-Earth Objects table.
  */
 
 import db from '../config/db.js'
@@ -12,21 +12,19 @@ export default class Neo {
 		return result[0]
 	}
 
-	static async getAllNeos(input) {
-		const filters = Object.keys(input)
+	static async filterNeos(input) {
+		const limit = input.limit ? input['limit'] : 50
+		const offset = input.page ? ((input['page'] - 1) * limit) : 0
+		const name = input.name ? input['name'] : null
 
-		const limit = filters.includes('limit') ? input['limit'] : 50
-		const offset = filters.includes('page') ? ((input['page'] - 1) * limit) : 0
-		const name = filters.includes('name') ? input['name'] : null
-
-		let filter
-		let values = [limit, offset]
-		if (name !== null) { 
-			filter = `WHERE name = ?`
-			values = [name, limit, offset]
+		let query, values
+		if (name === null) { 
+			query = 'SELECT * FROM near_earth_objects LIMIT ? OFFSET ?'
+			values = [limit, offset]
+		} else {
+			query = 'SELECT * FROM near_earth_objects WHERE name LIKE ? LIMIT ? OFFSET ?'
+			values = [`%${name}%`, limit, offset]
 		}
-
-		const query = `SELECT * FROM near_earth_objects ${filter} LIMIT ? OFFSET ?`
 		const [result] = await db.query(query, values)
 
 		return result

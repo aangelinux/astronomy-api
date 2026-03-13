@@ -12,21 +12,19 @@ export default class Orbit {
 		return result[0]
 	}
 
-	static async getAllOrbits(input) {
-		const filters = Object.keys(input)
+	static async filterOrbits(input) {
+		const limit = input.limit ? input['limit'] : 50
+		const offset = input.page ? ((input['page'] - 1) * limit) : 0
+		const orbitClass = input.orbital_class ? input['orbital_class'] : null
 
-		const limit = filters.includes('limit') ? input['limit'] : 50
-		const offset = filters.includes('page') ? ((input['page'] - 1) * limit) : 0
-		const orb_class = filters.includes('orbital_class') ? input['orbital_class'] : null
-
-		let filter
-		let values = [limit, offset]
-		if (orb_class !== null) { 
-			filter = `WHERE orbital_class = ?`
-			values = [orb_class, limit, offset]
+		let query, values
+		if (orbitClass === null) { 
+			query = 'SELECT * FROM orbits LIMIT ? OFFSET ?'
+			values = [limit, offset]
+		} else {
+			query = 'SELECT * FROM orbits WHERE orbital_class = ? LIMIT ? OFFSET ?'
+			values = [orbitClass, limit, offset]
 		}
-
-		const query = `SELECT * FROM orbits ${filter} LIMIT ? OFFSET ?`
 		const [result] = await db.query(query, values)
 
 		return result

@@ -16,14 +16,16 @@ import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin
 dotenv.config()
 
 const app = express()
+const PORT = process.env.PORT || 3000
 
 app.use(express.json())
+app.use(cors())
 app.use((err, req, res, next) => {
   console.error(err)
   res.status(500).json({ message: 'Oops! Something went wrong.' })
 })
-app.use(cors())
-app.use(helmet({  // These configs are needed when using Apollo Server
+
+app.use(helmet({  // Need this config for Apollo Server to work
   crossOriginEmbedderPolicy: false,
   contentSecurityPolicy: {
     directives: {
@@ -59,8 +61,6 @@ try {
 	console.error('Database failed to connect: ', error)
 	process.exit(1)
 }
-
-const PORT = process.env.PORT || 3000
 
 app.listen(PORT, () => {
 	console.log(`Server running on PORT ${PORT}`)	

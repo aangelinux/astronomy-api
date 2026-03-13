@@ -9,7 +9,7 @@ lint:
     - npm ci
     - npm run lint
 
-postman_tests:
+tests:
   stage: test
   image: node:18
   before_script: 

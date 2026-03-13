@@ -19,23 +19,21 @@ export default class Close_Approach {
 		return result
 	}
 
-	static async getAllApproaches(input) {
-		const filters = Object.keys(input)
+	static async filterApproaches(input) {
+		const limit = input.limit ? input['limit'] : 50
+		const offset = input.page ? ((input['page'] - 1) * limit) : 0
+		const rarity = input.rarity ? input['rarity'] : null
 
-		const limit = filters.includes('limit') ? input['limit'] : 50
-		const offset = filters.includes('page') ? ((input['page'] - 1) * limit) : 0
-		const rarity = filters.includes('rarity') ? input['rarity'] : null
-
-		let filter
-		let values = [limit, offset]
+		let query, values
 		// Need to check for null specifically, 
 		// because if rarity is 0 the if-statement will evaluate to false
-		if (rarity !== null) { 
-			filter = `WHERE rarity = ?`
+		if (rarity === null) { 
+			query = `SELECT * FROM close_approaches LIMIT ? OFFSET ?`
+			values = [limit, offset]
+		} else {
+			query = `SELECT * FROM close_approaches WHERE rarity = ? LIMIT ? OFFSET ?`
 			values = [rarity, limit, offset]
 		}
-
-		const query = `SELECT * FROM close_approaches ${filter} LIMIT ? OFFSET ?`
 		const [result] = await db.query(query, values)
 
 		return result

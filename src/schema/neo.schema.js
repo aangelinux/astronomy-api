@@ -23,7 +23,6 @@ export const neo = `#graphql
 		limit: Int
 		page: Int
 		name: String
-		pot_hazardous_asteroid: Boolean
 	}
 
 	input AddNeoInput {

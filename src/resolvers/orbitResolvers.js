@@ -10,7 +10,7 @@ export const orbitResolvers = {
 			return await Orbit.getOrbit(spkid)
 		},
 		orbits: async (_, { input }) => {
-			return await Orbit.getAllOrbits(input)
+			return await Orbit.filterOrbits(input)
 		}
 	}
 }

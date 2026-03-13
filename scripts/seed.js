@@ -22,7 +22,7 @@ const NEOS = {
  	values: (row) => [
 		row['spkid'],
 		formatName(row['full_name']),
-		row['moid_ld'],
+		safeFloat(row['moid_ld']),
 		safeFloat(row['H']),
 		safeFloat(row['rot_per']),
 		formatPHA(row['pha']),

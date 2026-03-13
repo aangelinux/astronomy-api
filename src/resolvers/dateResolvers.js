@@ -9,18 +9,18 @@ export const dateResolvers = {
     name: 'Date',
     description: 'ISO 8601 date scalar',
     serialize(value) {
-      // Outgoing -> Client
+      // Database -> Client
       return (value instanceof Date) ? value.toISOString() : new Date(value).toISOString()
     },
     parseValue(value) {
-      // Value from variables
+      // Client (variables) -> Database
       const date = new Date(value)
       if (isNaN(date)) throw new Error('Date format is invalid')
 
       return date
     },
     parseLiteral(ast) {
-      // Value from inline query
+      // Client (inline query) -> Database
       if (ast.kind === Kind.STRING) {
         const date = new Date(ast.value)
         if (isNaN(date)) throw new Error('Date format is invalid')
