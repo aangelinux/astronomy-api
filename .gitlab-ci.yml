@@ -19,7 +19,7 @@ tests:
     MYSQLHOST: mysql
     MYSQLPORT: 3306
     MYSQL_ROOT_PASSWORD: $MYSQLPASSWORD
-    MYSQLDATABASE: $MYSQLDATABASE
+    MYSQLDATABASE: astronomy_api
   before_script: 
     - npm ci
     - npm install -g newman newman-reporter-junitfull newman-reporter-htmlextra
