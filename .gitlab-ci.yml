@@ -24,7 +24,6 @@ tests:
     - npm ci
     - npm install -g newman newman-reporter-junitfull newman-reporter-htmlextra
   script:
-    - sleep 20
     - npm run migrate &
     - npm run seed
     - npm start &
