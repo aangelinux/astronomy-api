@@ -1,6 +1,6 @@
 # API Design Assignment
 
-## Astronomical GraphQL API
+## Astronomy GraphQL API
 
 ## Description
 
@@ -28,10 +28,10 @@ Orbits and Close Approaches are linked to their corresponding Near-Earth Object 
 
 **Examiner can verify tests in one of the following ways:**
 
-1. **CI/CD pipeline** — check the pipeline output in GitLab for test results.
+1. **CI/CD pipeline** — check the [pipeline output](https://gitlab.lnu.se/1dv027/student/al227bn/exercises/assignment-api-design/-/artifacts) in GitLab for test results.
 2. **Run manually** — no setup needed:
    ```
-   npx newman run postman/astronomy.postman_collection.json -e postman/astronomy_prod.postman_environment.json
+   npx newman run "./postman/astronomy.postman_collection.json" --environment "./postman/astronomy_prod.postman_environment.json"
    ```
 
 ## Dataset
@@ -54,12 +54,16 @@ This approach ensures that only verified users can make changes to the database.
 
 ### API Design
   
-<!--- *How did you design your schema (types, queries, mutations)?*
-- *How did you implement nested queries? How does the single-endpoint approach affect your design?*-->
-
+The API is designed to serve three main resources, as well as personal user accounts. The astronomical resources are connected to each other via the **spkid** attribute to allow nested queries. Queries to the main resource, Near-Earth Objects, can be nested to include related Orbit data and Close Approach data if applicable.  
+  
+Successful mutations will return a success message and info on the mutated object.  
+  
 ### Error Handling
   
-On errors related to business logic and SQL queries, the API will return a partical success response with a 200 status and an errors array containing info on the error that occurred. If required input is missing in a query, the API will return a 400 BAD REQUEST with an errors object describing the issue.  
+Errors follow standard GraphQL practices. Requests can return one of three possible response types:
+- 200 OK - Success. Response returns the requested data, or in the case of mutations a success message.
+- 200 OK - Partial success. Occurs as a result of business logic-related errors. Response contains an error object describing the issue, and the data object is null.  
+- 400 BAD REQUEST - Failure. Occurs as a result of missing required input. Response only contains an error object describing the issue.  
 
 ## Core Technologies Used
 
@@ -68,8 +72,8 @@ On errors related to business logic and SQL queries, the API will return a parti
 - Apollo Server for GraphQL API and playground
   
 ## Reflection
-
-<!--*What was hard? What did you learn? What would you do differently?*-->
+  
+Understanding how schemas and resolvers work in a GraphQL API was initially challenging. Seeing how they differ from REST APIs, and what their different strengths and weakness are, was interesting and useful in offering an alternative way to structure web APIs.  
   
 ## Requirements
   

@@ -1,5 +1,5 @@
 /**
- * Parses data from a CSV file and populates the database.
+ * Parses data from CSV files and populates a database.
  */
 
 import db from '../src/config/db.js'
@@ -64,12 +64,12 @@ async function seed() {
 	const connection = await db.getConnection()
 	try {
 		await connection.beginTransaction()
-		await emptyTables(connection)  // Prevent duplicates
+		await emptyTables(connection)  // To prevent duplicates
 		await streamData(connection, NEOS)
 		await streamApproaches(connection)
 		await streamData(connection, ORBITS)
 		await connection.commit()
-		console.log('CSV file processed successfully')
+		console.log('CSV files processed successfully')
 	} catch (error) {
 		await connection.rollback()
 		console.error('Error populating database: ', error.message)
@@ -84,25 +84,25 @@ async function emptyTables(connection) {
 	await connection.query(`DELETE FROM ${ORBITS.table}`)
 	// Must be TRUNCATE, not DELETE, to reset 'id' to 0
 	await connection.query(`TRUNCATE TABLE ${APPROACHES.table}`)
-	// Must be last because other tables have FKs that reference it
+	// Must be last because the other tables reference it via FKs
 	await connection.query(`DELETE FROM ${NEOS.table}`)
 }
 
-async function streamData(connection, CONFIG) {
+async function streamData(connection, RESOURCE) {
 	const batch = []
-	const fileStream = createReadStream(CONFIG.filePath)
+	const fileStream = createReadStream(RESOURCE.filePath)
 		.pipe(csvParser())
 
 	for await (const row of fileStream) {
-		const values = CONFIG.values(row)
+		const values = RESOURCE.values(row)
 		batch.push(values)
-		if (batch.length >= CONFIG.batchSize) {
-			await connection.query(CONFIG.query, [batch])
+		if (batch.length >= RESOURCE.batchSize) {
+			await connection.query(RESOURCE.query, [batch])
 			batch.length = 0
 		}
 	}
 	if (batch.length > 0) {  // If there are remaining values
-		await connection.query(CONFIG.query, [batch])
+		await connection.query(RESOURCE.query, [batch])
 	}
 }
 
