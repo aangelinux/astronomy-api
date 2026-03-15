@@ -20,7 +20,11 @@ export const neoResolvers = {
 			}
 		},
 		neos: async (_, { input }) => {
-			return await Neo.filterNeos(input)
+			const neos = await Neo.filterNeos(input)
+			return {
+				metadata: `${neos.length} entries found`,
+				neos
+			}
 		}
 	},
 

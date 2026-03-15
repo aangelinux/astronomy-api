@@ -10,7 +10,11 @@ export const approachResolvers = {
 			return await Close_Approach.getApproach(id)
 		},
 		close_approaches: async (_, { input }) => {
-			return await Close_Approach.filterApproaches(input)
+			const approaches = await Close_Approach.filterApproaches(input)
+			return {
+				metadata: `${approaches.length} entries found`,
+				approaches
+			}
 		}
 	}
 }

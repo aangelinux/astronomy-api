@@ -998,7 +998,7 @@
                   "script": {
                     "exec": [
                       "const response = pm.response.json().data\r",
-                      "const neos = response.neos\r",
+                      "const neos = response.neos.neos\r",
                       "\r",
                       "\r",
                       "eval(pm.collectionVariables.get(\"isSuccess\"))\r",
@@ -1036,7 +1036,7 @@
                 "body": {
                   "mode": "graphql",
                   "graphql": {
-                    "query": "query Neos {\r\n    neos(input: {\r\n        limit: {{limit}}\r\n        page: {{page}}\r\n        name: \"A\"\r\n    }) {\r\n        spkid\r\n        name\r\n        earth_moid_ld\r\n        magnitude\r\n        rotation_hours\r\n        pot_hazardous_asteroid\r\n    }\r\n}\r\n",
+                    "query": "query Neos {\r\n    neos(input: {\r\n        limit: {{limit}}\r\n        page: {{page}}\r\n        name: \"A\"\r\n    }) {\r\n        metadata\r\n        neos {\r\n            spkid\r\n            name\r\n            earth_moid_ld\r\n            magnitude\r\n            rotation_hours\r\n            pot_hazardous_asteroid\r\n        }\r\n    }\r\n}\r\n",
                     "variables": ""
                   }
                 },
@@ -1046,7 +1046,7 @@
                     "{{URL}}"
                   ]
                 },
-                "description": "**Example request:**\n\n``` graphql\nquery Neos {\n    neos(input: {\n        limit: {{limit}}\n        page: {{page}}\n        name: \"A\"\n    }) {\n        spkid\n        name\n        earth_moid_ld\n        magnitude\n        rotation_hours\n        pot_hazardous_asteroid\n    }\n}\n\n ```\n\n**Response:**\n\n``` graphql\n{\n    \"data\": {\n        \"neos\": [\n            {\n                \"spkid\": \"1000027\",\n                \"name\": \"15P/Finlay\",\n                \"earth_moid_ld\": 3.59,\n                \"magnitude\": null,\n                \"rotation_hours\": null,\n                \"pot_hazardous_asteroid\": false\n            },\n            {\n                \"spkid\": \"1000032\",\n                \"name\": \"21P/Giacobini-Zinner\",\n                \"earth_moid_ld\": 6.91,\n                \"magnitude\": null,\n                \"rotation_hours\": null,\n                \"pot_hazardous_asteroid\": false\n            },\n...\n\n ```"
+                "description": "**Example request:**\n\n``` graphql\nquery Neos {\n    neos(input: {\n        limit: {{limit}}\n        page: {{page}}\n        name: \"A\"\n    }) {\n        metadata\n        neos {\n            spkid\n            name\n            earth_moid_ld\n            magnitude\n            rotation_hours\n            pot_hazardous_asteroid\n        }\n    }\n}\n\n ```\n\n**Response:**\n\n``` graphql\n{\n    \"data\": {\n        \"neos\": {\n            \"metadata\": \"20 entries found\",\n            \"neos\": [\n                {\n                    \"spkid\": \"1000027\",\n                    \"name\": \"15P/Finlay\",\n                    \"earth_moid_ld\": 3.59,\n                    \"magnitude\": null,\n                    \"rotation_hours\": null,\n                    \"pot_hazardous_asteroid\": false\n                },\n                {\n                    \"spkid\": \"1000032\",\n                    \"name\": \"21P/Giacobini-Zinner\",\n                    \"earth_moid_ld\": 6.91,\n                    \"magnitude\": null,\n                    \"rotation_hours\": null,\n                    \"pot_hazardous_asteroid\": false\n                },\n...\n\n ```"
               },
               "response": []
             },
@@ -1089,7 +1089,7 @@
                 "body": {
                   "mode": "graphql",
                   "graphql": {
-                    "query": "query Neos {\r\n    neos(input: {\r\n        page: {{invalid_page}}\r\n    }) {\r\n        spkid\r\n        name\r\n        earth_moid_ld\r\n        magnitude\r\n        rotation_hours\r\n        pot_hazardous_asteroid\r\n    }\r\n}\r\n",
+                    "query": "query Neos {\r\n    neos(input: {\r\n        page: {{invalid_page}}\r\n    }) {\r\n        metadata\r\n        neos {\r\n            spkid\r\n            name\r\n            earth_moid_ld\r\n            magnitude\r\n            rotation_hours\r\n            pot_hazardous_asteroid\r\n        }\r\n    }\r\n}\r\n",
                     "variables": ""
                   }
                 },
@@ -1517,7 +1517,7 @@
               "script": {
                 "exec": [
                   "const response = pm.response.json().data\r",
-                  "const orbits = response.orbits\r",
+                  "const orbits = response.orbits.orbits\r",
                   "\r",
                   "\r",
                   "eval(pm.collectionVariables.get(\"isSuccess\"))\r",
@@ -1557,7 +1557,7 @@
             "body": {
               "mode": "graphql",
               "graphql": {
-                "query": "query Orbits {\r\n    orbits(input: {\r\n        limit: {{limit}}\r\n        page: {{page}}\r\n        orbital_class: \"JFc\"\r\n    }) {\r\n        spkid\r\n        orbital_class\r\n        eccentricity\r\n        years\r\n    }\r\n}",
+                "query": "query Orbits {\r\n    orbits(input: {\r\n        limit: {{limit}}\r\n        page: {{page}}\r\n        orbital_class: \"JFc\"\r\n    }) {\r\n        metadata\r\n        orbits {\r\n            spkid\r\n            orbital_class\r\n            years\r\n        }\r\n    }\r\n}",
                 "variables": ""
               }
             },
@@ -1567,7 +1567,7 @@
                 "{{URL}}"
               ]
             },
-            "description": "**Example request:**\n\n``` graphql\nquery Orbits {\n    orbits(input: {\n        limit: {{limit}}\n        page: {{page}}\n        orbital_class: \"JFc\"\n    }) {\n        spkid\n        orbital_class\n        eccentricity\n        years\n    }\n}\n\n ```\n\n**Response:**\n\n``` graphql\n{\n    \"data\": {\n        \"orbits\": [\n            {\n                \"spkid\": \"1000027\",\n                \"orbital_class\": \"JFc\",\n                \"eccentricity\": 0.7202,\n                \"years\": 6.52\n            },\n            {\n                \"spkid\": \"1000032\",\n                \"orbital_class\": \"JFc\",\n                \"eccentricity\": 0.7105,\n                \"years\": 6.55\n            },\n...\n\n ```"
+            "description": "**Example request:**\n\n``` graphql\nquery Orbits {\n    orbits(input: {\n        limit: {{limit}}\n        page: {{page}}\n        orbital_class: \"JFc\"\n    }) {\n        metadata\n        orbits {\n            spkid\n            orbital_class\n            years\n        }\n    }\n}\n\n ```\n\n**Response:**\n\n``` graphql\n{\n    \"data\": {\n        \"orbits\": {\n            \"metadata\": \"20 entries found\",\n            \"orbits\": [\n                {\n                    \"spkid\": \"1000027\",\n                    \"orbital_class\": \"JFc\",\n                    \"years\": 6.52\n                },\n                {\n                    \"spkid\": \"1000032\",\n                    \"orbital_class\": \"JFc\",\n                    \"years\": 6.55\n                },\n...\n\n ```"
           },
           "response": []
         },
@@ -1611,7 +1611,7 @@
             "body": {
               "mode": "graphql",
               "graphql": {
-                "query": "query Orbits {\r\n    orbits(input: {\r\n        page: {{invalid_page}}\r\n    }) {\r\n        spkid\r\n        orbital_class\r\n        eccentricity\r\n        years\r\n    }\r\n}\r\n\r\n\r\n",
+                "query": "query Orbits {\r\n    orbits(input: {\r\n        page: {{invalid_page}}\r\n    }) {\r\n        metadata\r\n        orbits {\r\n            spkid\r\n            orbital_class\r\n            years\r\n        }\r\n    }\r\n}\r\n\r\n\r\n",
                 "variables": ""
               }
             },
@@ -1803,7 +1803,7 @@
               "script": {
                 "exec": [
                   "const response = pm.response.json().data\r",
-                  "const close_approaches = response.close_approaches\r",
+                  "const close_approaches = response.close_approaches.approaches\r",
                   "\r",
                   "\r",
                   "eval(pm.collectionVariables.get(\"isSuccess\"))\r",
@@ -1843,7 +1843,7 @@
             "body": {
               "mode": "graphql",
               "graphql": {
-                "query": "query Close_approaches {\r\n    close_approaches(input: {\r\n        limit: {{limit}}\r\n        page: {{page}}\r\n        rarity: 4\r\n    }) {\r\n        id\r\n        spkid\r\n        date\r\n        nominal_distance_km\r\n        minimum_distance_km\r\n        relative_velocity_km_s\r\n        rarity\r\n    }\r\n}\r\n",
+                "query": "query Close_approaches {\r\n    close_approaches(input: {\r\n        limit: {{limit}}\r\n        page: {{page}}\r\n        rarity: 4\r\n    }) {\r\n        metadata\r\n        approaches {\r\n            id\r\n            spkid\r\n            date\r\n            nominal_distance_km\r\n            minimum_distance_km\r\n            relative_velocity_km_s\r\n            rarity\r\n        }\r\n    }\r\n}\r\n",
                 "variables": ""
               }
             },
@@ -1853,7 +1853,7 @@
                 "{{URL}}"
               ]
             },
-            "description": "**Example request:**\n\n``` graphql\nquery Close_approaches {\n    close_approaches(input: {\n        limit: {{limit}}\n        page: {{page}}\n        rarity: 4\n    }) {\n        id\n        spkid\n        date\n        nominal_distance_km\n        minimum_distance_km\n        relative_velocity_km_s\n        rarity\n    }\n}\n\n ```\n\n**Response:**\n\n``` graphql\n{\n    \"data\": {\n        \"close_approaches\": [\n            {\n                \"id\": \"409\",\n                \"spkid\": \"20152680\",\n                \"date\": \"1914-12-31T12:00:00.000Z\",\n                \"nominal_distance_km\": 233224,\n                \"minimum_distance_km\": 232781,\n                \"relative_velocity_km_s\": 21.1,\n                \"rarity\": 4\n            },\n            {\n                \"id\": \"700\",\n                \"spkid\": \"20163132\",\n                \"date\": \"1925-08-30T23:38:00.000Z\",\n                \"nominal_distance_km\": 346879,\n                \"minimum_distance_km\": 346176,\n                \"relative_velocity_km_s\": 26.48,\n                \"rarity\": 4\n            },\n...\n\n ```"
+            "description": "**Example request:**\n\n``` graphql\nquery Close_approaches {\n    close_approaches(input: {\n        limit: {{limit}}\n        page: {{page}}\n        rarity: 4\n    }) {\n        metadata\n        approaches {\n            id\n            spkid\n            date\n            nominal_distance_km\n            minimum_distance_km\n            relative_velocity_km_s\n            rarity\n        }\n    }\n}\n\n ```\n\n**Response:**\n\n``` graphql\n{\n    \"data\": {\n        \"close_approaches\": {\n            \"metadata\": \"20 entries found\",\n            \"approaches\": [\n                {\n                    \"id\": \"409\",\n                    \"spkid\": \"20152680\",\n                    \"date\": \"1914-12-31T11:00:00.000Z\",\n                    \"nominal_distance_km\": 233224,\n                    \"minimum_distance_km\": 232781,\n                    \"relative_velocity_km_s\": 21.1,\n                    \"rarity\": 4\n                },\n                {\n                    \"id\": \"700\",\n                    \"spkid\": \"20163132\",\n                    \"date\": \"1925-08-30T22:38:00.000Z\",\n                    \"nominal_distance_km\": 346879,\n                    \"minimum_distance_km\": 346176,\n                    \"relative_velocity_km_s\": 26.48,\n                    \"rarity\": 4\n                },\n...\n\n ```"
           },
           "response": []
         },
@@ -1897,7 +1897,7 @@
             "body": {
               "mode": "graphql",
               "graphql": {
-                "query": "query Close_approaches {\r\n    close_approaches(input: {\r\n        page: {{invalid_page}}\r\n    }) {\r\n        id\r\n        spkid\r\n        date\r\n        nominal_distance_km\r\n        minimum_distance_km\r\n        relative_velocity_km_s\r\n        rarity\r\n    }\r\n}\r\n",
+                "query": "query Close_approaches {\r\n    close_approaches(input: {\r\n        page: {{invalid_page}}\r\n    }) {\r\n        metadata\r\n        approaches {\r\n            id\r\n            spkid\r\n            date\r\n            nominal_distance_km\r\n            minimum_distance_km\r\n            relative_velocity_km_s\r\n            rarity\r\n        }\r\n    }\r\n}\r\n",
                 "variables": ""
               }
             },

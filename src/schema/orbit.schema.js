@@ -10,6 +10,11 @@ export const orbit = `#graphql
 		years: Float
 	}
 
+	type FilterResponse {
+		metadata: String!
+		orbits: [Orbit!]!
+	}
+
 	input FilterInput {
 		limit: Int
 		page: Int
@@ -18,6 +23,6 @@ export const orbit = `#graphql
 
 	extend type Query {
 		orbit(spkid: ID!): Orbit
-		orbits(input: FilterInput!): [Orbit!]!
+		orbits(input: FilterInput!): FilterResponse
 	}
 `

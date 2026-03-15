@@ -14,6 +14,11 @@ export const neo = `#graphql
 		close_approaches: [Close_Approach]
 	}
 
+	type FilterResponse {
+		metadata: String!
+		neos: [Neo!]!
+	}
+
 	type DeleteNeoResponse {
 		deletedNeo: Neo
 		message: String
@@ -44,7 +49,7 @@ export const neo = `#graphql
 
 	extend type Query {
 		neo(spkid: ID!): Neo
-		neos(input: FilterInput): [Neo!]!
+		neos(input: FilterInput): FilterResponse
 	}
 
 	extend type Mutation {
