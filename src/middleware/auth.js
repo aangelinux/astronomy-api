@@ -9,6 +9,20 @@ import dotenv from 'dotenv'
 
 dotenv.config()
 
+export async function verifyOAuthUser({ username, provider, providerID }) {
+	let user = await User.getByUsername(username)
+	if (!user) {
+		await User.registerWithOAuth({
+			username,
+			provider,
+			providerID
+		})
+		user = await User.getByUsername(username)
+	}
+
+	return user
+}
+
 export async function verifyUser(username, password) {
 	const user = await User.getByUsername(username)
 	if (!user) throw new Error('Username or password invalid')

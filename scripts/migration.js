@@ -56,8 +56,10 @@ async function userSchema() {
 		CREATE TABLE users (
 			userid INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 			username VARCHAR(100) UNIQUE NOT NULL,
-			password_hash VARCHAR(255) NOT NULL,
-			created DATETIME
+			password_hash VARCHAR(255),
+			created DATETIME,
+			provider VARCHAR(255),
+			providerID VARCHAR(255)
 		)`
 
 	const [result] = await db.query(query)

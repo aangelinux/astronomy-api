@@ -29,6 +29,12 @@ export const user = `#graphql
 		password: String!
 	}
 
+	input OAuthLoginInput {
+		username: String!
+		provider: String!
+		providerID: ID!
+	}
+
 	input DeleteInput {
 		username: String!
 		password: String!
@@ -41,6 +47,7 @@ export const user = `#graphql
 	extend type Mutation {
 		register(input: RegisterInput!): User
 		login(input: LoginInput!): LoginResponse
+		loginOAuth(input: OAuthLoginInput!): LoginResponse
 		deleteAccount(input: DeleteInput!): DeleteUserResponse
 	}
 `

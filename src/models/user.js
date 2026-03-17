@@ -32,6 +32,21 @@ export default class User {
 		return result.insertId
 	}
 
+	static async registerWithOAuth(data) {
+		const query = `
+		INSERT INTO users (username, provider, providerID, created)
+		VALUES (?, ?, ?, NOW())`
+
+		const [result] = await db.query(query, [
+			data.username,
+			data.provider,
+			data.providerID
+		])
+
+		return result.insertId
+
+	}
+
 	static async delete(user) {
 		const query = `DELETE FROM users WHERE username = ?`
 		const [result] = await db.query(query, [user])
