@@ -22,9 +22,9 @@ export default class Close_Approach {
 	static async filterApproaches(input) {
 		const limit = input['limit'] || 50
 		const offset = ((input['page'] - 1) * limit) || 0
-		// Need to use includes() here to check if input has key 'rarity',
+		// Need to explicitly check if input has key 'rarity',
 		// because if rarity exists but is 0 it will be treated as false
-		const rarity = input.includes('rarity') ? input['rarity'] : null
+		const rarity = input.rarity ? input['rarity'] : null
 
 		let query = `SELECT * FROM close_approaches WHERE rarity = ? LIMIT ? OFFSET ?`
 		let values = [rarity, limit, offset]
