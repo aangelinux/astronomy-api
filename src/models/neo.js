@@ -13,18 +13,18 @@ export default class Neo {
 	}
 
 	static async filterNeos(input) {
-		const limit = input.limit ? input['limit'] : 50
-		const offset = input.page ? ((input['page'] - 1) * limit) : 0
-		const name = input.name ? input['name'] : null
+		const limit = input['limit'] || 50
+		const offset = ((input['page'] - 1) * limit) || 0
+		const name = input['name'] || null
 
-		let query, values
+		let query = 'SELECT * FROM near_earth_objects WHERE name LIKE ? LIMIT ? OFFSET ?'
+		let values = [`%${name}%`, limit, offset]
+		
 		if (name === null) { 
 			query = 'SELECT * FROM near_earth_objects LIMIT ? OFFSET ?'
 			values = [limit, offset]
-		} else {
-			query = 'SELECT * FROM near_earth_objects WHERE name LIKE ? LIMIT ? OFFSET ?'
-			values = [`%${name}%`, limit, offset]
 		}
+
 		const [result] = await db.query(query, values)
 
 		return result
