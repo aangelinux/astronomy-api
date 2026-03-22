@@ -4,7 +4,7 @@
 
 import { fileURLToPath } from 'url'
 import path from 'path'
-import * as format from './formattingUtils.js'
+import * as format from './utils.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -16,7 +16,6 @@ export const NEOS = {
 	`INSERT INTO near_earth_objects  
 	(spkid, name, earth_moid_ld, magnitude, rotation_hours, pot_hazardous_asteroid) 
 	VALUES ?`,
-
 	/**
 	 * Extract CSV data and modify it where needed,
 	 * so it can be safely inserted into the DB
@@ -36,8 +35,8 @@ export const ORBITS = {
 	table: 'orbits',
 	query: 
 	`INSERT INTO orbits 
-	(spkid, orbital_class, eccentricity, years) VALUES ?`,
-
+	(spkid, orbital_class, eccentricity, years) 
+	VALUES ?`,
 	transform: (row) => [
 		row['spkid'],
 		row['class'],
@@ -53,7 +52,6 @@ export const APPROACHES = {
 	`INSERT INTO close_approaches  
 	(spkid, date, nominal_distance_km, minimum_distance_km, relative_velocity_km_s, rarity) 
 	VALUES ?`,
-
   transform: (row, { spkids }) => {
 		// The file of Approaches only has the names of the NEOs,
 		// not their spkids (unique IDs), so before inserting spkid,

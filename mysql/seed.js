@@ -5,9 +5,7 @@
 import db from '../src/config/db.js'
 import csvParser from 'csv-parser'
 import { createReadStream } from 'fs'
-import { NEOS, ORBITS, APPROACHES } from './datasetConfig.js'
-
-const batchSize = 500
+import { NEOS, ORBITS, APPROACHES } from './config.js'
 
 async function seed() {
 	const connection = await db.getConnection()
@@ -48,6 +46,7 @@ async function emptyDatabase(connection) {
  */
 async function streamData(connection, dataset, context = {}) {
 	const batch = []
+	const batchSize = 500
 	const fileStream = createReadStream(dataset.filePath)
 		.pipe(csvParser())
 

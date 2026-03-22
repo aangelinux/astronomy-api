@@ -7,8 +7,8 @@
   "scripts": {
     "start": "node src/app.js",
     "dev": "start http://localhost:3000 && node src/app.js",
-		"migrate": "node scripts/migration.js",
-    "seed": "node scripts/seed.js",
+		"migrate": "node mysql/migration.js",
+    "seed": "node mysql/seed.js",
     "lint": "npx eslint ."
   },
 	"engines": {
