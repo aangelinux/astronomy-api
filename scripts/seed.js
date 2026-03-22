@@ -1,134 +1,141 @@
 /**
- * Parses data from CSV files and populates a database.
+ * Parses data from CSV files to populate a database.
  */
 
 import db from '../src/config/db.js'
 import csvParser from 'csv-parser'
 import { createReadStream } from 'fs'
-import { parse, format } from 'date-fns'
-import path from 'path'
 import { fileURLToPath } from 'url'
+import path from 'path'
+import * as format from './formattingUtils.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
+const batchSize = 500
 
 const NEOS = {
-	table: 'near_earth_objects',
 	filePath: path.join(__dirname, '../data/near_earth_objects.csv'),
-	batchSize: 500,
-	query: `INSERT INTO near_earth_objects  
+	table: 'near_earth_objects',
+	query: 
+	`INSERT INTO near_earth_objects  
 	(spkid, name, earth_moid_ld, magnitude, rotation_hours, pot_hazardous_asteroid) 
 	VALUES ?`,
- 	values: (row) => [
-		row['spkid'],
-		formatName(row['full_name']),
-		safeFloat(row['moid_ld']),
-		safeFloat(row['H']),
-		safeFloat(row['rot_per']),
-		formatPHA(row['pha']),
-	]
-}
 
-const APPROACHES = {
-	table: 'close_approaches',
-	filePath: path.join(__dirname, '../data/close_approaches.csv'),
-	batchSize: 500,
-	query: `INSERT INTO close_approaches  
-	(spkid, date, nominal_distance_km, minimum_distance_km, relative_velocity_km_s, rarity) 
-	VALUES ?`,
-  values: (row, spkid) => [
-		spkid,
-		formatDate(row['Close-Approach (CA) Date']),
-		safeFloat(row['CA DistanceNominal (km)']),
-		safeFloat(row['CA DistanceMinimum (km)']),
-		safeFloat(row['V relative(km/s)']),
-		safeInt(row['Rarity'])
+	/**
+	 * Extract CSV data and modify it where needed,
+	 * so it can be safely inserted into the DB
+	 */
+ 	transform: (row) => [  
+		row['spkid'],
+		format.name(row['full_name']),
+		format.float(row['moid_ld']),
+		format.float(row['H']),
+		format.float(row['rot_per']),
+		format.pha(row['pha']),
 	]
 }
 
 const ORBITS = {
-	table: 'orbits',
 	filePath: path.join(__dirname, '../data/orbits.csv'),
-	batchSize: 500,
-	query: `INSERT INTO orbits 
+	table: 'orbits',
+	query: 
+	`INSERT INTO orbits 
 	(spkid, orbital_class, eccentricity, years) VALUES ?`,
-	values: (row) => [
+
+	transform: (row) => [
 		row['spkid'],
 		row['class'],
-		safeFloat(row['e']),
-		safeFloat(row['per_y']),
+		format.float(row['e']),
+		format.float(row['per_y']),
 	]
+}
+
+const APPROACHES = {
+	filePath: path.join(__dirname, '../data/close_approaches.csv'),
+	table: 'close_approaches',
+	query: 
+	`INSERT INTO close_approaches  
+	(spkid, date, nominal_distance_km, minimum_distance_km, relative_velocity_km_s, rarity) 
+	VALUES ?`,
+
+  transform: (row, { spkids }) => {
+		// The file of Approaches only has the names of the NEOs,
+		// not their spkids (unique IDs), so before inserting spkid,
+		// we have to get it from the NEO dataset
+		const spkid = spkids.get(row['Object'])
+		if (!spkid) return null
+
+		return [
+			spkid,
+			format.date(row['Close-Approach (CA) Date']),
+			format.float(row['CA DistanceNominal (km)']),
+			format.float(row['CA DistanceMinimum (km)']),
+			format.float(row['V relative(km/s)']),
+			format.int(row['Rarity'])
+		]
+	} 
 }
 
 async function seed() {
 	const connection = await db.getConnection()
 	try {
 		await connection.beginTransaction()
-		await emptyTables(connection)  // To prevent duplicates
+		await emptyDatabase(connection)
 		await streamData(connection, NEOS)
-		await streamApproaches(connection)
 		await streamData(connection, ORBITS)
+		await streamData(connection, APPROACHES, 
+			{ spkids: await getSpkids(connection) })
 		await connection.commit()
+
 		console.log('CSV files processed successfully')
 	} catch (error) {
 		await connection.rollback()
-		console.error('Error populating database: ', error.message)
-		process.exit(1)
 	} finally {
 		connection.release()
-		process.exit(0)
 	}
 }
 
-async function emptyTables(connection) {
+/**
+ * Deletes all data in the DB to prevent duplicates
+ */
+async function emptyDatabase(connection) {
 	await connection.query(`DELETE FROM ${ORBITS.table}`)
+
 	// Must be TRUNCATE, not DELETE, to reset 'id' to 0
 	await connection.query(`TRUNCATE TABLE ${APPROACHES.table}`)
-	// Must be last because the other tables reference it via FKs
+	
+	// Must be last because the other tables reference it
 	await connection.query(`DELETE FROM ${NEOS.table}`)
 }
 
-async function streamData(connection, RESOURCE) {
+/**
+ * Reads data line-by-line from a CSV file,
+ * then inserts the data into the DB in batches
+ */
+async function streamData(connection, dataset, context = {}) {
 	const batch = []
-	const fileStream = createReadStream(RESOURCE.filePath)
+	const fileStream = createReadStream(dataset.filePath)
 		.pipe(csvParser())
 
 	for await (const row of fileStream) {
-		const values = RESOURCE.values(row)
+		const values = dataset.transform(row, context)
+		if (!values) continue
+
 		batch.push(values)
-		if (batch.length >= RESOURCE.batchSize) {
-			await connection.query(RESOURCE.query, [batch])
+		if (batch.length >= batchSize) {
+			await connection.query(dataset.query, [batch])
 			batch.length = 0
 		}
 	}
-	if (batch.length > 0) {  // If there are remaining values
-		await connection.query(RESOURCE.query, [batch])
+	if (batch.length > 0) { // Inserts any remaining values
+		await connection.query(dataset.query, [batch])
 	}
 }
 
-async function streamApproaches(connection) {
-	const batch = []
-	const spkidMap = await mapSpkid(connection)
-	const fileStream = createReadStream(APPROACHES.filePath)
-		.pipe(csvParser())
-
-	for await (const row of fileStream) {
-		const spkid = spkidMap.get(row['Object'])
-		if (!spkid) continue
-
-		const values = APPROACHES.values(row, spkid)
-		batch.push(values)
-		if (batch.length >= APPROACHES.batchSize) {
-			await connection.query(APPROACHES.query, [batch])
-			batch.length = 0
-		}
-	}
-	if (batch.length > 0) {
-		await connection.query(APPROACHES.query, [batch])
-	}
-}
-
-async function mapSpkid(connection) {
+/**
+ * Creates a map of name -> spkid for each NEO
+ */
+async function getSpkids(connection) {
 	const [rows] = await connection.query(
 		`SELECT spkid, name FROM near_earth_objects`)
 	
@@ -136,34 +143,13 @@ async function mapSpkid(connection) {
 	for (const row of rows) {
 		map.set(row.name, row.spkid)
 	}
-	
+
 	return map
 }
 
-function formatName(value) {
-	return value.trimStart()
-}
-
-function formatPHA(value) {
-	return value === 'Y' ? true : false
-}
-
-function formatDate(date) {
-	const parsedDate = parse(
-		date.split('±')[0].trim(), 'yyyy-MMM-dd HH:mm', new Date())
-	const formattedDate = format(parsedDate, 'yyyy-MM-dd HH:mm:ss')
-
-	return formattedDate
-}
-
-function safeFloat(val) {
-	const parsedFloat = parseFloat(val)
-	return Number.isNaN(parsedFloat) ? null : parsedFloat
-}
-
-function safeInt(val) {
-	const parsedInt = parseInt(val)
-	return Number.isNaN(parsedInt) ? null : parsedInt
-}
-
-seed().catch(console.error)
+seed()
+	.then(() => process.exit(0))
+	.catch((error) => {
+		console.error('Error populating database: ', error.message)
+		process.exit(1)
+	})
