@@ -1,5 +1,5 @@
 /**
- * Server configuration and startup.
+ * Express app serving a GraphQL API.
  */
 
 import dotenv from 'dotenv'
@@ -25,7 +25,7 @@ app.use((err, req, res, next) => {
   res.status(500).json({ message: 'Oops! Something went wrong.' })
 })
 
-app.use(helmet({  // Need this config for Apollo Server to work
+app.use(helmet({  // Need these options for Apollo Server to work
   crossOriginEmbedderPolicy: false,
   contentSecurityPolicy: {
     directives: {

@@ -12,15 +12,12 @@ export default class Orbit {
 		return result[0]
 	}
 
-	static async filterOrbits(input) {
-		const limit = input['limit'] || 50
-		const offset = ((input['page'] - 1) * limit) || 0
-		const orbitClass = input['orbital_class'] || null
-
+	static async filterOrbits({ limit = 50, page = 1, orbital_class = null }) {
+		const offset = ((page - 1) * limit)
 		let query = 'SELECT * FROM orbits WHERE orbital_class = ? LIMIT ? OFFSET ?'
-		let values = [orbitClass, limit, offset]
-		
-		if (orbitClass === null) { 
+		let values = [orbital_class, limit, offset]
+
+		if (orbital_class === null) { 
 			query = 'SELECT * FROM orbits LIMIT ? OFFSET ?'
 			values = [limit, offset]
 		}

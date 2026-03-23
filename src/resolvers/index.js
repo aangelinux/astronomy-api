@@ -9,7 +9,7 @@ import { userResolvers } from './userResolvers.js'
 import { dateResolvers } from './dateResolvers.js'
 
 /**
- * Merges multiple resolvers into a single object
+ * Merges multiple resolvers into a single object,
  * before exporting it to the server
  */
 export const resolvers = {
