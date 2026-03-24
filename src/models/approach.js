@@ -19,8 +19,7 @@ export default class Close_Approach {
 		return result
 	}
 
-	static async filterApproaches({ limit = 50, page = 1, rarity = null }) {
-		const offset = ((page - 1) * limit)
+	static async filterApproaches({ limit = 50, offset = 0, rarity = null }) {
 		let query = `SELECT * FROM close_approaches WHERE rarity = ? LIMIT ? OFFSET ?`
 		let values = [rarity, limit, offset]
 

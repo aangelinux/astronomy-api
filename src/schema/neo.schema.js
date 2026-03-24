@@ -26,7 +26,7 @@ export const neo = `#graphql
 
 	input FilterInput {
 		limit: Int
-		page: Int
+		offset: Int
 		name: String
 	}
 

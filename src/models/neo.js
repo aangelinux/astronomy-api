@@ -12,8 +12,7 @@ export default class Neo {
 		return result[0]
 	}
 
-	static async filterNeos({ limit = 50, page = 1, name = null }) {
-		const offset = ((page - 1) * limit)
+	static async filterNeos({ limit = 50, offset = 0, name = null }) {
 		let query = 'SELECT * FROM near_earth_objects WHERE name LIKE ? LIMIT ? OFFSET ?'
 		let values = [`%${name}%`, limit, offset]
 

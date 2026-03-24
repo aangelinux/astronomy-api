@@ -20,7 +20,7 @@ export const approach = `#graphql
 
 	input FilterInput {
 		limit: Int
-		page: Int
+		offset: Int
 		rarity: Int
 	}
 

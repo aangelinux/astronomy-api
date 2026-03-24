@@ -17,7 +17,7 @@ export const orbit = `#graphql
 
 	input FilterInput {
 		limit: Int
-		page: Int
+		offset: Int
 		orbital_class: String
 	}
 
