@@ -32,16 +32,27 @@ export const neoResolvers = {
 		addNeo: async (_, { input }, context) => {
 			verifyToken(context)
 			await Neo.addNeo(input)
-			return await Neo.getNeo(input.spkid)
+			return {
+				addedNeo: await Neo.getNeo(input.spkid),
+				message: 'Near-Earth Object added successfully'
+			}
 		},
 		updateNeo: async (_, { spkid, input }, context) => {
 			verifyToken(context)
+			const neo = await Neo.getNeo(spkid)
+			if (!neo) throw new Error('No NEO matching spkid')
+
 			await Neo.updateNeo(spkid, input)
-			return await Neo.getNeo(spkid)
+			return {
+				updatedNeo: await Neo.getNeo(spkid),
+				message: 'Near-Earth Object updated successfully'
+			}
 		},
 		deleteNeo: async (_, { spkid }, context) => {
 			verifyToken(context)
 			const neo = await Neo.getNeo(spkid)
+			if (!neo) throw new Error('No NEO matching spkid')
+				
 			await Neo.deleteNeo(spkid)
 			return {
 				deletedNeo: neo,

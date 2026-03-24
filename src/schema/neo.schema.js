@@ -19,6 +19,16 @@ export const neo = `#graphql
 		neos: [Neo!]!
 	}
 
+	type AddNeoResponse {
+		addedNeo: Neo
+		message: String
+	}
+
+	type UpdateNeoResponse {
+		updatedNeo: Neo
+		message: String
+	}
+
 	type DeleteNeoResponse {
 		deletedNeo: Neo
 		message: String
@@ -53,8 +63,8 @@ export const neo = `#graphql
 	}
 
 	extend type Mutation {
-		addNeo(input: AddNeoInput!): Neo
-		updateNeo(spkid: ID!, input: UpdateNeoInput!): Neo
+		addNeo(input: AddNeoInput!): AddNeoResponse
+		updateNeo(spkid: ID!, input: UpdateNeoInput!): UpdateNeoResponse
 		deleteNeo(spkid: ID!): DeleteNeoResponse
 	}
 `

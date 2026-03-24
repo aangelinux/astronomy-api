@@ -3,7 +3,7 @@
  */
 
 import User from '../models/user.js'
-import { verifyUser, createToken, verifyOAuthUser, verifyToken } from '../middleware/auth.js'
+import { verifyUser, createToken, verifyOAuthUser } from '../middleware/auth.js'
 import bcrypt from 'bcrypt'
 
 export const userResolvers = {
@@ -41,8 +41,7 @@ export const userResolvers = {
 				message: 'Login successful'
 			}
 		},
-		deleteAccount: async (_, { input }, context) => {
-			verifyToken(context)
+		deleteAccount: async (_, { input }) => {
 			const user = await verifyUser(input)
 			await User.delete(user.username)
 			return {
