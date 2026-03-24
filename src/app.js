@@ -52,7 +52,9 @@ const apolloServer = new ApolloServer({
 })
 
 await apolloServer.start()
-app.use(expressMiddleware(apolloServer))
+app.use(expressMiddleware(apolloServer, {
+	context: async ({ req }) => { return req }
+}))
 
 try {
 	await db.getConnection()

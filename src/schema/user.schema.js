@@ -9,13 +9,18 @@ export const user = `#graphql
 		created: Date
 	}
 
-	type DeleteUserResponse {
-		deletedUser: User
+	type RegisterResponse {
+		token: String!
 		message: String
 	}
 
 	type LoginResponse {
 		token: String!
+		message: String
+	}
+
+	type DeleteResponse {
+		deletedUser: String
 		message: String
 	}
 
@@ -45,9 +50,9 @@ export const user = `#graphql
 	}
 
 	extend type Mutation {
-		register(input: RegisterInput!): User
+		register(input: RegisterInput!): RegisterResponse
 		login(input: LoginInput!): LoginResponse
 		loginOAuth(input: OAuthLoginInput!): LoginResponse
-		deleteAccount(input: DeleteInput!): DeleteUserResponse
+		deleteAccount(input: DeleteInput!): DeleteResponse
 	}
 `

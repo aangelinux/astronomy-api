@@ -29,18 +29,18 @@ export const neoResolvers = {
 	},
 
 	Mutation: {
-		addNeo: async (_, { input, token }) => {
-			verifyToken(token)
+		addNeo: async (_, { input }, context) => {
+			verifyToken(context)
 			await Neo.addNeo(input)
 			return await Neo.getNeo(input.spkid)
 		},
-		updateNeo: async (_, { spkid, input, token }) => {
-			verifyToken(token)
+		updateNeo: async (_, { spkid, input }, context) => {
+			verifyToken(context)
 			await Neo.updateNeo(spkid, input)
 			return await Neo.getNeo(spkid)
 		},
-		deleteNeo: async (_, { spkid, token }) => {
-			verifyToken(token)
+		deleteNeo: async (_, { spkid }, context) => {
+			verifyToken(context)
 			const neo = await Neo.getNeo(spkid)
 			await Neo.deleteNeo(spkid)
 			return {
