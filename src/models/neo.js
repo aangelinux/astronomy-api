@@ -20,7 +20,6 @@ export default class Neo {
 			query = 'SELECT * FROM near_earth_objects LIMIT ? OFFSET ?'
 			values = [limit, offset]
 		}
-
 		const [result] = await db.query(query, values)
 
 		return result

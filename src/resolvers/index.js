@@ -9,8 +9,7 @@ import { userResolvers } from './userResolvers.js'
 import { dateResolvers } from './dateResolvers.js'
 
 /**
- * Merges multiple resolvers into a single object,
- * before exporting it to the server
+ * Merges multiple resolvers into a single object
  */
 export const resolvers = {
 	// Adds the Date scalar to the other resolvers

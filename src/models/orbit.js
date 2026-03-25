@@ -20,7 +20,6 @@ export default class Orbit {
 			query = 'SELECT * FROM orbits LIMIT ? OFFSET ?'
 			values = [limit, offset]
 		}
-
 		const [result] = await db.query(query, values)
 
 		return result

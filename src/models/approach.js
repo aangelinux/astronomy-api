@@ -27,7 +27,6 @@ export default class Close_Approach {
 			query = `SELECT * FROM close_approaches LIMIT ? OFFSET ?`
 			values = [limit, offset]
 		}
-
 		const [result] = await db.query(query, values)
 
 		return result

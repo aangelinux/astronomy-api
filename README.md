@@ -6,7 +6,7 @@
 
 This API serves a dataset of 15 000+ near-earth objects, their orbital data, and historical records of close approaches to earth.  
   
-The main resource offering CRUD-functionality are the Near-Earth Objects (NEOs); their name, earth MOID (Minimum Orbit Intersection Distance), magnitude, hours to complete a full rotation, and a hazard flag.  
+The main resource which offers CRUD-functionality are the Near-Earth Objects (NEOs); their name, earth MOID (Minimum Orbit Intersection Distance), magnitude, hours to complete a full rotation, and a hazard flag.  
   
 Secondary resources are read-only, with the first resource offering orbital data of each NEO and the second resource offering historical records of close approaches.  
   
@@ -27,16 +27,16 @@ Orbits and Close Approaches are linked to their corresponding Near-Earth Object 
 | **Production Environment** | `./postman/astronomy_prod.postman_environment.json` |
   
   
-**Seed script**  
+### Seed script
   
 To populate the database with sample data:  
 
-```js
-npm run seed
-```
+		```js
+		npm run seed
+		```
   
 
-**Examiner can verify tests in one of the following ways:**
+### Examiner can verify tests in one of the following ways:
 
 1. **CI/CD pipeline** — check the [pipeline output](https://gitlab.lnu.se/1dv027/student/al227bn/exercises/assignment-api-design/-/artifacts) in GitLab for test results.
 2. **Run manually** — no setup needed:
@@ -49,7 +49,7 @@ npm run seed
 | Field | Description |
 |---|---|
 | **Dataset source** | CSV files from [NASA Small-Body DB](https://ssd.jpl.nasa.gov/tools/sbdb_query.html#!#results) and [NASA Close Approaches](https://cneos.jpl.nasa.gov/ca/) |
-| **Primary resource (CRUD)** | **Near-Earth Objects** (spkid, name, earth_moid_ld, magnitude, rotation_hours, pha) |
+| **Primary resource (CRUD)** | **Near-Earth Objects** (spkid, name, earth_moid_ld, magnitude, rotation_hours, pot_hazardous_asteroid) |
 | **Secondary resource 1 (read-only)** | **Orbits** (spkid, orbital_class, eccentricity, years) |
 | **Secondary resource 2 (read-only)** | **Close Approaches** (id, spkid, date, nominal_distance_km, minimum_distance_km, relative_velocity_km_s, rarity) |
 
@@ -58,22 +58,22 @@ npm run seed
 
 ### Authentication
 
-The API uses JWT tokens to authenticate the user before mutation requests. Successful login returns a token in the response, allowing users to copy-paste it into any subsequent requests that require authentication. The token is then verified to ensure it's valid.  
+The API requires a **JWT** token in the Authorization header to authenticate users for mutation requests. Successful login or register returns a token in the response body, allowing users to copy-paste it into their Authorization header. On mutation requests, the token is verified to ensure it's valid.  
   
 This approach ensures that only verified users can make changes to the database. The token expires after 1 hour.  
 
 ### API Design
   
-The API is designed to serve three main resources, as well as personal user accounts. The astronomical resources are connected to each other via the **spkid** attribute to allow nested queries. Queries to the main resource, Near-Earth Objects, can be nested to include related Orbit data and Close Approach data if applicable.  
+The API is designed to serve three main resources and allow users to create their own personal accounts.Astronomical resources are connected to each other via the **spkid** identifier. Queries to the main resource, Near-Earth Objects, can be nested to include related Orbit data and Close Approach data if applicable.  
   
 Successful mutations will return a success message and info on the mutated object.  
   
 ### Error Handling
   
 Errors follow standard GraphQL practices. Requests can return one of three possible response types:
-- 200 OK - Success. Response returns the requested data, or in the case of mutations a success message.
-- 200 OK - Partial success. Occurs as a result of business logic-related errors. Response contains an error object describing the issue, and the data object is null.  
-- 400 BAD REQUEST - Failure. Occurs as a result of missing required input. Response only contains an error object describing the issue.  
+- 200 OK - Success. Response contains the requested or mutated data.
+- 200 OK - Partial success. Response contains an error object and a null data object. 
+- 400 BAD REQUEST - Failure. Response contains an error object. Usually occurs as a result of missing required input.  
 
 ## Core Technologies Used
 
@@ -83,7 +83,7 @@ Errors follow standard GraphQL practices. Requests can return one of three possi
   
 ## Reflection
   
-Understanding how schemas and resolvers work in a GraphQL API was initially challenging. Seeing how they differ from REST APIs, and what their different strengths and weakness are, was interesting and useful in offering an alternative way to structure web APIs.  
+It was initially challenging to understand how schemas and resolvers work in GraphQL, but seeing how they differ from REST APIs and their respective strengths and weaknesses provides a useful alternative to building web APIs in the future.  
   
 ## Requirements
   
