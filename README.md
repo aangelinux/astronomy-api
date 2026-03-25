@@ -31,9 +31,9 @@ Orbits and Close Approaches are linked to their corresponding Near-Earth Object 
   
 To populate the database with sample data:  
 
-		```js
-		npm run seed
-		```
+```js
+npm run seed
+```
   
 
 ### Examiner can verify tests in one of the following ways:
