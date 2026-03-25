@@ -25,12 +25,22 @@ Orbits and Close Approaches are linked to their corresponding Near-Earth Object 
 | **GraphQL Playground** | https://astronomy-api-production.up.railway.app/ |
 | **Postman Collection** | `./postman/astronomy.postman_collection.json` |
 | **Production Environment** | `./postman/astronomy_prod.postman_environment.json` |
+  
+  
+**Seed script**  
+  
+To populate the database with sample data:  
+
+```js
+npm run seed
+```
+  
 
 **Examiner can verify tests in one of the following ways:**
 
 1. **CI/CD pipeline** — check the [pipeline output](https://gitlab.lnu.se/1dv027/student/al227bn/exercises/assignment-api-design/-/artifacts) in GitLab for test results.
 2. **Run manually** — no setup needed:
-   ```
+   ```js
    npx newman run "./postman/astronomy.postman_collection.json" --environment "./postman/astronomy_prod.postman_environment.json"
    ```
 

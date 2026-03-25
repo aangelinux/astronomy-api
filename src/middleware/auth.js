@@ -45,11 +45,13 @@ export function createToken(user) {
 
 export function verifyToken(req) {
 	const authHeader = req.headers.authorization
-	const token = authHeader.replace('Bearer', '')
+	if (!authHeader) throw new Error('Invalid or expired token')
+
+	const token = authHeader.replace('Bearer ', '')
 	
 	try {
 		return jwt.verify(token, process.env.JWT_SECRET)
 	} catch (error) {
-		console.log('Error verifying token: ', error.message)
+		throw new Error('Invalid or expired token')
 	}
 }

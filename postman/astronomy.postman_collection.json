@@ -60,7 +60,7 @@
                 "body": {
                   "mode": "graphql",
                   "graphql": {
-                    "query": "mutation Register {\r\n    register(input: { \r\n        username: \"{{randomUsername}}\", \r\n        password: \"{{randomPassword}}\"\r\n    }) \r\n    {\r\n        userid\r\n        username\r\n        created\r\n    }\r\n}",
+                    "query": "mutation Register {\r\n    register(input: { \r\n        username: \"{{randomUsername}}\", \r\n        password: \"{{randomPassword}}\"\r\n    }) \r\n    {\r\n        token,\r\n        message\r\n    }\r\n}",
                     "variables": ""
                   }
                 },
@@ -70,7 +70,7 @@
                     "{{URL}}"
                   ]
                 },
-                "description": "**Example request:**\n\n``` graphql\nmutation Register {\n    register(input: { \n        username: \"\", \n        password: \"\"\n    }) \n    {\n        userid\n        username\n        created\n    }\n}\n\n ```\n\n**Response:**\n\n``` graphql\n{\n    \"data\": {\n        \"register\": {\n            \"userid\": \"1\",\n            \"username\": \"53089f40-8007-4956-9fde-edb49b8dffa7\",\n            \"created\": \"2026-03-09T16:50:54.000Z\"\n        }\n    }\n}\n\n ```"
+                "description": "**Example request:**\n\n``` graphql\nmutation Register {\n    register(input: { \n        username: \"{{randomUsername}}\", \n        password: \"{{randomPassword}}\"\n    }) \n    {\n        token,\n        message\n    }\n}\n\n ```\n\n**Response:**\n\n``` graphql\n{\n    \"data\": {\n        \"register\": {\n            \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOjM2LCJpYXQiOjE3NzQzOTAxMTksImV4cCI6MTc3NDM5MzcxOX0.sGWpZ5AYUV-TrtTQNUkL9IAw703H6D8PdWMbcGVC5_I\",\n            \"message\": \"Account registered successfully\"\n        }\n    }\n}\n\n ```"
               },
               "response": []
             },
@@ -116,7 +116,7 @@
                 "body": {
                   "mode": "graphql",
                   "graphql": {
-                    "query": "mutation Register {\r\n    register(input: {\r\n        username: \"{{randomUsername}}\"\r\n        password: \"{{randomPassword}}\"\r\n    })\r\n    {\r\n        userid\r\n        username\r\n        created\r\n    }\r\n}",
+                    "query": "mutation Register {\r\n    register(input: {\r\n        username: \"{{randomUsername}}\"\r\n        password: \"{{randomPassword}}\"\r\n    })\r\n    {\r\n        token\r\n        message\r\n    }\r\n}",
                     "variables": ""
                   }
                 },
@@ -126,7 +126,7 @@
                     "{{URL}}"
                   ]
                 },
-                "description": "**Response:**\n\n``` graphql\n{\n    \"data\": {\n        \"register\": null\n    },\n    \"errors\": [\n        {\n            \"message\": \"Duplicate entry '53089f40-8007-4956-9fde-edb49b8dffa7' for key 'users.username'\",\n            \"path\": [\n                \"register\"\n            ],\n            \"locations\": [\n                {\n                    \"line\": 2,\n                    \"column\": 5\n                }\n            ],\n            \"extensions\": {\n                \"code\": \"INTERNAL_SERVER_ERROR\",\n                \"stacktrace\": [\n                    \"Error: Duplicate entry '53089f40-8007-4956-9fde-edb49b8dffa7' for key 'users.username'\",\n                    \"    at PromisePool.query (C:\\\\Users\\\\angel\\\\OneDrive\\\\Documents\\\\Kurser\\\\1DV027\\\\assignment-api-design\\\\node_modules\\\\mysql2\\\\lib\\\\promise\\\\pool.js:36:22)\",\n                    \"    at User.register (file:///C:/Users/angel/OneDrive/Documents/Kurser/1DV027/assignment-api-design/src/models/user.js:27:29)\",\n                    \"    at Object.register (file:///C:/Users/angel/OneDrive/Documents/Kurser/1DV027/assignment-api-design/src/resolvers/userResolvers.js:19:30)\"\n                ]\n            }\n        }\n    ]\n}\n\n ```"
+                "description": "**Response:**\n\n``` graphql\n{\n    \"errors\": [\n        {\n            \"message\": \"Duplicate entry '04253dec-1992-4754-bcf7-823a9f1bbcf8' for key 'users.username'\",\n            \"locations\": [\n                {\n                    \"line\": 2,\n                    \"column\": 5\n                }\n            ],\n            \"path\": [\n                \"register\"\n            ],\n            \"extensions\": {\n                \"code\": \"INTERNAL_SERVER_ERROR\",\n                \"stacktrace\": [\n                    \"Error: Duplicate entry '04253dec-1992-4754-bcf7-823a9f1bbcf8' for key 'users.username'\",\n                    \"    at PromisePool.query (C:\\\\Users\\\\angel\\\\OneDrive\\\\Documents\\\\Kurser\\\\1DV027\\\\API\\\\assignment-api-design\\\\node_modules\\\\mysql2\\\\lib\\\\promise\\\\pool.js:36:22)\",\n                    \"    at User.register (file:///C:/Users/angel/OneDrive/Documents/Kurser/1DV027/API/assignment-api-design/src/models/user.js:27:29)\",\n                    \"    at Object.register (file:///C:/Users/angel/OneDrive/Documents/Kurser/1DV027/API/assignment-api-design/src/resolvers/userResolvers.js:20:30)\"\n                ]\n            }\n        }\n    ],\n    \"data\": {\n        \"register\": null\n    }\n}\n\n ```"
               },
               "response": []
             },
@@ -165,7 +165,7 @@
                 "body": {
                   "mode": "graphql",
                   "graphql": {
-                    "query": "mutation Register {\r\n    register(input: null) {\r\n        userid\r\n        username\r\n        created\r\n    }\r\n}\r\n",
+                    "query": "mutation Register {\r\n    register(input: null) {\r\n        token\r\n        message\r\n    }\r\n}\r\n",
                     "variables": ""
                   }
                 },
@@ -175,7 +175,7 @@
                     "{{URL}}"
                   ]
                 },
-                "description": "**Response:**\n\n``` graphql\n{\n    \"errors\": [\n        {\n            \"message\": \"Expected value of type \\\"RegisterInput!\\\", found null.\",\n            \"locations\": [\n                {\n                    \"line\": 2,\n                    \"column\": 21\n                }\n            ],\n            \"extensions\": {\n                \"code\": \"GRAPHQL_VALIDATION_FAILED\",\n                \"stacktrace\": [\n                    \"GraphQLError: Expected value of type \\\"RegisterInput!\\\", found null.\",\n                    \"    at Object.NullValue (C:\\\\Users\\\\angel\\\\OneDrive\\\\Documents\\\\Kurser\\\\1DV027\\\\assignment-api-design\\\\node_modules\\\\graphql\\\\validation\\\\rules\\\\ValuesOfCorrectTypeRule.js:120:11)\",\n                    \"    at Object.enter (C:\\\\Users\\\\angel\\\\OneDrive\\\\Documents\\\\Kurser\\\\1DV027\\\\assignment-api-design\\\\node_modules\\\\graphql\\\\language\\\\visitor.js:298:32)\",\n                    \"    at Object.enter (C:\\\\Users\\\\angel\\\\OneDrive\\\\Documents\\\\Kurser\\\\1DV027\\\\assignment-api-design\\\\node_modules\\\\graphql\\\\utilities\\\\TypeInfo.js:391:27)\",\n                    \"    at visit (C:\\\\Users\\\\angel\\\\OneDrive\\\\Documents\\\\Kurser\\\\1DV027\\\\assignment-api-design\\\\node_modules\\\\graphql\\\\language\\\\visitor.js:194:21)\",\n                    \"    at validate (C:\\\\Users\\\\angel\\\\OneDrive\\\\Documents\\\\Kurser\\\\1DV027\\\\assignment-api-design\\\\node_modules\\\\graphql\\\\validation\\\\validate.js:102:24)\",\n                    \"    at processGraphQLRequest (file:///C:/Users/angel/OneDrive/Documents/Kurser/1DV027/assignment-api-design/node_modules/@apollo/server/dist/esm/requestPipeline.js:101:36)\",\n                    \"    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\",\n                    \"    at async internalExecuteOperation (file:///C:/Users/angel/OneDrive/Documents/Kurser/1DV027/assignment-api-design/node_modules/@apollo/server/dist/esm/ApolloServer.js:635:16)\",\n                    \"    at async runHttpQuery (file:///C:/Users/angel/OneDrive/Documents/Kurser/1DV027/assignment-api-design/node_modules/@apollo/server/dist/esm/runHttpQuery.js:129:29)\",\n                    \"    at async runPotentiallyBatchedHttpQuery (file:///C:/Users/angel/OneDrive/Documents/Kurser/1DV027/assignment-api-design/node_modules/@apollo/server/dist/esm/httpBatching.js:34:16)\"\n                ]\n            }\n        }\n    ]\n}\n\n ```"
+                "description": "**Response:**\n\n``` graphql\n{\n    \"errors\": [\n        {\n            \"message\": \"Expected value of type \\\"RegisterInput!\\\", found null.\",\n            \"locations\": [\n                {\n                    \"line\": 2,\n                    \"column\": 21\n                }\n            ],\n            \"extensions\": {\n                \"code\": \"GRAPHQL_VALIDATION_FAILED\",\n                \"stacktrace\": [\n                    \"GraphQLError: Expected value of type \\\"RegisterInput!\\\", found null.\",\n                    \"    at Object.NullValue (C:\\\\Users\\\\angel\\\\OneDrive\\\\Documents\\\\Kurser\\\\1DV027\\\\API\\\\assignment-api-design\\\\node_modules\\\\graphql\\\\validation\\\\rules\\\\ValuesOfCorrectTypeRule.js:120:11)\",\n                    \"    at Object.enter (C:\\\\Users\\\\angel\\\\OneDrive\\\\Documents\\\\Kurser\\\\1DV027\\\\API\\\\assignment-api-design\\\\node_modules\\\\graphql\\\\language\\\\visitor.js:298:32)\",\n                    \"    at Object.enter (C:\\\\Users\\\\angel\\\\OneDrive\\\\Documents\\\\Kurser\\\\1DV027\\\\API\\\\assignment-api-design\\\\node_modules\\\\graphql\\\\utilities\\\\TypeInfo.js:391:27)\",\n                    \"    at visit (C:\\\\Users\\\\angel\\\\OneDrive\\\\Documents\\\\Kurser\\\\1DV027\\\\API\\\\assignment-api-design\\\\node_modules\\\\graphql\\\\language\\\\visitor.js:194:21)\",\n                    \"    at validate (C:\\\\Users\\\\angel\\\\OneDrive\\\\Documents\\\\Kurser\\\\1DV027\\\\API\\\\assignment-api-design\\\\node_modules\\\\graphql\\\\validation\\\\validate.js:102:24)\",\n                    \"    at processGraphQLRequest (file:///C:/Users/angel/OneDrive/Documents/Kurser/1DV027/API/assignment-api-design/node_modules/@apollo/server/dist/esm/requestPipeline.js:101:36)\",\n                    \"    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\",\n                    \"    at async internalExecuteOperation (file:///C:/Users/angel/OneDrive/Documents/Kurser/1DV027/API/assignment-api-design/node_modules/@apollo/server/dist/esm/ApolloServer.js:635:16)\",\n                    \"    at async runHttpQuery (file:///C:/Users/angel/OneDrive/Documents/Kurser/1DV027/API/assignment-api-design/node_modules/@apollo/server/dist/esm/runHttpQuery.js:129:29)\",\n                    \"    at async runPotentiallyBatchedHttpQuery (file:///C:/Users/angel/OneDrive/Documents/Kurser/1DV027/API/assignment-api-design/node_modules/@apollo/server/dist/esm/httpBatching.js:34:16)\"\n                ]\n            }\n        }\n    ]\n}\n\n ```"
               },
               "response": []
             }
@@ -208,7 +208,19 @@
                   "listen": "test",
                   "script": {
                     "exec": [
-                      ""
+                      "const jsonData = pm.response.json()\r",
+                      "const token = jsonData?.data?.register?.token\r",
+                      "    || jsonData?.data?.token\r",
+                      "    || jsonData?.token\r",
+                      "\r",
+                      "if (token) {\r",
+                      "    pm.collectionVariables.set(\"authToken\", token)\r",
+                      "    pm.request.headers.upsert({ key: \"Authorization\", value: \"Bearer \" + token })\r",
+                      "}\r",
+                      "\r",
+                      "pm.test(\"Token extracted and saved\", () => {\r",
+                      "    pm.expect(token).to.be.a(\"string\").and.not.empty\r",
+                      "})"
                     ],
                     "type": "text/javascript",
                     "packages": {},
@@ -222,7 +234,7 @@
                 "body": {
                   "mode": "graphql",
                   "graphql": {
-                    "query": "mutation Register {\r\n    register(input: { \r\n        username: \"{{randomUsername}}\", \r\n        password: \"{{randomPassword}}\"\r\n    }) \r\n    {\r\n        userid\r\n        username\r\n        created\r\n    }\r\n}",
+                    "query": "mutation Register {\r\n    register(input: { \r\n        username: \"{{randomUsername}}\", \r\n        password: \"{{randomPassword}}\"\r\n    }) \r\n    {\r\n        token\r\n        message\r\n    }\r\n}",
                     "variables": ""
                   }
                 },
@@ -296,7 +308,7 @@
                     "{{URL}}"
                   ]
                 },
-                "description": "**Example request:**\n\n``` graphql\nmutation Login {\n    login(input: { \n        username: \"{{randomUsername}}\", \n        password: \"{{randomPassword}}\" \n    }) \n    {\n        token\n        message\n    }\n}\n\n ```\n\n**Response:**\n\n``` graphql\n{\n    \"data\": {\n        \"login\": {\n            \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOjMsImlhdCI6MTc3MzA3NTM0NiwiZXhwIjoxNzczMDc4OTQ2fQ.QDefkLBkX734bYO12DAFl1bT0hJGPhggmmYjefVkuRg\",\n            \"message\": \"Login successful\"\n        }\n    }\n}\n\n ```"
+                "description": "**Example request:**\n\n``` graphql\nmutation Login {\n    login(input: {\n        username: \"{{randomUsername}}\",\n        password: \"{{randomPassword}}\"\n    })\n    {\n        token\n        message\n    }\n}\n\n ```\n\n**Response:**\n\n``` graphql\n{\n    \"data\": {\n        \"login\": {\n            \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOjM2LCJpYXQiOjE3NzQzOTAyMjcsImV4cCI6MTc3NDM5MzgyN30.-3CaTLwi1caviUTCVZzfHVgNslQaTeFehD4pmIJgLDA\",\n            \"message\": \"Login successful\"\n        }\n    }\n}\n\n ```"
               },
               "response": []
             },
@@ -349,7 +361,7 @@
                     "{{URL}}"
                   ]
                 },
-                "description": "**Response:**\n\n``` graphql\n{\n    \"data\": {\n        \"login\": null\n    },\n    \"errors\": [\n        {\n            \"message\": \"Username or password invalid\",\n            \"path\": [\n                \"login\"\n            ],\n            \"locations\": [\n                {\n                    \"line\": 2,\n                    \"column\": 5\n                }\n            ],\n            \"extensions\": {\n                \"code\": \"INTERNAL_SERVER_ERROR\",\n                \"stacktrace\": [\n                    \"Error: Username or password invalid\",\n                    \"    at verifyCredentials (file:///C:/Users/angel/OneDrive/Documents/Kurser/1DV027/assignment-api-design/src/middleware/auth.js:17:20)\",\n                    \"    at async Object.login (file:///C:/Users/angel/OneDrive/Documents/Kurser/1DV027/assignment-api-design/src/resolvers/userResolvers.js:24:18)\"\n                ]\n            }\n        }\n    ]\n}\n\n ```"
+                "description": "**Response:**\n\n``` graphql\n{\n    \"errors\": [\n        {\n            \"message\": \"Username or password invalid\",\n            \"locations\": [\n                {\n                    \"line\": 2,\n                    \"column\": 5\n                }\n            ],\n            \"path\": [\n                \"login\"\n            ],\n            \"extensions\": {\n                \"code\": \"INTERNAL_SERVER_ERROR\",\n                \"stacktrace\": [\n                    \"Error: Username or password invalid\",\n                    \"    at verifyUser (file:///C:/Users/angel/OneDrive/Documents/Kurser/1DV027/API/assignment-api-design/src/middleware/auth.js:31:28)\",\n                    \"    at async Object.login (file:///C:/Users/angel/OneDrive/Documents/Kurser/1DV027/API/assignment-api-design/src/resolvers/userResolvers.js:29:17)\"\n                ]\n            }\n        }\n    ],\n    \"data\": {\n        \"login\": null\n    }\n}\n\n ```"
               },
               "response": []
             }
@@ -382,7 +394,19 @@
                   "listen": "test",
                   "script": {
                     "exec": [
-                      ""
+                      "const jsonData = pm.response.json()\r",
+                      "const token = jsonData?.data?.register?.token\r",
+                      "    || jsonData?.data?.token\r",
+                      "    || jsonData?.token\r",
+                      "\r",
+                      "if (token) {\r",
+                      "    pm.collectionVariables.set(\"authToken\", token)\r",
+                      "    pm.request.headers.upsert({ key: \"Authorization\", value: \"Bearer \" + token })\r",
+                      "}\r",
+                      "\r",
+                      "pm.test(\"Token extracted and saved\", () => {\r",
+                      "    pm.expect(token).to.be.a(\"string\").and.not.empty\r",
+                      "})"
                     ],
                     "type": "text/javascript",
                     "packages": {},
@@ -391,12 +415,22 @@
                 }
               ],
               "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
                 "method": "POST",
                 "header": [],
                 "body": {
                   "mode": "graphql",
                   "graphql": {
-                    "query": "mutation Register {\r\n    register(input: { \r\n        username: \"{{randomUsername}}\", \r\n        password: \"{{randomPassword}}\"\r\n    }) \r\n    {\r\n        userid\r\n        username\r\n        created\r\n    }\r\n}",
+                    "query": "mutation Register {\r\n    register(input: { \r\n        username: \"{{randomUsername}}\", \r\n        password: \"{{randomPassword}}\"\r\n    }) \r\n    {\r\n        token\r\n        message\r\n    }\r\n}",
                     "variables": ""
                   }
                 },
@@ -444,12 +478,22 @@
                 }
               ],
               "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
                 "method": "POST",
                 "header": [],
                 "body": {
                   "mode": "graphql",
                   "graphql": {
-                    "query": "mutation DeleteAccount {\r\n    deleteAccount(input: {\r\n        username: \"{{randomUsername}}\",\r\n        password: \"null\"\r\n    })\r\n    {\r\n        message\r\n        deletedUser {\r\n            userid\r\n            username\r\n            created\r\n        }\r\n    }\r\n}\r\n",
+                    "query": "mutation DeleteAccount {\r\n    deleteAccount(input: {\r\n        username: \"{{randomUsername}}\",\r\n        password: \"null\"\r\n    })\r\n    {\r\n        message\r\n        deletedUser\r\n    }\r\n}\r\n",
                     "variables": ""
                   }
                 },
@@ -459,7 +503,7 @@
                     "{{URL}}"
                   ]
                 },
-                "description": "**Response:**\n\n``` graphql\n{\n    \"data\": {\n        \"deleteAccount\": null\n    },\n    \"errors\": [\n        {\n            \"message\": \"Username or password invalid\",\n            \"path\": [\n                \"deleteAccount\"\n            ],\n            \"locations\": [\n                {\n                    \"line\": 2,\n                    \"column\": 5\n                }\n            ],\n            \"extensions\": {\n                \"code\": \"INTERNAL_SERVER_ERROR\",\n                \"stacktrace\": [\n                    \"Error: Username or password invalid\",\n                    \"    at Object.deleteAccount (file:///C:/Users/angel/OneDrive/Documents/Kurser/1DV027/assignment-api-design/src/resolvers/userResolvers.js:41:12)\"\n                ]\n            }\n        }\n    ]\n}\n\n ```"
+                "description": "**Response:**\n\n``` graphql\n{\n    \"errors\": [\n        {\n            \"message\": \"Username or password invalid\",\n            \"locations\": [\n                {\n                    \"line\": 2,\n                    \"column\": 5\n                }\n            ],\n            \"path\": [\n                \"deleteAccount\"\n            ],\n            \"extensions\": {\n                \"code\": \"INTERNAL_SERVER_ERROR\",\n                \"stacktrace\": [\n                    \"Error: Username or password invalid\",\n                    \"    at verifyUser (file:///C:/Users/angel/OneDrive/Documents/Kurser/1DV027/API/assignment-api-design/src/middleware/auth.js:31:28)\",\n                    \"    at async Object.deleteAccount (file:///C:/Users/angel/OneDrive/Documents/Kurser/1DV027/API/assignment-api-design/src/resolvers/userResolvers.js:45:17)\"\n                ]\n            }\n        }\n    ],\n    \"data\": {\n        \"deleteAccount\": null\n    }\n}\n\n ```"
               },
               "response": []
             },
@@ -494,7 +538,6 @@
                       "isSuccess()\r",
                       "hasStatus(200)\r",
                       "hasSuccessMessage(deleted.message, \"Account deleted successfully\")\r",
-                      "isObject(deleted.deletedUser)\r",
                       ""
                     ],
                     "type": "text/javascript",
@@ -504,12 +547,22 @@
                 }
               ],
               "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
                 "method": "POST",
                 "header": [],
                 "body": {
                   "mode": "graphql",
                   "graphql": {
-                    "query": "mutation DeleteAccount {\r\n    deleteAccount(input: {\r\n        username: \"{{randomUsername}}\",\r\n        password: \"{{randomPassword}}\"\r\n    })\r\n    {\r\n        message\r\n        deletedUser {\r\n            userid\r\n            username\r\n            created\r\n        }\r\n    }\r\n}\r\n",
+                    "query": "mutation DeleteAccount {\r\n    deleteAccount(input: {\r\n        username: \"{{randomUsername}}\",\r\n        password: \"{{randomPassword}}\"\r\n    })\r\n    {\r\n        message\r\n        deletedUser\r\n    }\r\n}\r\n",
                     "variables": ""
                   }
                 },
@@ -519,7 +572,7 @@
                     "{{URL}}"
                   ]
                 },
-                "description": "**Example request:**\n\n``` graphql\nmutation DeleteAccount {\n    deleteAccount(input: { \n        username: \"{{randomUsername}}\", \n        password: \"{{randomPassword}}\" \n    }) \n    {\n        message\n        deletedUser {\n            userid\n            username\n            created\n        }\n    }\n}\n\n ```\n\n**Response:**\n\n``` graphql\n{\n    \"data\": {\n        \"deleteAccount\": {\n            \"message\": \"Account deleted successfully\",\n            \"deletedUser\": {\n                \"userid\": \"5\",\n                \"username\": \"6e741723-479d-4656-8f06-be14bc64ee4d\",\n                \"created\": \"2026-03-09T17:02:55.000Z\"\n            }\n        }\n    }\n}\n\n ```"
+                "description": "**Example request:**\n\n``` graphql\nmutation DeleteAccount {\n    deleteAccount(input: {\n        username: \"{{randomUsername}}\",\n        password: \"{{randomPassword}}\"\n    })\n    {\n        message\n        deletedUser\n    }\n}\n\n ```\n\n**Response:**\n\n``` graphql\n{\n    \"data\": {\n        \"deleteAccount\": {\n            \"message\": \"Account deleted successfully\",\n            \"deletedUser\": {\n                \"userid\": \"5\",\n                \"username\": \"6e741723-479d-4656-8f06-be14bc64ee4d\",\n                \"created\": \"2026-03-09T17:02:55.000Z\"\n            }\n        }\n    }\n}\n\n ```"
               },
               "response": []
             }
@@ -558,7 +611,19 @@
                   "listen": "test",
                   "script": {
                     "exec": [
-                      ""
+                      "const jsonData = pm.response.json()",
+                      "const token = jsonData?.data?.register?.token",
+                      "    || jsonData?.data?.token",
+                      "    || jsonData?.token",
+                      "",
+                      "if (token) {",
+                      "    pm.collectionVariables.set(\"authToken\", token)",
+                      "    pm.request.headers.upsert({ key: \"Authorization\", value: \"Bearer \" + token })",
+                      "}",
+                      "",
+                      "pm.test(\"Token extracted and saved\", () => {",
+                      "    pm.expect(token).to.be.a(\"string\").and.not.empty",
+                      "})"
                     ],
                     "type": "text/javascript",
                     "packages": {},
@@ -567,12 +632,15 @@
                 }
               ],
               "request": {
+                "auth": {
+                  "type": "noauth"
+                },
                 "method": "POST",
                 "header": [],
                 "body": {
                   "mode": "graphql",
                   "graphql": {
-                    "query": "mutation Register {\r\n    register(input: { \r\n        username: \"{{randomUsername}}\", \r\n        password: \"{{randomPassword}}\"\r\n    }) \r\n    {\r\n        userid\r\n        username\r\n        created\r\n    }\r\n}",
+                    "query": "mutation Register {\r\n    register(input: { \r\n        username: \"{{randomUsername}}\", \r\n        password: \"{{randomPassword}}\"\r\n    }) {\r\n        token,\r\n        message\r\n    }\r\n}",
                     "variables": ""
                   }
                 },
@@ -587,52 +655,6 @@
               "response": []
             },
             {
-              "name": "Login (Setup)",
-              "event": [
-                {
-                  "listen": "prerequest",
-                  "script": {
-                    "exec": [
-                      ""
-                    ],
-                    "type": "text/javascript",
-                    "packages": {},
-                    "requests": {}
-                  }
-                },
-                {
-                  "listen": "test",
-                  "script": {
-                    "exec": [
-                      "pm.collectionVariables.set(\"token\", pm.response.json().data.login.token)"
-                    ],
-                    "type": "text/javascript",
-                    "packages": {},
-                    "requests": {}
-                  }
-                }
-              ],
-              "request": {
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "graphql",
-                  "graphql": {
-                    "query": "mutation Login {\r\n    login(input: {\r\n        username: \"{{randomUsername}}\",\r\n        password: \"{{randomPassword}}\"\r\n    })\r\n    {\r\n        token\r\n        message\r\n    }\r\n}\r\n",
-                    "variables": ""
-                  }
-                },
-                "url": {
-                  "raw": "{{URL}}",
-                  "host": [
-                    "{{URL}}"
-                  ]
-                },
-                "description": "See Login - Success request."
-              },
-              "response": []
-            },
-            {
               "name": "Add NEO - Success",
               "event": [
                 {
@@ -640,8 +662,10 @@
                   "script": {
                     "exec": [
                       "const randomSpkid = pm.variables.replaceIn('{{$randomInt}}')\r",
+                      "pm.collectionVariables.set(\"randomSpkid\", randomSpkid)\r",
                       "\r",
-                      "pm.collectionVariables.set(\"randomSpkid\", randomSpkid)"
+                      "const token = pm.collectionVariables.get(\"authToken\")\r",
+                      "pm.request.headers.upsert({ key: \"Authorization\", value: \"Bearer \" + token })"
                     ],
                     "type": "text/javascript",
                     "packages": {},
@@ -653,7 +677,7 @@
                   "script": {
                     "exec": [
                       "const response = pm.response.json().data\r",
-                      "const neo = response.addNeo\r",
+                      "const neo = response.addNeo.addedNeo\r",
                       "\r",
                       "\r",
                       "eval(pm.collectionVariables.get(\"isSuccess\"))\r",
@@ -674,12 +698,15 @@
                 }
               ],
               "request": {
+                "auth": {
+                  "type": "noauth"
+                },
                 "method": "POST",
                 "header": [],
                 "body": {
                   "mode": "graphql",
                   "graphql": {
-                    "query": "mutation AddNeo {\r\n    addNeo(input: {\r\n        spkid: {{randomSpkid}},\r\n        name: \"test_neo\",\r\n        earth_moid_ld: 1.1,\r\n        magnitude: 10\r\n        rotation_hours: 5\r\n        pot_hazardous_asteroid: true\r\n    },\r\n    token: \"{{token}}\") {\r\n        spkid\r\n        name\r\n        earth_moid_ld\r\n        magnitude\r\n        rotation_hours\r\n        pot_hazardous_asteroid\r\n    }\r\n}",
+                    "query": "mutation AddNeo {\r\n    addNeo(input: {\r\n        spkid: {{randomSpkid}},\r\n        name: \"test_neo\",\r\n        earth_moid_ld: 1.1,\r\n        magnitude: 10\r\n        rotation_hours: 5\r\n        pot_hazardous_asteroid: true\r\n    }) {\r\n        addedNeo {\r\n            spkid\r\n            name\r\n            earth_moid_ld\r\n            magnitude\r\n            rotation_hours\r\n            pot_hazardous_asteroid\r\n        }\r\n    message\r\n    }\r\n}",
                     "variables": ""
                   }
                 },
@@ -689,7 +716,7 @@
                     "{{URL}}"
                   ]
                 },
-                "description": "**Example reqest:**\n\n``` graphql\nmutation AddNeo {\n    addNeo(input: { \n        spkid: {{randomSpkid}}, \n        name: \"test_neo\", \n        earth_moid_ld: 1.1,\n        magnitude: 10\n        rotation_hours: 5\n        pot_hazardous_asteroid: true\n    }, \n    token: \"{{token}}\") {\n        spkid\n        name\n        earth_moid_ld\n        magnitude\n        rotation_hours\n        pot_hazardous_asteroid\n    }\n}\n\n ```\n\n**Response:**\n\n``` graphql\n{\n    \"data\": {\n        \"addNeo\": {\n            \"spkid\": \"602\",\n            \"name\": \"test_neo\",\n            \"earth_moid_ld\": 1.1,\n            \"magnitude\": 10,\n            \"rotation_hours\": 5,\n            \"pot_hazardous_asteroid\": true\n        }\n    }\n}\n\n ```"
+                "description": "**Example reqest:**\n\n``` graphql\nmutation AddNeo {\n    addNeo(input: {\n        spkid: {{randomSpkid}},\n        name: \"test_neo\",\n        earth_moid_ld: 1.1,\n        magnitude: 10\n        rotation_hours: 5\n        pot_hazardous_asteroid: true\n    }) {\n        addedNeo {\n            spkid\n            name\n            earth_moid_ld\n            magnitude\n            rotation_hours\n            pot_hazardous_asteroid\n        }\n    message\n    }\n}\n\n ```\n\n**Response:**\n\n``` graphql\n{\n    \"data\": {\n        \"addNeo\": {\n            \"spkid\": \"602\",\n            \"name\": \"test_neo\",\n            \"earth_moid_ld\": 1.1,\n            \"magnitude\": 10,\n            \"rotation_hours\": 5,\n            \"pot_hazardous_asteroid\": true\n        }\n    }\n}\n\n ```"
               },
               "response": []
             },
@@ -728,12 +755,15 @@
                 }
               ],
               "request": {
+                "auth": {
+                  "type": "noauth"
+                },
                 "method": "POST",
                 "header": [],
                 "body": {
                   "mode": "graphql",
                   "graphql": {
-                    "query": "mutation AddNeo {\r\n    addNeo(input: {\r\n        spkid: {{randomSpkid}},\r\n        name: \"test\",\r\n        earth_moid_ld: 1.1\r\n    },\r\n    token: \"null\") {\r\n        spkid\r\n        name\r\n        earth_moid_ld\r\n        magnitude\r\n        rotation_hours\r\n        pot_hazardous_asteroid\r\n    }\r\n}\r\n",
+                    "query": "mutation AddNeo {\r\n    addNeo(input: {\r\n        spkid: {{randomSpkid}},\r\n        name: \"test_neo\",\r\n        earth_moid_ld: 1.1,\r\n        magnitude: 10\r\n        rotation_hours: 5\r\n        pot_hazardous_asteroid: true\r\n    }) {\r\n        addedNeo {\r\n            spkid\r\n            name\r\n            earth_moid_ld\r\n            magnitude\r\n            rotation_hours\r\n            pot_hazardous_asteroid\r\n        }\r\n    message\r\n    }\r\n}\r\n",
                     "variables": ""
                   }
                 },
@@ -863,6 +893,9 @@
                 }
               ],
               "request": {
+                "auth": {
+                  "type": "noauth"
+                },
                 "method": "POST",
                 "header": [],
                 "body": {
@@ -1036,7 +1069,7 @@
                 "body": {
                   "mode": "graphql",
                   "graphql": {
-                    "query": "query Neos {\r\n    neos(input: {\r\n        limit: {{limit}}\r\n        page: {{page}}\r\n        name: \"A\"\r\n    }) {\r\n        metadata\r\n        neos {\r\n            spkid\r\n            name\r\n            earth_moid_ld\r\n            magnitude\r\n            rotation_hours\r\n            pot_hazardous_asteroid\r\n        }\r\n    }\r\n}\r\n",
+                    "query": "query Neos {\r\n    neos(input: {\r\n        limit: {{limit}}\r\n        offset: {{offset}}\r\n        name: \"A\"\r\n    }) {\r\n        metadata\r\n        neos {\r\n            spkid\r\n            name\r\n            earth_moid_ld\r\n            magnitude\r\n            rotation_hours\r\n            pot_hazardous_asteroid\r\n        }\r\n    }\r\n}\r\n",
                     "variables": ""
                   }
                 },
@@ -1046,7 +1079,7 @@
                     "{{URL}}"
                   ]
                 },
-                "description": "**Example request:**\n\n``` graphql\nquery Neos {\n    neos(input: {\n        limit: {{limit}}\n        page: {{page}}\n        name: \"A\"\n    }) {\n        metadata\n        neos {\n            spkid\n            name\n            earth_moid_ld\n            magnitude\n            rotation_hours\n            pot_hazardous_asteroid\n        }\n    }\n}\n\n ```\n\n**Response:**\n\n``` graphql\n{\n    \"data\": {\n        \"neos\": {\n            \"metadata\": \"20 entries found\",\n            \"neos\": [\n                {\n                    \"spkid\": \"1000027\",\n                    \"name\": \"15P/Finlay\",\n                    \"earth_moid_ld\": 3.59,\n                    \"magnitude\": null,\n                    \"rotation_hours\": null,\n                    \"pot_hazardous_asteroid\": false\n                },\n                {\n                    \"spkid\": \"1000032\",\n                    \"name\": \"21P/Giacobini-Zinner\",\n                    \"earth_moid_ld\": 6.91,\n                    \"magnitude\": null,\n                    \"rotation_hours\": null,\n                    \"pot_hazardous_asteroid\": false\n                },\n...\n\n ```"
+                "description": "**Example request:**\n\n``` graphql\nquery Neos {\n    neos(input: {\n        limit: {{limit}}\n        offset: {{offset}}\n        name: \"A\"\n    }) {\n        metadata\n        neos {\n            spkid\n            name\n            earth_moid_ld\n            magnitude\n            rotation_hours\n            pot_hazardous_asteroid\n        }\n    }\n}\n\n ```\n\n**Response:**\n\n``` graphql\n{\n    \"data\": {\n        \"neos\": {\n            \"metadata\": \"20 entries found\",\n            \"neos\": [\n                {\n                    \"spkid\": \"3413073\",\n                    \"name\": \"(2008 LA)\",\n                    \"earth_moid_ld\": 0.281,\n                    \"magnitude\": 23.1,\n                    \"rotation_hours\": null,\n                    \"pot_hazardous_asteroid\": false\n                },\n                {\n                    \"spkid\": \"3427440\",\n                    \"name\": \"(2008 SA)\",\n                    \"earth_moid_ld\": 1.92,\n                    \"magnitude\": 25,\n                    \"rotation_hours\": 0.1297,\n                    \"pot_hazardous_asteroid\": false\n                },\n...\n\n ```"
               },
               "response": []
             },
@@ -1089,7 +1122,7 @@
                 "body": {
                   "mode": "graphql",
                   "graphql": {
-                    "query": "query Neos {\r\n    neos(input: {\r\n        page: {{invalid_page}}\r\n    }) {\r\n        metadata\r\n        neos {\r\n            spkid\r\n            name\r\n            earth_moid_ld\r\n            magnitude\r\n            rotation_hours\r\n            pot_hazardous_asteroid\r\n        }\r\n    }\r\n}\r\n",
+                    "query": "query Neos {\r\n    neos(input: {\r\n        offset: {{invalid_offset}}\r\n    }) {\r\n        metadata\r\n        neos {\r\n            spkid\r\n            name\r\n            earth_moid_ld\r\n            magnitude\r\n            rotation_hours\r\n            pot_hazardous_asteroid\r\n        }\r\n    }\r\n}\r\n",
                     "variables": ""
                   }
                 },
@@ -1133,18 +1166,25 @@
                 {
                   "listen": "prerequest",
                   "script": {
-                    "exec": [],
-                    "type": "text/javascript"
+                    "exec": [
+                      ""
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
                   }
                 }
               ],
               "request": {
+                "auth": {
+                  "type": "noauth"
+                },
                 "method": "POST",
                 "header": [],
                 "body": {
                   "mode": "graphql",
                   "graphql": {
-                    "query": "mutation UpdateNeo {\r\n    updateNeo(\r\n    spkid: {{randomSpkid}},\r\n    input: {\r\n        name: \"update\"\r\n    },\r\n    token: \"\")\r\n    {\r\n        spkid\r\n        name\r\n        earth_moid_ld\r\n        magnitude\r\n        rotation_hours\r\n        pot_hazardous_asteroid\r\n    }\r\n}\r\n\r\n",
+                    "query": "mutation UpdateNeo {\r\n    updateNeo(\r\n    spkid: {{randomSpkid}},\r\n    input: { name: \"update\" }) \r\n    {\r\n    updatedNeo {\r\n        spkid\r\n        name\r\n        earth_moid_ld\r\n        magnitude\r\n        rotation_hours\r\n        pot_hazardous_asteroid\r\n        }\r\n    message\r\n    }\r\n}\r\n\r\n",
                     "variables": ""
                   }
                 },
@@ -1166,7 +1206,7 @@
                   "script": {
                     "exec": [
                       "const response = pm.response.json().data\r",
-                      "const neo = response.updateNeo\r",
+                      "const neo = response.updateNeo.updatedNeo\r",
                       "\r",
                       "\r",
                       "eval(pm.collectionVariables.get(\"isSuccess\"))\r",
@@ -1194,7 +1234,8 @@
                   "listen": "prerequest",
                   "script": {
                     "exec": [
-                      ""
+                      "const token = pm.collectionVariables.get(\"authToken\")\r",
+                      "pm.request.headers.upsert({ key: \"Authorization\", value: \"Bearer \" + token })"
                     ],
                     "type": "text/javascript",
                     "packages": {},
@@ -1203,12 +1244,22 @@
                 }
               ],
               "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
                 "method": "POST",
                 "header": [],
                 "body": {
                   "mode": "graphql",
                   "graphql": {
-                    "query": "mutation UpdateNeo {\r\n    updateNeo(\r\n    spkid: {{randomSpkid}},\r\n    input: {\r\n        name: \"update\"\r\n    },\r\n    token: \"{{token}}\")\r\n    {\r\n        spkid\r\n        name\r\n        earth_moid_ld\r\n        magnitude\r\n        rotation_hours\r\n        pot_hazardous_asteroid\r\n    }\r\n}\r\n",
+                    "query": "mutation UpdateNeo {\r\n    updateNeo(\r\n        spkid: {{randomSpkid}},\r\n        input: { name: \"update\" }\r\n    ) {\r\n        updatedNeo {\r\n            spkid\r\n            name\r\n            earth_moid_ld\r\n            magnitude\r\n            rotation_hours\r\n            pot_hazardous_asteroid\r\n            }\r\n        message\r\n    }\r\n}\r\n",
                     "variables": ""
                   }
                 },
@@ -1218,7 +1269,7 @@
                     "{{URL}}"
                   ]
                 },
-                "description": "**Example request:**\n\n``` graphql\nmutation UpdateNeo {\n    updateNeo(\n    spkid: {{randomSpkid}}, \n    input: { \n        name: \"update\" \n    }, \n    token: \"{{token}}\") \n    {\n        spkid\n        name\n        earth_moid_ld\n        magnitude\n        rotation_hours\n        pot_hazardous_asteroid\n    }\n}\n\n ```\n\n**Response:**\n\n``` graphql\n{\n    \"data\": {\n        \"updateNeo\": {\n            \"spkid\": \"602\",\n            \"name\": \"update\",\n            \"earth_moid_ld\": 1.1,\n            \"magnitude\": 10,\n            \"rotation_hours\": 5,\n            \"pot_hazardous_asteroid\": true\n        }\n    }\n}\n\n ```"
+                "description": "**Example request:**\n\n``` graphql\nmutation UpdateNeo {\n    updateNeo(\n        spkid: {{randomSpkid}},\n        input: { name: \"update\" }\n    ) {\n        updatedNeo {\n            spkid\n            name\n            earth_moid_ld\n            magnitude\n            rotation_hours\n            pot_hazardous_asteroid\n            }\n        message\n    }\n}\n\n ```\n\n**Response:**\n\n``` graphql\n{\n    \"data\": {\n        \"updateNeo\": {\n            \"updatedNeo\": {\n                \"spkid\": \"239\",\n                \"name\": \"update\",\n                \"earth_moid_ld\": 1.1,\n                \"magnitude\": 10,\n                \"rotation_hours\": 5,\n                \"pot_hazardous_asteroid\": true\n            },\n            \"message\": \"Near-Earth Object updated successfully\"\n        }\n    }\n}\n\n ```"
               },
               "response": []
             },
@@ -1256,12 +1307,15 @@
                 }
               ],
               "request": {
+                "auth": {
+                  "type": "noauth"
+                },
                 "method": "POST",
                 "header": [],
                 "body": {
                   "mode": "graphql",
                   "graphql": {
-                    "query": "mutation DeleteNeo {\r\n    deleteNeo(\r\n    spkid: {{randomSpkid}},\r\n    token: \"\")\r\n    {\r\n        message\r\n        deletedNeo {\r\n            spkid\r\n            name\r\n            earth_moid_ld\r\n            magnitude\r\n            rotation_hours\r\n            pot_hazardous_asteroid\r\n        }\r\n    }\r\n}\r\n",
+                    "query": "mutation DeleteNeo {\r\n    deleteNeo(spkid: {{randomSpkid}}),\r\n    {\r\n        message\r\n        deletedNeo {\r\n            spkid\r\n            name\r\n            earth_moid_ld\r\n            magnitude\r\n            rotation_hours\r\n            pot_hazardous_asteroid\r\n        }\r\n    }\r\n}\r\n",
                     "variables": ""
                   }
                 },
@@ -1307,7 +1361,8 @@
                   "listen": "prerequest",
                   "script": {
                     "exec": [
-                      ""
+                      "const token = pm.collectionVariables.get(\"authToken\")\r",
+                      "pm.request.headers.upsert({ key: \"Authorization\", value: \"Bearer \" + token })"
                     ],
                     "type": "text/javascript",
                     "packages": {},
@@ -1316,12 +1371,22 @@
                 }
               ],
               "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{authToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
                 "method": "POST",
                 "header": [],
                 "body": {
                   "mode": "graphql",
                   "graphql": {
-                    "query": "mutation DeleteNeo {\r\n    deleteNeo(\r\n    spkid: {{randomSpkid}},\r\n    token: \"{{token}}\")\r\n    {\r\n        message\r\n        deletedNeo {\r\n            spkid\r\n            name\r\n            earth_moid_ld\r\n            magnitude\r\n            rotation_hours\r\n            pot_hazardous_asteroid\r\n        }\r\n    }\r\n}\r\n",
+                    "query": "mutation DeleteNeo {\r\n    deleteNeo(spkid: {{randomSpkid}}),\r\n    {\r\n        message\r\n        deletedNeo {\r\n            spkid\r\n            name\r\n            earth_moid_ld\r\n            magnitude\r\n            rotation_hours\r\n            pot_hazardous_asteroid\r\n        }\r\n    }\r\n}\r\n",
                     "variables": ""
                   }
                 },
@@ -1557,7 +1622,7 @@
             "body": {
               "mode": "graphql",
               "graphql": {
-                "query": "query Orbits {\r\n    orbits(input: {\r\n        limit: {{limit}}\r\n        page: {{page}}\r\n        orbital_class: \"JFc\"\r\n    }) {\r\n        metadata\r\n        orbits {\r\n            spkid\r\n            orbital_class\r\n            years\r\n        }\r\n    }\r\n}",
+                "query": "query Orbits {\r\n    orbits(input: {\r\n        limit: {{limit}}\r\n        offset: {{offset}}\r\n        orbital_class: \"APO\"\r\n    }) {\r\n        metadata\r\n        orbits {\r\n            spkid\r\n            orbital_class\r\n            years\r\n        }\r\n    }\r\n}",
                 "variables": ""
               }
             },
@@ -1567,7 +1632,7 @@
                 "{{URL}}"
               ]
             },
-            "description": "**Example request:**\n\n``` graphql\nquery Orbits {\n    orbits(input: {\n        limit: {{limit}}\n        page: {{page}}\n        orbital_class: \"JFc\"\n    }) {\n        metadata\n        orbits {\n            spkid\n            orbital_class\n            years\n        }\n    }\n}\n\n ```\n\n**Response:**\n\n``` graphql\n{\n    \"data\": {\n        \"orbits\": {\n            \"metadata\": \"20 entries found\",\n            \"orbits\": [\n                {\n                    \"spkid\": \"1000027\",\n                    \"orbital_class\": \"JFc\",\n                    \"years\": 6.52\n                },\n                {\n                    \"spkid\": \"1000032\",\n                    \"orbital_class\": \"JFc\",\n                    \"years\": 6.55\n                },\n...\n\n ```"
+            "description": "**Example request:**\n\n``` graphql\nquery Orbits {\n    orbits(input: {\n        limit: {{limit}}\n        offset: {{offset}}\n        orbital_class: \"APO\"\n    }) {\n        metadata\n        orbits {\n            spkid\n            orbital_class\n            years\n        }\n    }\n}\n\n ```\n\n**Response:**\n\n``` graphql\n{\n    \"data\": {\n        \"orbits\": {\n            \"metadata\": \"20 entries found\",\n            \"orbits\": [\n                {\n                    \"spkid\": \"3092147\",\n                    \"orbital_class\": \"APO\",\n                    \"years\": 2.81\n                },\n                {\n                    \"spkid\": \"3092151\",\n                    \"orbital_class\": \"APO\",\n                    \"years\": 2.54\n                },\n...\n\n ```"
           },
           "response": []
         },
@@ -1611,7 +1676,7 @@
             "body": {
               "mode": "graphql",
               "graphql": {
-                "query": "query Orbits {\r\n    orbits(input: {\r\n        page: {{invalid_page}}\r\n    }) {\r\n        metadata\r\n        orbits {\r\n            spkid\r\n            orbital_class\r\n            years\r\n        }\r\n    }\r\n}\r\n\r\n\r\n",
+                "query": "query Orbits {\r\n    orbits(input: {\r\n        offset: {{invalid_offset}}\r\n    }) {\r\n        metadata\r\n        orbits {\r\n            spkid\r\n            orbital_class\r\n            years\r\n        }\r\n    }\r\n}\r\n\r\n\r\n",
                 "variables": ""
               }
             },
@@ -1843,7 +1908,7 @@
             "body": {
               "mode": "graphql",
               "graphql": {
-                "query": "query Close_approaches {\r\n    close_approaches(input: {\r\n        limit: {{limit}}\r\n        page: {{page}}\r\n        rarity: 4\r\n    }) {\r\n        metadata\r\n        approaches {\r\n            id\r\n            spkid\r\n            date\r\n            nominal_distance_km\r\n            minimum_distance_km\r\n            relative_velocity_km_s\r\n            rarity\r\n        }\r\n    }\r\n}\r\n",
+                "query": "query Close_approaches {\r\n    close_approaches(input: {\r\n        limit: {{limit}}\r\n        offset: {{offset}}\r\n        rarity: 1\r\n    }) {\r\n        metadata\r\n        approaches {\r\n            id\r\n            spkid\r\n            date\r\n            nominal_distance_km\r\n            minimum_distance_km\r\n            relative_velocity_km_s\r\n            rarity\r\n        }\r\n    }\r\n}\r\n",
                 "variables": ""
               }
             },
@@ -1853,7 +1918,7 @@
                 "{{URL}}"
               ]
             },
-            "description": "**Example request:**\n\n``` graphql\nquery Close_approaches {\n    close_approaches(input: {\n        limit: {{limit}}\n        page: {{page}}\n        rarity: 4\n    }) {\n        metadata\n        approaches {\n            id\n            spkid\n            date\n            nominal_distance_km\n            minimum_distance_km\n            relative_velocity_km_s\n            rarity\n        }\n    }\n}\n\n ```\n\n**Response:**\n\n``` graphql\n{\n    \"data\": {\n        \"close_approaches\": {\n            \"metadata\": \"20 entries found\",\n            \"approaches\": [\n                {\n                    \"id\": \"409\",\n                    \"spkid\": \"20152680\",\n                    \"date\": \"1914-12-31T11:00:00.000Z\",\n                    \"nominal_distance_km\": 233224,\n                    \"minimum_distance_km\": 232781,\n                    \"relative_velocity_km_s\": 21.1,\n                    \"rarity\": 4\n                },\n                {\n                    \"id\": \"700\",\n                    \"spkid\": \"20163132\",\n                    \"date\": \"1925-08-30T22:38:00.000Z\",\n                    \"nominal_distance_km\": 346879,\n                    \"minimum_distance_km\": 346176,\n                    \"relative_velocity_km_s\": 26.48,\n                    \"rarity\": 4\n                },\n...\n\n ```"
+            "description": "**Example request:**\n\n``` graphql\nquery Close_approaches {\n    close_approaches(input: {\n        limit: {{limit}}\n        offset: {{offset}}\n        rarity: 1\n    }) {\n        metadata\n        approaches {\n            id\n            spkid\n            date\n            nominal_distance_km\n            minimum_distance_km\n            relative_velocity_km_s\n            rarity\n        }\n    }\n}\n\n ```\n\n**Response:**\n\n``` graphql\n{\n    \"data\": {\n        \"close_approaches\": {\n            \"metadata\": \"20 entries found\",\n            \"approaches\": [\n                {\n                    \"id\": \"397\",\n                    \"spkid\": \"3581669\",\n                    \"date\": \"1914-10-14T07:45:00.000Z\",\n                    \"nominal_distance_km\": 3324660,\n                    \"minimum_distance_km\": 3324330,\n                    \"relative_velocity_km_s\": 21.5,\n                    \"rarity\": 1\n                },\n                {\n                    \"id\": \"398\",\n                    \"spkid\": \"3729541\",\n                    \"date\": \"1914-10-19T16:11:00.000Z\",\n                    \"nominal_distance_km\": 2261240,\n                    \"minimum_distance_km\": 1967660,\n                    \"relative_velocity_km_s\": 24.28,\n                    \"rarity\": 1\n                },\n...\n\n ```"
           },
           "response": []
         },
@@ -1897,7 +1962,7 @@
             "body": {
               "mode": "graphql",
               "graphql": {
-                "query": "query Close_approaches {\r\n    close_approaches(input: {\r\n        page: {{invalid_page}}\r\n    }) {\r\n        metadata\r\n        approaches {\r\n            id\r\n            spkid\r\n            date\r\n            nominal_distance_km\r\n            minimum_distance_km\r\n            relative_velocity_km_s\r\n            rarity\r\n        }\r\n    }\r\n}\r\n",
+                "query": "query Close_approaches {\r\n    close_approaches(input: {\r\n        offset: {{invalid_offset}}\r\n    }) {\r\n        metadata\r\n        approaches {\r\n            id\r\n            spkid\r\n            date\r\n            nominal_distance_km\r\n            minimum_distance_km\r\n            relative_velocity_km_s\r\n            rarity\r\n        }\r\n    }\r\n}\r\n",
                 "variables": ""
               }
             },
@@ -2078,7 +2143,11 @@
     },
     {
       "key": "token",
-      "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOjEwMywiaWF0IjoxNzczNDEyNTYxLCJleHAiOjE3NzM0MTYxNjF9.mMpnmLoJJVu9LG7nAEQ4MQRqCWut9ALNz95xZzRQPEs"
+      "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOjQyLCJpYXQiOjE3NzQzOTMyODIsImV4cCI6MTc3NDM5Njg4Mn0.rZ2IowTFHYraaJ9M61_TJlP2FHCNQQyyIt3I-cfInRQ"
+    },
+    {
+      "key": "authToken",
+      "value": ""
     }
   ]
 }
